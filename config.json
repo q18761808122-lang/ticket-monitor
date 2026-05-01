@@ -1,95 +1,167 @@
 {
   "check_interval_seconds": 30,
   "remind_interval_seconds": 30,
-  "wechat_token": "你的PushPlusToken",
-  "bark_key": "你的BarkKey",
-  "_comment_wechat": "去 http://www.pushplus.plus 注册 → 登录 → 一键生成Token → 替换上方 wechat_token",
-  "_comment_bark": "App Store 搜索 'Bark' 安装 → 复制 Key → 替换上方 bark_key",
-  "_comment_check": "check_interval_seconds: 每轮检查间隔（建议 15-60 秒）",
-  "_comment_remind": "remind_interval_seconds: 持续有票时每隔多少秒重复提醒（默认 300 秒 = 5 分钟）",
-
+  "wechat_token": "ä½ çPushPlusToken",
+  "bark_key": "ä½ çBarkKey",
+  "_comment_wechat": "å» http://www.pushplus.plus æ³¨å â ç»å½ â ä¸é®çæToken â æ¿æ¢ä¸æ¹ wechat_token",
+  "_comment_bark": "App Store æç´¢ 'Bark' å®è£ â å¤å¶ Key â æ¿æ¢ä¸æ¹ bark_key",
+  "_comment_check": "check_interval_seconds: æ¯è½®æ£æ¥é´éï¼å»ºè®® 15-60 ç§ï¼",
+  "_comment_remind": "remind_interval_seconds: æç»­æç¥¨æ¶æ¯éå¤å°ç§éå¤æéï¼é»è®¤ 300 ç§ = 5 åéï¼",
   "monitors": [
     {
       "id": "xuezhiqian_taiyuan_damai",
       "enabled": true,
       "platform": "damai",
-      "label": "大麦",
+      "label": "å¤§éº¦",
       "item_id": "1030416581941",
       "buy_url": "https://detail.damai.cn/item.htm?id=1030416581941",
       "buy_url_mobile": "damai://V1/ProjectPage?id=1030416581941",
-      "comment": "一级官方平台 — 太原站 2026.04.24-05.03"
+      "comment": "ä¸çº§å®æ¹å¹³å° â å¤ªåç« 2026.04.24-05.03"
     },
     {
       "id": "xuezhiqian_taiyuan_pxq",
       "enabled": true,
       "platform": "generic",
       "mode": "page",
-      "label": "票星球",
+      "label": "ç¥¨æç",
       "url": "http://www.xingqiupiao.com/event?id=113812",
-      "buy_keywords": ["立即购买", "选座购买", "去购买", "立即预订"],
-      "sold_keywords": ["已售罄", "售罄", "缺货登记", "下架", "已下架"],
+      "buy_keywords": [
+        "ç«å³è´­ä¹°",
+        "éåº§è´­ä¹°",
+        "å»è´­ä¹°",
+        "ç«å³é¢è®¢"
+      ],
+      "sold_keywords": [
+        "å·²å®ç½",
+        "å®ç½",
+        "ç¼ºè´§ç»è®°",
+        "ä¸æ¶",
+        "å·²ä¸æ¶"
+      ],
       "buy_url": "http://www.xingqiupiao.com/event?id=113812",
       "buy_url_mobile": "http://www.xingqiupiao.com/event?id=113812",
-      "comment": "代拍平台 — 太原站 2026.04.24-05.03"
+      "comment": "ä»£æå¹³å° â å¤ªåç« 2026.04.24-05.03"
     },
     {
       "id": "xuezhiqian_taiyuan_ypiao",
       "enabled": true,
       "platform": "generic",
       "mode": "page",
-      "label": "有票网",
+      "label": "æç¥¨ç½",
       "url": "https://www.ypiao.com/t_113812/",
-      "buy_keywords": ["立即购买", "去购买", "立即预订", "我要买票", "有票"],
-      "sold_keywords": ["已售罄", "售罄", "缺货登记", "下架", "已下架", "等待开售"],
+      "buy_keywords": [
+        "ç«å³è´­ä¹°",
+        "å»è´­ä¹°",
+        "ç«å³é¢è®¢",
+        "æè¦ä¹°ç¥¨",
+        "æç¥¨"
+      ],
+      "sold_keywords": [
+        "å·²å®ç½",
+        "å®ç½",
+        "ç¼ºè´§ç»è®°",
+        "ä¸æ¶",
+        "å·²ä¸æ¶",
+        "ç­å¾å¼å®"
+      ],
       "buy_url": "https://www.ypiao.com/t_113812/",
       "buy_url_mobile": "https://www.ypiao.com/t_113812/",
-      "comment": "代拍平台 — 太原站 2026.04.24-05.03"
+      "comment": "ä»£æå¹³å° â å¤ªåç« 2026.04.24-05.03"
     },
     {
       "id": "xuezhiqian_taiyuan_dahe",
       "enabled": true,
       "platform": "generic",
       "mode": "page",
-      "label": "大河票务",
+      "label": "å¤§æ²³ç¥¨å¡",
       "url": "https://m.dahepiao.com/yc/xuezhiqaintaiyuanych/",
-      "buy_keywords": ["立即购买", "选座购买", "立即预订", "有票"],
-      "sold_keywords": ["已售罄", "售罄", "缺货登记", "等待开售"],
+      "buy_keywords": [
+        "ç«å³è´­ä¹°",
+        "éåº§è´­ä¹°",
+        "ç«å³é¢è®¢",
+        "æç¥¨"
+      ],
+      "sold_keywords": [
+        "å·²å®ç½",
+        "å®ç½",
+        "ç¼ºè´§ç»è®°",
+        "ç­å¾å¼å®"
+      ],
       "buy_url": "https://m.dahepiao.com/yc/xuezhiqaintaiyuanych/",
       "buy_url_mobile": "https://m.dahepiao.com/yc/xuezhiqaintaiyuanych/",
-      "comment": "第三方票务 — 太原站 2026.04.24-05.03"
+      "comment": "ç¬¬ä¸æ¹ç¥¨å¡ â å¤ªåç« 2026.04.24-05.03"
     },
     {
       "id": "xuezhiqian_taiyuan_motianlun",
       "enabled": true,
       "platform": "generic",
       "mode": "page",
-      "label": "摩天轮",
+      "label": "æ©å¤©è½®",
       "url": "https://m.motianlun.cn/pages/show-detail/show-detail?showId=682c3c88f1b2200001985198",
-      "buy_keywords": ["立即购买", "选座购买", "去购买", "有票"],
-      "sold_keywords": ["已售罄", "售罄", "缺货登记", "已下架"],
+      "buy_keywords": [
+        "ç«å³è´­ä¹°",
+        "éåº§è´­ä¹°",
+        "å»è´­ä¹°",
+        "æç¥¨"
+      ],
+      "sold_keywords": [
+        "å·²å®ç½",
+        "å®ç½",
+        "ç¼ºè´§ç»è®°",
+        "å·²ä¸æ¶"
+      ],
       "buy_url": "https://m.motianlun.cn/pages/show-detail/show-detail?showId=682c3c88f1b2200001985198",
       "buy_url_mobile": "https://m.motianlun.cn/pages/show-detail/show-detail?showId=682c3c88f1b2200001985198",
-      "comment": "二级票务撮合平台 — 太原站 2026.04.24-05.03 — 回流票较多"
+      "comment": "äºçº§ç¥¨å¡æ®åå¹³å° â å¤ªåç« 2026.04.24-05.03 â åæµç¥¨è¾å¤"
     },
     {
       "id": "example_generic_page",
       "enabled": false,
       "platform": "generic",
       "mode": "page",
-      "label": "通用页面监控示例",
+      "label": "éç¨é¡µé¢çæ§ç¤ºä¾",
       "url": "https://example.com/ticket-page",
-      "buy_keywords": ["立即购买", "立即购票", "选座购买"],
-      "sold_keywords": ["已售罄", "缺货登记", "暂时无货"],
-      "comment": "mode=page 时抓取 HTML 全文匹配关键词"
+      "buy_keywords": [
+        "ç«å³è´­ä¹°",
+        "ç«å³è´­ç¥¨",
+        "éåº§è´­ä¹°"
+      ],
+      "sold_keywords": [
+        "å·²å®ç½",
+        "ç¼ºè´§ç»è®°",
+        "ææ¶æ è´§"
+      ],
+      "comment": "mode=page æ¶æå HTML å¨æå¹éå³é®è¯"
+    },
+    {
+      "id": "damai_1030416581941",
+      "enabled": true,
+      "platform": "damai",
+      "mode": "page",
+      "label": "薛之谦「万兽之王」巡回演唱会-太原站",
+      "url": "https://detail.damai.cn/item.htm?id=1030416581941",
+      "item_id": "1030416581941",
+      "buy_url": "https://detail.damai.cn/item.htm?id=1030416581941",
+      "buy_url_mobile": "damai://V1/ProjectPage?id=1030416581941",
+      "buy_keywords": [
+        "立即购买",
+        "立即预订",
+        "选座购买"
+      ],
+      "sold_keywords": [
+        "缺货登记",
+        "已售罄",
+        "暂无可售"
+      ],
+      "comment": "太原 · 2026.04.24-05.03 19:30"
     }
   ],
-
   "_how_to_find_api": [
-    "1. 浏览器打开目标演出页面，按 F12 打开开发者工具",
-    "2. 切换到 Network（网络）标签",
-    "3. 刷新页面，在筛选栏输入 'detail' 或 'stock' 或 'item'",
-    "4. 找到返回 JSON 数据的 XHR/Fetch 请求",
-    "5. 右键 → Copy → Copy as URL，填入 generic api 监控项的 url",
-    "6. 查看 JSON 响应中有票/无票时的字段值，填入 buy_keywords / sold_keywords"
+    "1. æµè§å¨æå¼ç®æ æ¼åºé¡µé¢ï¼æ F12 æå¼å¼åèå·¥å·",
+    "2. åæ¢å° Networkï¼ç½ç»ï¼æ ç­¾",
+    "3. å·æ°é¡µé¢ï¼å¨ç­éæ è¾å¥ 'detail' æ 'stock' æ 'item'",
+    "4. æ¾å°è¿å JSON æ°æ®ç XHR/Fetch è¯·æ±",
+    "5. å³é® â Copy â Copy as URLï¼å¡«å¥ generic api çæ§é¡¹ç url",
+    "6. æ¥ç JSON ååºä¸­æç¥¨/æ ç¥¨æ¶çå­æ®µå¼ï¼å¡«å¥ buy_keywords / sold_keywords"
   ]
 }
