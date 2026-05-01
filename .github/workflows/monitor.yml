@@ -28,6 +28,9 @@ jobs:
         run: pip install -r requirements.txt
 
       - name: 检查票务
+        env:
+          PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
+          BARK_KEY: ${{ secrets.BARK_KEY }}
         run: python ticket_monitor.py --once
 
       - name: 提交状态更新

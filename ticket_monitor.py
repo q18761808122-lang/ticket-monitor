@@ -460,8 +460,8 @@ def run():
         log.error("config.json 中没有配置监控项，请在 monitors 数组中添加。")
         return
 
-    wechat_token = global_cfg.get("wechat_token", "")
-    bark_key = global_cfg.get("bark_key", "")
+    wechat_token = os.environ.get("PUSHPLUS_TOKEN") or global_cfg.get("wechat_token", "")
+    bark_key = os.environ.get("BARK_KEY") or global_cfg.get("bark_key", "")
     remind_interval = int(global_cfg.get("remind_interval_seconds", 300))
     check_interval = int(global_cfg.get("check_interval_seconds", 30))
 
@@ -506,8 +506,8 @@ def run_once():
         log.error("config.json 中没有配置监控项。")
         return
 
-    wechat_token = global_cfg.get("wechat_token", "")
-    bark_key = global_cfg.get("bark_key", "")
+    wechat_token = os.environ.get("PUSHPLUS_TOKEN") or global_cfg.get("wechat_token", "")
+    bark_key = os.environ.get("BARK_KEY") or global_cfg.get("bark_key", "")
     remind_interval = int(global_cfg.get("remind_interval_seconds", 300))
 
     state = load_state()
