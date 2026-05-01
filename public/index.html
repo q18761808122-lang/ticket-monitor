@@ -347,7 +347,7 @@ async function loadSearchCache() {
   const s = getSettings();
   if (!s.owner) return;
   try {
-    const r = await fetch(`https://raw.githubusercontent.com/${s.owner}/${s.repo}/main/search_cache.json`);
+    const r = await fetch(`https://raw.githubusercontent.com/${s.owner}/${s.repo}/main/public/search_cache.json`);
     if (r.ok) searchCache = await r.json();
   } catch(e) {}
 }
