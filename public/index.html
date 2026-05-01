@@ -192,45 +192,103 @@ function switchTab(name) {
   if (name==='settings') loadSettings();
 }
 
-// ── 搜索 ──
+// ── 搜索（自动搜大麦 + 缓存融合） ──
+const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+
 async function search() {
   const q = document.getElementById('search-input').value.trim();
-  if (!q) { toast('请输入搜索关键词'); return; }
+  if (!q) { toast('请输入歌手名或演出名'); return; }
   const el = document.getElementById('search-results');
-  el.innerHTML = '<div class="empty"><span class="spinner"></span>搜索中...</div>';
+  el.innerHTML = '<div class="empty"><span class="spinner"></span>搜索中…</div>';
 
-  // 先从搜索缓存加载
+  // 并行：缓存 + 大麦实时搜索
   await loadSearchCache();
-
-  // 本地缓存搜索
-  const results = searchCache.filter(item =>
+  const liveResults = await searchDamaiLive(q);
+  const cacheResults = searchCache.filter(item =>
     (item.name||'').includes(q) || (item.keywords||'').includes(q)
   );
 
-  if (results.length === 0) {
-    el.innerHTML = `<div class="empty">未找到"${q}"相关演出<br><small>请尝试其他关键词，或使用下方「手动添加」</small></div>`;
+  // 合并去重（按 item_id）
+  const all = [...liveResults];
+  for (const r of cacheResults) {
+    if (!all.find(x => x.item_id === r.item_id)) {
+      all.push(r);
+    }
+  }
+
+  if (all.length === 0) {
+    el.innerHTML = `<div class="empty">未找到「${q}」相关演出<br><small>请检查拼写或试试简称</small></div>`;
     return;
   }
 
-  el.innerHTML = results.map((r,i) => `
+  window._lastSearchResults = all;
+  el.innerHTML = all.map((r, i) => `
     <div class="card">
       <h4>${r.name}</h4>
       <div class="meta">${r.city||''} · ${r.time||''} · ${r.platform||'大麦'}</div>
       <div class="actions">
-        <button class="btn btn-red btn-sm" onclick="addMonitor(${i})">+ 监控</button>
+        <button class="btn btn-red btn-sm" onclick="addMonitorFromSearch(${i})">+ 监控</button>
       </div>
     </div>
   `).join('');
-
-  // 暂存结果供添加用
-  window._lastSearchResults = results;
 }
 
-function addMonitor(idx) {
+async function searchDamaiLive(keyword) {
+  try {
+    const url = CORS_PROXY + encodeURIComponent(`https://search.damai.cn/search.htm?keyword=${keyword}`);
+    const r = await fetch(url, { timeout: 8000 });
+    const html = await r.text();
+
+    // 解析搜索结果 HTML
+    const results = [];
+    // 匹配 detail.damai.cn/item.htm?id=xxxxx 链接及周边文本
+    const linkRe = /https?:\/\/detail\.damai\.cn\/item\.htm\?id=(\d+)/g;
+    const seen = new Set();
+    let m;
+    while ((m = linkRe.exec(html)) !== null) {
+      const id = m[1];
+      if (seen.has(id)) continue;
+      seen.add(id);
+
+      // 尝试从附近 HTML 提取演出名/城市/时间
+      const pos = m.index;
+      const ctx = html.substring(Math.max(0, pos - 600), Math.min(html.length, pos + 300));
+      const name = extract(ctx, /(?:title|alt)=["']([^"']*(?:演唱会|音乐会|话剧|展览|比赛|音乐节|Live|戏剧|歌剧|舞蹈|亲子|相声|戏曲|体育)[^"']*)/i)
+                || extract(ctx, />([^<]{4,60})<\//)
+                || `${keyword} 演出 (ID ${id})`;
+      const city = extract(ctx, /(?:北京|上海|广州|深圳|成都|重庆|杭州|武汉|西安|南京|天津|苏州|长沙|郑州|沈阳|青岛|大连|东莞|宁波|厦门|福州|合肥|无锡|佛山|昆明|贵阳|南宁|南昌|哈尔滨|长春|石家庄|太原|济南|兰州|银川|西宁|拉萨|海口|呼和浩特|乌鲁木齐)/) || '';
+      const time = extract(ctx, /(\d{4}[.-]\d{2}[.-]\d{2}[^<]*)/) || '';
+
+      results.push({
+        name: name.replace(/<[^>]+>/g, '').trim(),
+        city: city,
+        time: time,
+        platform: 'damai',
+        item_id: id,
+        url: `https://detail.damai.cn/item.htm?id=${id}`,
+        url_mobile: `damai://V1/ProjectPage?id=${id}`,
+        buy_keywords: ['立即购买', '立即预订', '选座购买'],
+        sold_keywords: ['缺货登记', '已售罄', '暂无可售'],
+        keywords: keyword,
+      });
+    }
+    return results;
+  } catch (e) {
+    console.log('实时搜索失败，使用缓存', e);
+    return [];
+  }
+}
+
+function extract(text, regex) {
+  const m = text.match(regex);
+  return m ? m[1] || m[0] : '';
+}
+
+function addMonitorFromSearch(idx) {
   const r = window._lastSearchResults[idx];
   if (!r) return;
-  const cfg = {
-    id: 'search_' + Date.now(),
+  addToMonitors({
+    id: r.platform + '_' + (r.item_id || Date.now()),
     enabled: true,
     platform: r.platform === 'damai' ? 'damai' : 'generic',
     mode: 'page',
@@ -239,31 +297,9 @@ function addMonitor(idx) {
     item_id: r.item_id || '',
     buy_url: r.url || '',
     buy_url_mobile: r.url_mobile || r.url || '',
-    buy_keywords: r.buy_keywords || ['立即购买','选座购买','立即预订'],
-    sold_keywords: r.sold_keywords || ['已售罄','售罄','缺货登记'],
+    buy_keywords: r.buy_keywords || ['立即购买', '选座购买', '立即预订'],
+    sold_keywords: r.sold_keywords || ['已售罄', '售罄', '缺货登记'],
     comment: `${r.city||''} · ${r.time||''}`,
-  };
-  addToMonitors(cfg);
-}
-
-async function addManual() {
-  const url = document.getElementById('manual-url').value.trim();
-  const label = document.getElementById('manual-label').value.trim();
-  const platform = document.getElementById('manual-platform').value;
-  if (!url || !label) { toast('请填写 URL 和平台名称'); return; }
-  addToMonitors({
-    id: 'manual_' + Date.now(),
-    enabled: true,
-    platform: platform,
-    mode: 'page',
-    label: label,
-    url: url,
-    item_id: '',
-    buy_url: url,
-    buy_url_mobile: url,
-    buy_keywords: ['立即购买','选座购买','立即预订','去购买'],
-    sold_keywords: ['已售罄','售罄','缺货登记','下架','已下架'],
-    comment: '手动添加',
   });
 }
 
