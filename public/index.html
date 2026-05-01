@@ -193,7 +193,11 @@ function switchTab(name) {
 }
 
 // ── 搜索（自动搜大麦 + 缓存融合） ──
-const CORS_PROXY = 'https://api.allorigins.win/raw?url=';
+const CORS_PROXIES = [
+  'https://api.allorigins.win/raw?url=',
+  'https://corsproxy.io/?',
+  'https://api.codetabs.com/v1/proxy?quest=',
+];
 
 async function search() {
   const q = document.getElementById('search-input').value.trim();
@@ -201,31 +205,31 @@ async function search() {
   const el = document.getElementById('search-results');
   el.innerHTML = '<div class="empty"><span class="spinner"></span>搜索中…</div>';
 
-  // 并行：缓存 + 大麦实时搜索
   await loadSearchCache();
   const liveResults = await searchDamaiLive(q);
   const cacheResults = searchCache.filter(item =>
     (item.name||'').includes(q) || (item.keywords||'').includes(q)
   );
 
-  // 合并去重（按 item_id）
   const all = [...liveResults];
   for (const r of cacheResults) {
     if (!all.find(x => x.item_id === r.item_id)) {
+      r._fromCache = true;
       all.push(r);
     }
   }
 
   if (all.length === 0) {
-    el.innerHTML = `<div class="empty">未找到「${q}」相关演出<br><small>请检查拼写或试试简称</small></div>`;
+    el.innerHTML = `<div class="empty">未找到「${q}」相关演出<br><small>请检查拼写或试试简称（如：薛之谦、周杰伦）</small><br><br><button class="btn btn-outline btn-sm" onclick="document.getElementById('search-input').value='薛之谦';search()">试试搜「薛之谦」</button></div>`;
     return;
   }
 
   window._lastSearchResults = all;
-  el.innerHTML = all.map((r, i) => `
+  const srcNote = liveResults.length > 0 ? '' : '<div style="font-size:11px;color:#f0ad4e;margin-bottom:8px">实时搜索暂不可用，显示缓存结果</div>';
+  el.innerHTML = srcNote + all.map((r, i) => `
     <div class="card">
-      <h4>${r.name}</h4>
-      <div class="meta">${r.city||''} · ${r.time||''} · ${r.platform||'大麦'}</div>
+      <h4>${r.name}${r._fromCache ? ' <small style="color:#999">(缓存)</small>' : ''}</h4>
+      <div class="meta">${r.city||''} · ${r.time||''} · <span class="tag ${r.platform==='damai'?'tag-damai':'tag-generic'}">${r.platform==='damai'?'大麦':(r.platform||'其他')}</span></div>
       <div class="actions">
         <button class="btn btn-red btn-sm" onclick="addMonitorFromSearch(${i})">+ 监控</button>
       </div>
@@ -233,36 +237,40 @@ async function search() {
   `).join('');
 }
 
+async function fetchWithProxy(targetUrl, idx) {
+  idx = idx || 0;
+  if (idx >= CORS_PROXIES.length) return null;
+  try {
+    const url = CORS_PROXIES[idx] + encodeURIComponent(targetUrl);
+    const r = await fetch(url);
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return await r.text();
+  } catch (e) {
+    return fetchWithProxy(targetUrl, idx + 1);
+  }
+}
+
 async function searchDamaiLive(keyword) {
   try {
-    const url = CORS_PROXY + encodeURIComponent(`https://search.damai.cn/search.htm?keyword=${keyword}`);
-    const r = await fetch(url, { timeout: 8000 });
-    const html = await r.text();
+    const html = await fetchWithProxy(`https://search.damai.cn/search.htm?keyword=${keyword}`);
+    if (!html) return [];
 
-    // 解析搜索结果 HTML
     const results = [];
-    // 匹配 detail.damai.cn/item.htm?id=xxxxx 链接及周边文本
-    const linkRe = /https?:\/\/detail\.damai\.cn\/item\.htm\?id=(\d+)/g;
     const seen = new Set();
+
+    // 方法1: 匹配 detail.damai.cn/item.htm?id=xxxxx
+    const linkRe = /https?:\/\/detail\.damai\.cn\/item\.htm\?id=(\d+)/g;
     let m;
     while ((m = linkRe.exec(html)) !== null) {
       const id = m[1];
       if (seen.has(id)) continue;
       seen.add(id);
-
-      // 尝试从附近 HTML 提取演出名/城市/时间
       const pos = m.index;
-      const ctx = html.substring(Math.max(0, pos - 600), Math.min(html.length, pos + 300));
-      const name = extract(ctx, /(?:title|alt)=["']([^"']*(?:演唱会|音乐会|话剧|展览|比赛|音乐节|Live|戏剧|歌剧|舞蹈|亲子|相声|戏曲|体育)[^"']*)/i)
-                || extract(ctx, />([^<]{4,60})<\//)
-                || `${keyword} 演出 (ID ${id})`;
-      const city = extract(ctx, /(?:北京|上海|广州|深圳|成都|重庆|杭州|武汉|西安|南京|天津|苏州|长沙|郑州|沈阳|青岛|大连|东莞|宁波|厦门|福州|合肥|无锡|佛山|昆明|贵阳|南宁|南昌|哈尔滨|长春|石家庄|太原|济南|兰州|银川|西宁|拉萨|海口|呼和浩特|乌鲁木齐)/) || '';
-      const time = extract(ctx, /(\d{4}[.-]\d{2}[.-]\d{2}[^<]*)/) || '';
-
+      const ctx = html.substring(Math.max(0, pos - 800), Math.min(html.length, pos + 400));
       results.push({
-        name: name.replace(/<[^>]+>/g, '').trim(),
-        city: city,
-        time: time,
+        name: extractName(ctx) || `${keyword} 演出(ID ${id})`,
+        city: extractCity(ctx),
+        time: extractTime(ctx),
         platform: 'damai',
         item_id: id,
         url: `https://detail.damai.cn/item.htm?id=${id}`,
@@ -272,34 +280,76 @@ async function searchDamaiLive(keyword) {
         keywords: keyword,
       });
     }
+
+    // 方法2: 解析内嵌 JSON 数据
+    if (results.length === 0) {
+      const jsonRe = /"items"\s*:\s*(\[[\s\S]*?\])\s*[,}]/g;
+      let jm;
+      while ((jm = jsonRe.exec(html)) !== null) {
+        try {
+          const items = JSON.parse(jm[1]);
+          for (const item of items) {
+            const id = String(item.itemId || item.projectId || '');
+            if (!id || seen.has(id)) continue;
+            seen.add(id);
+            results.push({
+              name: item.name || item.title || item.projectName || `${keyword} 演出`,
+              city: item.cityName || item.city || '',
+              time: item.showTime || item.performDate || '',
+              platform: 'damai',
+              item_id: id,
+              url: `https://detail.damai.cn/item.htm?id=${id}`,
+              url_mobile: `damai://V1/ProjectPage?id=${id}`,
+              buy_keywords: ['立即购买', '立即预订', '选座购买'],
+              sold_keywords: ['缺货登记', '已售罄', '暂无可售'],
+              keywords: keyword,
+            });
+          }
+        } catch(e) {}
+      }
+    }
+
     return results;
   } catch (e) {
-    console.log('实时搜索失败，使用缓存', e);
+    console.log('实时搜索失败: ' + e.message);
     return [];
   }
 }
 
-function extract(text, regex) {
-  const m = text.match(regex);
-  return m ? m[1] || m[0] : '';
+function extractName(ctx) {
+  const m = ctx.match(/(?:title|alt)=["']([^"']*(?:演唱会|音乐会|话剧|展览|比赛|音乐节|Live|戏剧|歌剧|舞蹈|亲子|相声|戏曲|体育|巡演)[^"']*)/i);
+  if (m) return m[1].replace(/<[^>]+>/g, '').trim();
+  const m2 = ctx.match(/>([^<]{6,80})<\//);
+  return m2 ? m2[1].replace(/<[^>]+>/g, '').trim() : '';
+}
+
+function extractCity(ctx) {
+  const cities = '北京|上海|广州|深圳|成都|重庆|杭州|武汉|西安|南京|天津|苏州|长沙|郑州|沈阳|青岛|大连|东莞|宁波|厦门|福州|合肥|无锡|佛山|昆明|贵阳|南宁|南昌|哈尔滨|长春|石家庄|太原|济南|兰州|银川|西宁|拉萨|海口|呼和浩特|乌鲁木齐';
+  const m = ctx.match(new RegExp(cities));
+  return m ? m[0] : '';
+}
+
+function extractTime(ctx) {
+  const m = ctx.match(/(\d{4}[.\-/]\d{1,2}[.\-/]\d{1,2}[^<]{0,20})/);
+  return m ? m[1].trim() : '';
 }
 
 function addMonitorFromSearch(idx) {
   const r = window._lastSearchResults[idx];
   if (!r) return;
   addToMonitors({
-    id: r.platform + '_' + (r.item_id || Date.now()),
+    id: (r.platform || 'damai') + '_' + (r.item_id || Date.now()),
     enabled: true,
     platform: r.platform === 'damai' ? 'damai' : 'generic',
-    mode: 'page',
+    mode: r.mode || 'page',
     label: r.name,
     url: r.url || '',
     item_id: r.item_id || '',
-    buy_url: r.url || '',
+    buy_url: r.buy_url || r.url || '',
     buy_url_mobile: r.url_mobile || r.url || '',
     buy_keywords: r.buy_keywords || ['立即购买', '选座购买', '立即预订'],
     sold_keywords: r.sold_keywords || ['已售罄', '售罄', '缺货登记'],
-    comment: `${r.city||''} · ${r.time||''}`,
+    comment: [r.city, r.time].filter(Boolean).join(' · '),
   });
 }
 
