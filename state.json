@@ -1,9 +1,9 @@
 {
   "xuezhiqian_taiyuan_damai": {
-    "status": "unknown",
-    "message": "大麦 item=1030416581941 → 无法确定状态",
-    "last_change": "2026-05-01T23:38:02.428523",
-    "last_remind": "2026-05-01T23:35:47.273384",
+    "status": "available",
+    "message": "大麦 item=1030416581941 → 有票/可购买",
+    "last_change": "2026-05-01T23:47:55.666833",
+    "last_remind": "2026-05-01T23:47:55.666833",
     "remind_count": 0
   },
   "xuezhiqian_taiyuan_pxq": {
@@ -35,17 +35,17 @@
     "remind_count": 0
   },
   "damai_1030416581941": {
-    "status": "unknown",
-    "message": "大麦 item=1030416581941 → 无法确定状态",
-    "last_change": "2026-05-01T23:38:22.145705",
-    "last_remind": "",
+    "status": "available",
+    "message": "大麦 item=1030416581941 → 有票/可购买",
+    "last_change": "2026-05-01T23:48:26.117152",
+    "last_remind": "2026-05-01T23:48:26.117152",
     "remind_count": 0
   },
   "damai_1030416581941_uvpn": {
-    "status": "unknown",
-    "message": "大麦 item=1030416581941 → 无法确定状态",
-    "last_change": "2026-05-01T23:46:40.446927",
-    "last_remind": "",
+    "status": "available",
+    "message": "大麦 item=1030416581941 → 有票/可购买",
+    "last_change": "2026-05-01T23:48:30.283006",
+    "last_remind": "2026-05-01T23:48:30.283006",
     "remind_count": 0
   }
 }
