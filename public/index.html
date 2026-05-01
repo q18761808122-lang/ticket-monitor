@@ -159,19 +159,24 @@ async function gh(path, method = 'GET', body = null) {
   } catch(e) { return null; }
 }
 
-// ── 读取 config.json（公开仓库无需 token 也能读） ──
+// ── 读取 config.json（raw 优先避免中文乱码） ──
 async function fetchConfig() {
-  // 方式1: GitHub API（需要 token）
-  const data = await gh('config.json');
-  if (data && data.content) {
-    try { return JSON.parse(atob(data.content.replace(/\s/g, ''))); } catch(e) {}
-  }
-  // 方式2: Raw URL（公开仓库无需 token）
   const s = getSettings();
+  // 方式1: Raw URL（无编码问题，公开仓库无需 token）
   if (s.owner) {
     try {
       const r = await fetch(`https://raw.githubusercontent.com/${s.owner}/${s.repo}/main/config.json`);
       if (r.ok) return await r.json();
+    } catch(e) {}
+  }
+  // 方式2: GitHub API（需要 token，注意 base64 UTF-8 解码）
+  const data = await gh('config.json');
+  if (data && data.content) {
+    try {
+      const raw = atob(data.content.replace(/\s/g, ''));
+      // 正确处理 UTF-8 中文
+      const json = decodeURIComponent(escape(raw));
+      return JSON.parse(json);
     } catch(e) {}
   }
   return null;
