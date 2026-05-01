@@ -1,0 +1,41 @@
+name: 票务监控
+
+on:
+  schedule:
+    # 每 5 分钟运行一次（UTC 时间，实际可能延迟 5-15 分钟）
+    - cron: "*/5 * * * *"
+  # 允许手动触发
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - name: 检出代码
+        uses: actions/checkout@v4
+
+      - name: 安装 Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: 安装依赖
+        run: pip install -r requirements.txt
+
+      - name: 检查票务
+        run: python ticket_monitor.py --once
+
+      - name: 提交状态更新
+        run: |
+          if [ -n "$(git status --porcelain state.json)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add state.json
+            git commit -m "更新状态 [skip ci]"
+            git push
+          fi

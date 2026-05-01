@@ -1,0 +1,56 @@
+{
+  "check_interval_seconds": 30,
+  "remind_interval_seconds": 30,
+  "wechat_token": "cb766b8f6ac0463b8dd52a1bbca4de34",
+  "bark_key": "ibFJRdJ9NXoeMhmDGSJb3j",
+  "_comment_wechat": "去 http://www.pushplus.plus 注册 → 登录 → 一键生成Token → 替换上方 wechat_token",
+  "_comment_bark": "App Store 搜索 'Bark' 安装 → 复制 Key → 替换上方 bark_key",
+  "_comment_check": "check_interval_seconds: 每轮检查间隔（建议 15-60 秒）",
+  "_comment_remind": "remind_interval_seconds: 持续有票时每隔多少秒重复提醒（默认 300 秒 = 5 分钟）",
+
+  "monitors": [
+    {
+      "id": "xuezhiqian_taiyuan",
+      "enabled": true,
+      "platform": "damai",
+      "label": "薛之谦-万兽之王-太原站",
+      "item_id": "1030416581941",
+      "buy_url": "https://detail.damai.cn/item.htm?id=1030416581941",
+      "buy_url_mobile": "damai://V1/ProjectPage?id=1030416581941",
+      "comment": "2026.04.24-05.03 山西体育中心体育场"
+    },
+    {
+      "id": "xuezhiqian_taiyuan_pxq",
+      "enabled": true,
+      "platform": "generic",
+      "mode": "page",
+      "label": "薛之谦-万兽之王-太原站(票星球)",
+      "url": "http://www.xingqiupiao.com/event?id=113812",
+      "buy_keywords": ["立即购买", "选座购买", "去购买", "立即预订"],
+      "sold_keywords": ["已售罄", "售罄", "缺货登记", "下架", "已下架"],
+      "buy_url": "http://www.xingqiupiao.com/event?id=113812",
+      "buy_url_mobile": "http://www.xingqiupiao.com/event?id=113812",
+      "comment": "票星球/有票网 — 太原站 2026.04.24-05.03"
+    },
+    {
+      "id": "example_generic_page",
+      "enabled": false,
+      "platform": "generic",
+      "mode": "page",
+      "label": "通用页面监控示例",
+      "url": "https://example.com/ticket-page",
+      "buy_keywords": ["立即购买", "立即购票", "选座购买"],
+      "sold_keywords": ["已售罄", "缺货登记", "暂时无货"],
+      "comment": "mode=page 时抓取 HTML 全文匹配关键词"
+    }
+  ],
+
+  "_how_to_find_api": [
+    "1. 浏览器打开目标演出页面，按 F12 打开开发者工具",
+    "2. 切换到 Network（网络）标签",
+    "3. 刷新页面，在筛选栏输入 'detail' 或 'stock' 或 'item'",
+    "4. 找到返回 JSON 数据的 XHR/Fetch 请求",
+    "5. 右键 → Copy → Copy as URL，填入 generic api 监控项的 url",
+    "6. 查看 JSON 响应中有票/无票时的字段值，填入 buy_keywords / sold_keywords"
+  ]
+}
