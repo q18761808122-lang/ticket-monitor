@@ -53,8 +53,8 @@ jobs:
       - name: 准备 Pages 文件
         run: |
           mkdir -p _pages
-          cp index.html _pages/
-          cp search_cache.json _pages/
+          cp public/index.html _pages/
+          cp public/search_cache.json _pages/
 
       - name: 部署到 GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
