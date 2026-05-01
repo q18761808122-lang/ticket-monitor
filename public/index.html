@@ -159,13 +159,22 @@ async function gh(path, method = 'GET', body = null) {
   } catch(e) { return null; }
 }
 
-// ── 读取 config.json ──
+// ── 读取 config.json（公开仓库无需 token 也能读） ──
 async function fetchConfig() {
+  // 方式1: GitHub API（需要 token）
   const data = await gh('config.json');
-  if (!data || !data.content) return null;
-  try {
-    return JSON.parse(atob(data.content.replace(/\s/g, '')));
-  } catch(e) { return null; }
+  if (data && data.content) {
+    try { return JSON.parse(atob(data.content.replace(/\s/g, ''))); } catch(e) {}
+  }
+  // 方式2: Raw URL（公开仓库无需 token）
+  const s = getSettings();
+  if (s.owner) {
+    try {
+      const r = await fetch(`https://raw.githubusercontent.com/${s.owner}/${s.repo}/main/config.json`);
+      if (r.ok) return await r.json();
+    } catch(e) {}
+  }
+  return null;
 }
 
 // ── 更新 config.json ──
@@ -365,9 +374,13 @@ function addMonitorFromSearch(idx) {
 
 async function addToMonitors(cfg) {
   const c = await fetchConfig();
-  if (!c) { toast('读取配置失败，请检查 GitHub 设置'); return; }
+  if (!c) {
+    const s = getSettings();
+    if (!s.owner) { toast('请先在「设置」页填写 GitHub 用户名'); return; }
+    toast('读取配置失败，检查用户名和仓库名是否正确');
+    return;
+  }
   c.monitors = c.monitors || [];
-  // 去重
   if (c.monitors.find(m => m.id === cfg.id)) {
     cfg.id = cfg.id + '_' + Math.random().toString(36).slice(2,6);
   }
@@ -378,8 +391,29 @@ async function addToMonitors(cfg) {
     document.getElementById('manual-url').value = '';
     document.getElementById('manual-label').value = '';
   } else {
-    toast('添加失败，请检查网络或 Token');
+    toast('写入失败，请检查 Token 是否有 repo 权限');
   }
+}
+
+function addManual() {
+  const url = document.getElementById('manual-url').value.trim();
+  const label = document.getElementById('manual-label').value.trim();
+  const platform = document.getElementById('manual-platform').value;
+  if (!url) { toast('请粘贴演出页面 URL'); return; }
+  if (!label) { toast('请填写平台名称'); return; }
+  addToMonitors({
+    id: platform + '_manual_' + Date.now(),
+    enabled: true,
+    platform: platform,
+    mode: 'page',
+    label: label,
+    url: url,
+    buy_url: url,
+    buy_url_mobile: url,
+    buy_keywords: ['立即购买', '选座购买', '立即预订', '去购买'],
+    sold_keywords: ['已售罄', '售罄', '缺货登记', '下架'],
+    comment: '手动添加',
+  });
 }
 
 // ── 监控列表 ──
