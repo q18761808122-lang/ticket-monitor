@@ -169,17 +169,27 @@ async function fetchConfig() {
       if (r.ok) return await r.json();
     } catch(e) {}
   }
-  // 方式2: GitHub API（需要 token，注意 base64 UTF-8 解码）
+  // 方式2: GitHub API（需要 token，用 TextDecoder 安全解码 UTF-8）
   const data = await gh('config.json');
   if (data && data.content) {
-    try {
-      const raw = atob(data.content.replace(/\s/g, ''));
-      // 正确处理 UTF-8 中文
-      const json = decodeURIComponent(escape(raw));
-      return JSON.parse(json);
-    } catch(e) {}
+    try { return JSON.parse(base64ToUtf8(data.content)); } catch(e) {}
   }
   return null;
+}
+
+// ── UTF-8 安全编码 ──
+function utf8ToBase64(str) {
+  const bytes = new TextEncoder().encode(str);
+  let bin = '';
+  for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+  return btoa(bin);
+}
+
+function base64ToUtf8(b64) {
+  const bin = atob(b64.replace(/\s/g, ''));
+  const bytes = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
 }
 
 // ── 更新 config.json ──
@@ -188,7 +198,7 @@ async function updateConfig(newCfg) {
   if (!data) return false;
   const body = {
     message: '更新监控列表',
-    content: btoa(unescape(encodeURIComponent(JSON.stringify(newCfg, null, 2)))),
+    content: utf8ToBase64(JSON.stringify(newCfg, null, 2)),
     sha: data.sha,
   };
   const r = await gh('config.json', 'PUT', body);

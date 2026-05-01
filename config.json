@@ -1,189 +1,95 @@
 {
   "check_interval_seconds": 30,
   "remind_interval_seconds": 30,
-  "wechat_token": "Ã¤Â½Â Ã§ÂÂPushPlusToken",
-  "bark_key": "Ã¤Â½Â Ã§ÂÂBarkKey",
-  "_comment_wechat": "Ã¥ÂÂ» http://www.pushplus.plus Ã¦Â³Â¨Ã¥ÂÂ Ã¢ÂÂ Ã§ÂÂ»Ã¥Â½Â Ã¢ÂÂ Ã¤Â¸ÂÃ©ÂÂ®Ã§ÂÂÃ¦ÂÂToken Ã¢ÂÂ Ã¦ÂÂ¿Ã¦ÂÂ¢Ã¤Â¸ÂÃ¦ÂÂ¹ wechat_token",
-  "_comment_bark": "App Store Ã¦ÂÂÃ§Â´Â¢ 'Bark' Ã¥Â®ÂÃ¨Â£Â Ã¢ÂÂ Ã¥Â¤ÂÃ¥ÂÂ¶ Key Ã¢ÂÂ Ã¦ÂÂ¿Ã¦ÂÂ¢Ã¤Â¸ÂÃ¦ÂÂ¹ bark_key",
-  "_comment_check": "check_interval_seconds: Ã¦Â¯ÂÃ¨Â½Â®Ã¦Â£ÂÃ¦ÂÂ¥Ã©ÂÂ´Ã©ÂÂÃ¯Â¼ÂÃ¥Â»ÂºÃ¨Â®Â® 15-60 Ã§Â§ÂÃ¯Â¼Â",
-  "_comment_remind": "remind_interval_seconds: Ã¦ÂÂÃ§Â»Â­Ã¦ÂÂÃ§Â¥Â¨Ã¦ÂÂ¶Ã¦Â¯ÂÃ©ÂÂÃ¥Â¤ÂÃ¥Â°ÂÃ§Â§ÂÃ©ÂÂÃ¥Â¤ÂÃ¦ÂÂÃ©ÂÂÃ¯Â¼ÂÃ©Â»ÂÃ¨Â®Â¤ 300 Ã§Â§Â = 5 Ã¥ÂÂÃ©ÂÂÃ¯Â¼Â",
+  "wechat_token": "你的PushPlusToken",
+  "bark_key": "你的BarkKey",
+  "_comment_wechat": "去 http://www.pushplus.plus 注册 → 登录 → 一键生成Token → 替换上方 wechat_token",
+  "_comment_bark": "App Store 搜索 'Bark' 安装 → 复制 Key → 替换上方 bark_key",
+  "_comment_check": "check_interval_seconds: 每轮检查间隔（建议 15-60 秒）",
+  "_comment_remind": "remind_interval_seconds: 持续有票时每隔多少秒重复提醒（默认 300 秒 = 5 分钟）",
+
   "monitors": [
     {
       "id": "xuezhiqian_taiyuan_damai",
       "enabled": true,
       "platform": "damai",
-      "label": "Ã¥Â¤Â§Ã©ÂºÂ¦",
+      "label": "大麦",
       "item_id": "1030416581941",
       "buy_url": "https://detail.damai.cn/item.htm?id=1030416581941",
       "buy_url_mobile": "damai://V1/ProjectPage?id=1030416581941",
-      "comment": "Ã¤Â¸ÂÃ§ÂºÂ§Ã¥Â®ÂÃ¦ÂÂ¹Ã¥Â¹Â³Ã¥ÂÂ° Ã¢ÂÂ Ã¥Â¤ÂªÃ¥ÂÂÃ§Â«Â 2026.04.24-05.03"
+      "comment": "一级官方平台 — 太原站 2026.04.24-05.03"
     },
     {
       "id": "xuezhiqian_taiyuan_pxq",
       "enabled": true,
       "platform": "generic",
       "mode": "page",
-      "label": "Ã§Â¥Â¨Ã¦ÂÂÃ§ÂÂ",
+      "label": "票星球",
       "url": "http://www.xingqiupiao.com/event?id=113812",
-      "buy_keywords": [
-        "Ã§Â«ÂÃ¥ÂÂ³Ã¨Â´Â­Ã¤Â¹Â°",
-        "Ã©ÂÂÃ¥ÂºÂ§Ã¨Â´Â­Ã¤Â¹Â°",
-        "Ã¥ÂÂ»Ã¨Â´Â­Ã¤Â¹Â°",
-        "Ã§Â«ÂÃ¥ÂÂ³Ã©Â¢ÂÃ¨Â®Â¢"
-      ],
-      "sold_keywords": [
-        "Ã¥Â·Â²Ã¥ÂÂ®Ã§Â½Â",
-        "Ã¥ÂÂ®Ã§Â½Â",
-        "Ã§Â¼ÂºÃ¨Â´Â§Ã§ÂÂ»Ã¨Â®Â°",
-        "Ã¤Â¸ÂÃ¦ÂÂ¶",
-        "Ã¥Â·Â²Ã¤Â¸ÂÃ¦ÂÂ¶"
-      ],
+      "buy_keywords": ["立即购买", "选座购买", "去购买", "立即预订"],
+      "sold_keywords": ["已售罄", "售罄", "缺货登记", "下架", "已下架"],
       "buy_url": "http://www.xingqiupiao.com/event?id=113812",
       "buy_url_mobile": "http://www.xingqiupiao.com/event?id=113812",
-      "comment": "Ã¤Â»Â£Ã¦ÂÂÃ¥Â¹Â³Ã¥ÂÂ° Ã¢ÂÂ Ã¥Â¤ÂªÃ¥ÂÂÃ§Â«Â 2026.04.24-05.03"
+      "comment": "代拍平台 — 太原站 2026.04.24-05.03"
     },
     {
       "id": "xuezhiqian_taiyuan_ypiao",
       "enabled": true,
       "platform": "generic",
       "mode": "page",
-      "label": "Ã¦ÂÂÃ§Â¥Â¨Ã§Â½Â",
+      "label": "有票网",
       "url": "https://www.ypiao.com/t_113812/",
-      "buy_keywords": [
-        "Ã§Â«ÂÃ¥ÂÂ³Ã¨Â´Â­Ã¤Â¹Â°",
-        "Ã¥ÂÂ»Ã¨Â´Â­Ã¤Â¹Â°",
-        "Ã§Â«ÂÃ¥ÂÂ³Ã©Â¢ÂÃ¨Â®Â¢",
-        "Ã¦ÂÂÃ¨Â¦ÂÃ¤Â¹Â°Ã§Â¥Â¨",
-        "Ã¦ÂÂÃ§Â¥Â¨"
-      ],
-      "sold_keywords": [
-        "Ã¥Â·Â²Ã¥ÂÂ®Ã§Â½Â",
-        "Ã¥ÂÂ®Ã§Â½Â",
-        "Ã§Â¼ÂºÃ¨Â´Â§Ã§ÂÂ»Ã¨Â®Â°",
-        "Ã¤Â¸ÂÃ¦ÂÂ¶",
-        "Ã¥Â·Â²Ã¤Â¸ÂÃ¦ÂÂ¶",
-        "Ã§Â­ÂÃ¥Â¾ÂÃ¥Â¼ÂÃ¥ÂÂ®"
-      ],
+      "buy_keywords": ["立即购买", "去购买", "立即预订", "我要买票", "有票"],
+      "sold_keywords": ["已售罄", "售罄", "缺货登记", "下架", "已下架", "等待开售"],
       "buy_url": "https://www.ypiao.com/t_113812/",
       "buy_url_mobile": "https://www.ypiao.com/t_113812/",
-      "comment": "Ã¤Â»Â£Ã¦ÂÂÃ¥Â¹Â³Ã¥ÂÂ° Ã¢ÂÂ Ã¥Â¤ÂªÃ¥ÂÂÃ§Â«Â 2026.04.24-05.03"
+      "comment": "代拍平台 — 太原站 2026.04.24-05.03"
     },
     {
       "id": "xuezhiqian_taiyuan_dahe",
       "enabled": true,
       "platform": "generic",
       "mode": "page",
-      "label": "Ã¥Â¤Â§Ã¦Â²Â³Ã§Â¥Â¨Ã¥ÂÂ¡",
+      "label": "大河票务",
       "url": "https://m.dahepiao.com/yc/xuezhiqaintaiyuanych/",
-      "buy_keywords": [
-        "Ã§Â«ÂÃ¥ÂÂ³Ã¨Â´Â­Ã¤Â¹Â°",
-        "Ã©ÂÂÃ¥ÂºÂ§Ã¨Â´Â­Ã¤Â¹Â°",
-        "Ã§Â«ÂÃ¥ÂÂ³Ã©Â¢ÂÃ¨Â®Â¢",
-        "Ã¦ÂÂÃ§Â¥Â¨"
-      ],
-      "sold_keywords": [
-        "Ã¥Â·Â²Ã¥ÂÂ®Ã§Â½Â",
-        "Ã¥ÂÂ®Ã§Â½Â",
-        "Ã§Â¼ÂºÃ¨Â´Â§Ã§ÂÂ»Ã¨Â®Â°",
-        "Ã§Â­ÂÃ¥Â¾ÂÃ¥Â¼ÂÃ¥ÂÂ®"
-      ],
+      "buy_keywords": ["立即购买", "选座购买", "立即预订", "有票"],
+      "sold_keywords": ["已售罄", "售罄", "缺货登记", "等待开售"],
       "buy_url": "https://m.dahepiao.com/yc/xuezhiqaintaiyuanych/",
       "buy_url_mobile": "https://m.dahepiao.com/yc/xuezhiqaintaiyuanych/",
-      "comment": "Ã§Â¬Â¬Ã¤Â¸ÂÃ¦ÂÂ¹Ã§Â¥Â¨Ã¥ÂÂ¡ Ã¢ÂÂ Ã¥Â¤ÂªÃ¥ÂÂÃ§Â«Â 2026.04.24-05.03"
+      "comment": "第三方票务 — 太原站 2026.04.24-05.03"
     },
     {
       "id": "xuezhiqian_taiyuan_motianlun",
       "enabled": true,
       "platform": "generic",
       "mode": "page",
-      "label": "Ã¦ÂÂ©Ã¥Â¤Â©Ã¨Â½Â®",
+      "label": "摩天轮",
       "url": "https://m.motianlun.cn/pages/show-detail/show-detail?showId=682c3c88f1b2200001985198",
-      "buy_keywords": [
-        "Ã§Â«ÂÃ¥ÂÂ³Ã¨Â´Â­Ã¤Â¹Â°",
-        "Ã©ÂÂÃ¥ÂºÂ§Ã¨Â´Â­Ã¤Â¹Â°",
-        "Ã¥ÂÂ»Ã¨Â´Â­Ã¤Â¹Â°",
-        "Ã¦ÂÂÃ§Â¥Â¨"
-      ],
-      "sold_keywords": [
-        "Ã¥Â·Â²Ã¥ÂÂ®Ã§Â½Â",
-        "Ã¥ÂÂ®Ã§Â½Â",
-        "Ã§Â¼ÂºÃ¨Â´Â§Ã§ÂÂ»Ã¨Â®Â°",
-        "Ã¥Â·Â²Ã¤Â¸ÂÃ¦ÂÂ¶"
-      ],
+      "buy_keywords": ["立即购买", "选座购买", "去购买", "有票"],
+      "sold_keywords": ["已售罄", "售罄", "缺货登记", "已下架"],
       "buy_url": "https://m.motianlun.cn/pages/show-detail/show-detail?showId=682c3c88f1b2200001985198",
       "buy_url_mobile": "https://m.motianlun.cn/pages/show-detail/show-detail?showId=682c3c88f1b2200001985198",
-      "comment": "Ã¤ÂºÂÃ§ÂºÂ§Ã§Â¥Â¨Ã¥ÂÂ¡Ã¦ÂÂ®Ã¥ÂÂÃ¥Â¹Â³Ã¥ÂÂ° Ã¢ÂÂ Ã¥Â¤ÂªÃ¥ÂÂÃ§Â«Â 2026.04.24-05.03 Ã¢ÂÂ Ã¥ÂÂÃ¦ÂµÂÃ§Â¥Â¨Ã¨Â¾ÂÃ¥Â¤Â"
+      "comment": "二级票务撮合平台 — 太原站 2026.04.24-05.03 — 回流票较多"
     },
     {
       "id": "example_generic_page",
       "enabled": false,
       "platform": "generic",
       "mode": "page",
-      "label": "Ã©ÂÂÃ§ÂÂ¨Ã©Â¡ÂµÃ©ÂÂ¢Ã§ÂÂÃ¦ÂÂ§Ã§Â¤ÂºÃ¤Â¾Â",
+      "label": "通用页面监控示例",
       "url": "https://example.com/ticket-page",
-      "buy_keywords": [
-        "Ã§Â«ÂÃ¥ÂÂ³Ã¨Â´Â­Ã¤Â¹Â°",
-        "Ã§Â«ÂÃ¥ÂÂ³Ã¨Â´Â­Ã§Â¥Â¨",
-        "Ã©ÂÂÃ¥ÂºÂ§Ã¨Â´Â­Ã¤Â¹Â°"
-      ],
-      "sold_keywords": [
-        "Ã¥Â·Â²Ã¥ÂÂ®Ã§Â½Â",
-        "Ã§Â¼ÂºÃ¨Â´Â§Ã§ÂÂ»Ã¨Â®Â°",
-        "Ã¦ÂÂÃ¦ÂÂ¶Ã¦ÂÂ Ã¨Â´Â§"
-      ],
-      "comment": "mode=page Ã¦ÂÂ¶Ã¦ÂÂÃ¥ÂÂ HTML Ã¥ÂÂ¨Ã¦ÂÂÃ¥ÂÂ¹Ã©ÂÂÃ¥ÂÂ³Ã©ÂÂ®Ã¨Â¯Â"
-    },
-    {
-      "id": "damai_1030416581941",
-      "enabled": true,
-      "platform": "damai",
-      "mode": "page",
-      "label": "èä¹è°¦ãä¸å½ä¹çãå·¡åæ¼å±ä¼-å¤ªåç«",
-      "url": "https://detail.damai.cn/item.htm?id=1030416581941",
-      "item_id": "1030416581941",
-      "buy_url": "https://detail.damai.cn/item.htm?id=1030416581941",
-      "buy_url_mobile": "damai://V1/ProjectPage?id=1030416581941",
-      "buy_keywords": [
-        "ç«å³è´­ä¹°",
-        "ç«å³é¢è®¢",
-        "éåº§è´­ä¹°"
-      ],
-      "sold_keywords": [
-        "ç¼ºè´§ç»è®°",
-        "å·²å®ç½",
-        "ææ å¯å®"
-      ],
-      "comment": "å¤ªå Â· 2026.04.24-05.03 19:30"
-    },
-    {
-      "id": "damai_1030416581941_uvpn",
-      "enabled": true,
-      "platform": "damai",
-      "mode": "page",
-      "label": "薛之谦「万兽之王」巡回演唱会-太原站",
-      "url": "https://detail.damai.cn/item.htm?id=1030416581941",
-      "item_id": "1030416581941",
-      "buy_url": "https://detail.damai.cn/item.htm?id=1030416581941",
-      "buy_url_mobile": "damai://V1/ProjectPage?id=1030416581941",
-      "buy_keywords": [
-        "立即购买",
-        "立即预订",
-        "选座购买"
-      ],
-      "sold_keywords": [
-        "缺货登记",
-        "已售罄",
-        "暂无可售"
-      ],
-      "comment": "太原 · 2026.04.24-05.03 19:30"
+      "buy_keywords": ["立即购买", "立即购票", "选座购买"],
+      "sold_keywords": ["已售罄", "缺货登记", "暂时无货"],
+      "comment": "mode=page 时抓取 HTML 全文匹配关键词"
     }
   ],
+
   "_how_to_find_api": [
-    "1. Ã¦ÂµÂÃ¨Â§ÂÃ¥ÂÂ¨Ã¦ÂÂÃ¥Â¼ÂÃ§ÂÂ®Ã¦Â ÂÃ¦Â¼ÂÃ¥ÂÂºÃ©Â¡ÂµÃ©ÂÂ¢Ã¯Â¼ÂÃ¦ÂÂ F12 Ã¦ÂÂÃ¥Â¼ÂÃ¥Â¼ÂÃ¥ÂÂÃ¨ÂÂÃ¥Â·Â¥Ã¥ÂÂ·",
-    "2. Ã¥ÂÂÃ¦ÂÂ¢Ã¥ÂÂ° NetworkÃ¯Â¼ÂÃ§Â½ÂÃ§Â»ÂÃ¯Â¼ÂÃ¦Â ÂÃ§Â­Â¾",
-    "3. Ã¥ÂÂ·Ã¦ÂÂ°Ã©Â¡ÂµÃ©ÂÂ¢Ã¯Â¼ÂÃ¥ÂÂ¨Ã§Â­ÂÃ©ÂÂÃ¦Â ÂÃ¨Â¾ÂÃ¥ÂÂ¥ 'detail' Ã¦ÂÂ 'stock' Ã¦ÂÂ 'item'",
-    "4. Ã¦ÂÂ¾Ã¥ÂÂ°Ã¨Â¿ÂÃ¥ÂÂ JSON Ã¦ÂÂ°Ã¦ÂÂ®Ã§ÂÂ XHR/Fetch Ã¨Â¯Â·Ã¦Â±Â",
-    "5. Ã¥ÂÂ³Ã©ÂÂ® Ã¢ÂÂ Copy Ã¢ÂÂ Copy as URLÃ¯Â¼ÂÃ¥Â¡Â«Ã¥ÂÂ¥ generic api Ã§ÂÂÃ¦ÂÂ§Ã©Â¡Â¹Ã§ÂÂ url",
-    "6. Ã¦ÂÂ¥Ã§ÂÂ JSON Ã¥ÂÂÃ¥ÂºÂÃ¤Â¸Â­Ã¦ÂÂÃ§Â¥Â¨/Ã¦ÂÂ Ã§Â¥Â¨Ã¦ÂÂ¶Ã§ÂÂÃ¥Â­ÂÃ¦Â®ÂµÃ¥ÂÂ¼Ã¯Â¼ÂÃ¥Â¡Â«Ã¥ÂÂ¥ buy_keywords / sold_keywords"
+    "1. 浏览器打开目标演出页面，按 F12 打开开发者工具",
+    "2. 切换到 Network（网络）标签",
+    "3. 刷新页面，在筛选栏输入 'detail' 或 'stock' 或 'item'",
+    "4. 找到返回 JSON 数据的 XHR/Fetch 请求",
+    "5. 右键 → Copy → Copy as URL，填入 generic api 监控项的 url",
+    "6. 查看 JSON 响应中有票/无票时的字段值，填入 buy_keywords / sold_keywords"
   ]
 }
