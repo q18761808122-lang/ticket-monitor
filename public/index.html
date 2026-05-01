@@ -205,28 +205,38 @@ async function search() {
   const el = document.getElementById('search-results');
   el.innerHTML = '<div class="empty"><span class="spinner"></span>搜索中…</div>';
 
+  // 1. 先加载缓存（立即可用）
   await loadSearchCache();
-  const liveResults = await searchDamaiLive(q);
-  const cacheResults = searchCache.filter(item =>
+
+  // 2. 缓存中搜索
+  const results = searchCache.filter(item =>
     (item.name||'').includes(q) || (item.keywords||'').includes(q)
   );
 
-  const all = [...liveResults];
-  for (const r of cacheResults) {
-    if (!all.find(x => x.item_id === r.item_id)) {
-      r._fromCache = true;
-      all.push(r);
+  // 3. 后台尝试实时搜索（大麦 API 有反爬，不保证成功）
+  searchDamaiLive(q).then(liveResults => {
+    if (liveResults.length > 0) {
+      for (const r of liveResults) {
+        if (!results.find(x => x.item_id === r.item_id)) {
+          results.push(r);
+        }
+      }
+      window._lastSearchResults = results;
+      renderSearchResults(el, results, true);
     }
-  }
+  }).catch(() => {});
 
-  if (all.length === 0) {
-    el.innerHTML = `<div class="empty">未找到「${q}」相关演出<br><small>请检查拼写或试试简称（如：薛之谦、周杰伦）</small><br><br><button class="btn btn-outline btn-sm" onclick="document.getElementById('search-input').value='薛之谦';search()">试试搜「薛之谦」</button></div>`;
+  if (results.length === 0) {
+    el.innerHTML = `<div class="empty">未找到「${q}」相关演出<br><small>请检查拼写或试试简称</small><br><br><button class="btn btn-outline btn-sm" onclick="document.getElementById('search-input').value='薛之谦';search()">试试搜「薛之谦」</button></div>`;
     return;
   }
 
-  window._lastSearchResults = all;
-  const srcNote = liveResults.length > 0 ? '' : '<div style="font-size:11px;color:#f0ad4e;margin-bottom:8px">实时搜索暂不可用，显示缓存结果</div>';
-  el.innerHTML = srcNote + all.map((r, i) => `
+  window._lastSearchResults = results;
+  renderSearchResults(el, results, false);
+}
+
+function renderSearchResults(el, results, hasLive) {
+  el.innerHTML = results.map((r, i) => `
     <div class="card">
       <h4>${r.name}${r._fromCache ? ' <small style="color:#999">(缓存)</small>' : ''}</h4>
       <div class="meta">${r.city||''} · ${r.time||''} · <span class="tag ${r.platform==='damai'?'tag-damai':'tag-generic'}">${r.platform==='damai'?'大麦':(r.platform||'其他')}</span></div>
@@ -427,15 +437,26 @@ async function deleteMonitor(idx) {
   loadMonitors();
 }
 
-// ── 搜索缓存 ──
+// ── 搜索缓存（同源优先，无需 GitHub 配置） ──
 async function loadSearchCache() {
   if (searchCache.length > 0) return;
-  const s = getSettings();
-  if (!s.owner) return;
+  // 方式1: 同源加载（GitHub Pages 部署后直接可用）
   try {
-    const r = await fetch(`https://raw.githubusercontent.com/${s.owner}/${s.repo}/main/public/search_cache.json`);
-    if (r.ok) searchCache = await r.json();
+    const r = await fetch('search_cache.json');
+    if (r.ok) { searchCache = await r.json(); return; }
   } catch(e) {}
+  // 方式2: GitHub Raw（需配置 GitHub 信息）
+  const s = getSettings();
+  if (s.owner) {
+    try {
+      const r = await fetch(`https://raw.githubusercontent.com/${s.owner}/${s.repo}/main/public/search_cache.json`);
+      if (r.ok) { searchCache = await r.json(); return; }
+    } catch(e) {}
+  }
+  // 方式3: 内置默认缓存
+  searchCache = [
+    {name:"薛之谦「万兽之王」巡回演唱会-太原站",city:"太原",time:"2026.04.24-05.03",platform:"damai",item_id:"1030416581941",url:"https://detail.damai.cn/item.htm?id=1030416581941",url_mobile:"damai://V1/ProjectPage?id=1030416581941",buy_url:"https://detail.damai.cn/item.htm?id=1030416581941",buy_keywords:["立即购买","立即预订","选座购买"],sold_keywords:["缺货登记","已售罄","暂无可售"],mode:"page",keywords:"薛之谦,万兽之王,太原"}
+  ];
 }
 
 // ── Toast ──
