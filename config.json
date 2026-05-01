@@ -1,8 +1,8 @@
 {
   "check_interval_seconds": 30,
   "remind_interval_seconds": 30,
-  "wechat_token": "cb766b8f6ac0463b8dd52a1bbca4de34",
-  "bark_key": "ibFJRdJ9NXoeMhmDGSJb3j",
+  "wechat_token": "你的PushPlusToken",
+  "bark_key": "你的BarkKey",
   "_comment_wechat": "去 http://www.pushplus.plus 注册 → 登录 → 一键生成Token → 替换上方 wechat_token",
   "_comment_bark": "App Store 搜索 'Bark' 安装 → 复制 Key → 替换上方 bark_key",
   "_comment_check": "check_interval_seconds: 每轮检查间隔（建议 15-60 秒）",
