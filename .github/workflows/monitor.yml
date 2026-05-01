@@ -2,24 +2,23 @@ name: 票务监控
 
 on:
   schedule:
-    # 每 5 分钟运行一次（UTC 时间，实际可能延迟 5-15 分钟）
     - cron: "*/5 * * * *"
-  # 允许手动触发
   workflow_dispatch:
+  push:
+    branches: [main]
+    paths-ignore:
+      - "state.json"
 
 jobs:
   check:
     runs-on: ubuntu-latest
-
     permissions:
       contents: write
 
     steps:
-      - name: 检出代码
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-      - name: 安装 Python
-        uses: actions/setup-python@v5
+      - uses: actions/setup-python@v5
         with:
           python-version: "3.11"
           cache: "pip"
@@ -42,3 +41,26 @@ jobs:
             git commit -m "更新状态 [skip ci]"
             git push
           fi
+
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: 准备 Pages 文件
+        run: |
+          mkdir -p _pages
+          cp index.html _pages/
+          cp search_cache.json _pages/
+
+      - name: 部署到 GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: _pages
+          publish_branch: gh-pages
+          force_orphan: true
+          enable_jekyll: false

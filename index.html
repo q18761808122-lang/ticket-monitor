@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="票务监控">
+<title>票务监控</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#f5f5f5;color:#333;max-width:500px;margin:0 auto;min-height:100vh}
+.header{background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;padding:16px 20px;text-align:center;font-size:18px;font-weight:600;position:sticky;top:0;z-index:10}
+.tabs{display:flex;background:#fff;border-bottom:1px solid #eee;position:sticky;top:52px;z-index:10}
+.tab{flex:1;text-align:center;padding:12px;font-size:14px;color:#999;border-bottom:2px solid transparent;cursor:pointer;transition:.2s}
+.tab.active{color:#e74c3c;border-bottom-color:#e74c3c;font-weight:600}
+.page{display:none;padding:16px}
+.page.active{display:block}
+.card{background:#fff;border-radius:10px;padding:14px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.card h4{font-size:15px;margin-bottom:6px;line-height:1.4}
+.card .meta{font-size:12px;color:#999;margin-bottom:8px}
+.card .actions{display:flex;gap:8px;justify-content:flex-end}
+.btn{padding:8px 16px;border-radius:6px;font-size:13px;border:none;cursor:pointer;font-weight:500;transition:.2s}
+.btn-red{background:#e74c3c;color:#fff}
+.btn-red:active{background:#c0392b}
+.btn-outline{background:#fff;color:#e74c3c;border:1px solid #e74c3c}
+.btn-outline:active{background:#fef0ef}
+.btn-gray{background:#eee;color:#666}
+.btn-gray:active{background:#ddd}
+.btn-sm{padding:6px 12px;font-size:12px}
+.search-box{display:flex;gap:8px;margin-bottom:16px}
+.search-box input{flex:1;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;outline:none}
+.search-box input:focus{border-color:#e74c3c}
+.search-box button{padding:10px 20px;white-space:nowrap}
+.empty{text-align:center;padding:40px 20px;color:#999;font-size:14px}
+.toggle{position:relative;width:44px;height:24px;display:inline-block}
+.toggle input{display:none}
+.toggle .slider{position:absolute;top:0;left:0;right:0;bottom:0;background:#ccc;border-radius:12px;transition:.3s;cursor:pointer}
+.toggle .slider:before{content:"";position:absolute;width:20px;height:20px;left:2px;bottom:2px;background:#fff;border-radius:50%;transition:.3s}
+.toggle input:checked+.slider{background:#2ecc71}
+.toggle input:checked+.slider:before{transform:translateX(20px)}
+.monitor-row{display:flex;align-items:center;justify-content:space-between;padding:12px 0;border-bottom:1px solid #f0f0f0}
+.monitor-row:last-child{border-bottom:none}
+.monitor-info{flex:1;min-width:0}
+.monitor-info .name{font-size:14px;font-weight:500;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.monitor-info .url{font-size:11px;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.monitor-actions{display:flex;align-items:center;gap:10px;flex-shrink:0}
+.tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;margin-right:4px}
+.tag-damai{background:#fff0f0;color:#e74c3c}
+.tag-generic{background:#f0f0ff;color:#3498db}
+.spinner{display:inline-block;width:16px;height:16px;border:2px solid #ddd;border-top-color:#e74c3c;border-radius:50%;animation:spin .6s linear infinite;margin-right:8px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:100;animation:fadeIn .3s}
+@keyframes fadeIn{from{opacity:0;transform:translateX(-50%) translateY(-10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
+.setup-hint{background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:12px;margin-bottom:16px;font-size:13px;line-height:1.6}
+input[type="text"],input[type="password"]{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:10px;outline:none}
+input[type="text"]:focus,input[type="password"]:focus{border-color:#e74c3c}
+.form-group{margin-bottom:12px}
+.form-group label{display:block;font-size:13px;color:#666;margin-bottom:4px;font-weight:500}
+</style>
+</head>
+<body>
+
+<div class="header">票务监控</div>
+
+<div class="tabs">
+  <div class="tab active" onclick="switchTab('search')">搜索</div>
+  <div class="tab" onclick="switchTab('monitors')">监控</div>
+  <div class="tab" onclick="switchTab('settings')">设置</div>
+</div>
+
+<!-- 搜索页 -->
+<div id="page-search" class="page active">
+  <div class="search-box">
+    <input id="search-input" type="text" placeholder="输入歌手名 / 演出名..." onkeydown="if(event.key==='Enter')search()">
+    <button class="btn btn-red" onclick="search()">搜索</button>
+  </div>
+  <div id="search-results"></div>
+  <div style="margin-top:20px">
+    <h5 style="font-size:14px;color:#666;margin-bottom:10px">或手动添加</h5>
+    <input id="manual-url" type="text" placeholder="粘贴演出页面 URL...">
+    <input id="manual-label" type="text" placeholder="平台名称，如：大麦、猫眼">
+    <select id="manual-platform" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:10px">
+      <option value="generic">通用（页面关键词检测）</option>
+      <option value="damai">大麦</option>
+    </select>
+    <button class="btn btn-red" style="width:100%" onclick="addManual()">添加监控</button>
+  </div>
+</div>
+
+<!-- 监控页 -->
+<div id="page-monitors" class="page">
+  <div id="monitor-list"></div>
+  <div class="empty" id="monitor-empty" style="display:none">暂无监控项<br><small>去「搜索」页面添加</small></div>
+</div>
+
+<!-- 设置页 -->
+<div id="page-settings" class="page">
+  <div class="setup-hint">
+    配置 GitHub 信息后，添加/删除监控会自动同步到仓库。<br>
+    Token 仅保存在你手机本地，不会上传。
+  </div>
+  <div class="form-group">
+    <label>GitHub 用户名</label>
+    <input id="cfg-owner" type="text" placeholder="q18761808122-lang">
+  </div>
+  <div class="form-group">
+    <label>仓库名</label>
+    <input id="cfg-repo" type="text" placeholder="ticket-monitor">
+  </div>
+  <div class="form-group">
+    <label>GitHub Token</label>
+    <input id="cfg-token" type="password" placeholder="ghp_...">
+    <small style="color:#999">需要 repo + workflow 权限</small>
+  </div>
+  <button class="btn btn-red" style="width:100%" onclick="saveSettings()">保存设置</button>
+  <hr style="margin:20px 0;border-color:#eee">
+  <button class="btn btn-gray" style="width:100%" onclick="loadMonitors()">刷新监控列表</button>
+</div>
+
+<script>
+// ── 状态 ──
+let monitors = [];
+let searchCache = [];
+
+// ── 设置管理 ──
+function getSettings() {
+  return {
+    owner: localStorage.getItem('gh_owner') || '',
+    repo: localStorage.getItem('gh_repo') || 'ticket-monitor',
+    token: localStorage.getItem('gh_token') || '',
+  };
+}
+
+function saveSettings() {
+  localStorage.setItem('gh_owner', document.getElementById('cfg-owner').value.trim());
+  localStorage.setItem('gh_repo', document.getElementById('cfg-repo').value.trim() || 'ticket-monitor');
+  localStorage.setItem('gh_token', document.getElementById('cfg-token').value.trim());
+  toast('设置已保存');
+}
+
+function loadSettings() {
+  const s = getSettings();
+  document.getElementById('cfg-owner').value = s.owner;
+  document.getElementById('cfg-repo').value = s.repo;
+  document.getElementById('cfg-token').value = s.token;
+}
+
+// ── GitHub API ──
+async function gh(path, method = 'GET', body = null) {
+  const s = getSettings();
+  if (!s.owner || !s.token) { toast('请先配置 GitHub 信息'); return null; }
+  const url = `https://api.github.com/repos/${s.owner}/${s.repo}/contents/${path}`;
+  const headers = { Authorization: `token ${s.token}`, Accept: 'application/vnd.github.v3+json' };
+  const opts = { method, headers };
+  if (body) opts.body = JSON.stringify(body);
+  try {
+    const r = await fetch(url, opts);
+    return r.ok ? r.json() : null;
+  } catch(e) { return null; }
+}
+
+// ── 读取 config.json ──
+async function fetchConfig() {
+  const data = await gh('config.json');
+  if (!data || !data.content) return null;
+  try {
+    return JSON.parse(atob(data.content.replace(/\s/g, '')));
+  } catch(e) { return null; }
+}
+
+// ── 更新 config.json ──
+async function updateConfig(newCfg) {
+  const data = await gh('config.json');
+  if (!data) return false;
+  const body = {
+    message: '更新监控列表',
+    content: btoa(unescape(encodeURIComponent(JSON.stringify(newCfg, null, 2)))),
+    sha: data.sha,
+  };
+  const r = await gh('config.json', 'PUT', body);
+  return !!r;
+}
+
+// ── 切换标签 ──
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach((t,i)=>{
+    t.classList.toggle('active', ['search','monitors','settings'][i]===name);
+  });
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  if (name==='monitors') loadMonitors();
+  if (name==='settings') loadSettings();
+}
+
+// ── 搜索 ──
+async function search() {
+  const q = document.getElementById('search-input').value.trim();
+  if (!q) { toast('请输入搜索关键词'); return; }
+  const el = document.getElementById('search-results');
+  el.innerHTML = '<div class="empty"><span class="spinner"></span>搜索中...</div>';
+
+  // 先从搜索缓存加载
+  await loadSearchCache();
+
+  // 本地缓存搜索
+  const results = searchCache.filter(item =>
+    (item.name||'').includes(q) || (item.keywords||'').includes(q)
+  );
+
+  if (results.length === 0) {
+    el.innerHTML = `<div class="empty">未找到"${q}"相关演出<br><small>请尝试其他关键词，或使用下方「手动添加」</small></div>`;
+    return;
+  }
+
+  el.innerHTML = results.map((r,i) => `
+    <div class="card">
+      <h4>${r.name}</h4>
+      <div class="meta">${r.city||''} · ${r.time||''} · ${r.platform||'大麦'}</div>
+      <div class="actions">
+        <button class="btn btn-red btn-sm" onclick="addMonitor(${i})">+ 监控</button>
+      </div>
+    </div>
+  `).join('');
+
+  // 暂存结果供添加用
+  window._lastSearchResults = results;
+}
+
+function addMonitor(idx) {
+  const r = window._lastSearchResults[idx];
+  if (!r) return;
+  const cfg = {
+    id: 'search_' + Date.now(),
+    enabled: true,
+    platform: r.platform === 'damai' ? 'damai' : 'generic',
+    mode: 'page',
+    label: r.name,
+    url: r.url || '',
+    item_id: r.item_id || '',
+    buy_url: r.url || '',
+    buy_url_mobile: r.url_mobile || r.url || '',
+    buy_keywords: r.buy_keywords || ['立即购买','选座购买','立即预订'],
+    sold_keywords: r.sold_keywords || ['已售罄','售罄','缺货登记'],
+    comment: `${r.city||''} · ${r.time||''}`,
+  };
+  addToMonitors(cfg);
+}
+
+async function addManual() {
+  const url = document.getElementById('manual-url').value.trim();
+  const label = document.getElementById('manual-label').value.trim();
+  const platform = document.getElementById('manual-platform').value;
+  if (!url || !label) { toast('请填写 URL 和平台名称'); return; }
+  addToMonitors({
+    id: 'manual_' + Date.now(),
+    enabled: true,
+    platform: platform,
+    mode: 'page',
+    label: label,
+    url: url,
+    item_id: '',
+    buy_url: url,
+    buy_url_mobile: url,
+    buy_keywords: ['立即购买','选座购买','立即预订','去购买'],
+    sold_keywords: ['已售罄','售罄','缺货登记','下架','已下架'],
+    comment: '手动添加',
+  });
+}
+
+async function addToMonitors(cfg) {
+  const c = await fetchConfig();
+  if (!c) { toast('读取配置失败，请检查 GitHub 设置'); return; }
+  c.monitors = c.monitors || [];
+  // 去重
+  if (c.monitors.find(m => m.id === cfg.id)) {
+    cfg.id = cfg.id + '_' + Math.random().toString(36).slice(2,6);
+  }
+  c.monitors.push(cfg);
+  const ok = await updateConfig(c);
+  if (ok) {
+    toast('已添加监控：' + cfg.label);
+    document.getElementById('manual-url').value = '';
+    document.getElementById('manual-label').value = '';
+  } else {
+    toast('添加失败，请检查网络或 Token');
+  }
+}
+
+// ── 监控列表 ──
+async function loadMonitors() {
+  const el = document.getElementById('monitor-list');
+  const emptyEl = document.getElementById('monitor-empty');
+  el.innerHTML = '<div class="empty"><span class="spinner"></span>加载中...</div>';
+
+  const c = await fetchConfig();
+  if (!c) { el.innerHTML = ''; emptyEl.style.display = 'block'; return; }
+  monitors = c.monitors || [];
+
+  if (monitors.length === 0) {
+    el.innerHTML = '';
+    emptyEl.style.display = 'block';
+    return;
+  }
+  emptyEl.style.display = 'none';
+
+  el.innerHTML = monitors.map((m,i) => `
+    <div class="monitor-row">
+      <div class="monitor-info">
+        <div class="name">
+          <span class="tag ${m.platform==='damai'?'tag-damai':'tag-generic'}">${m.platform==='damai'?'大麦':'通用'}</span>
+          ${m.label}
+        </div>
+        <div class="url">${m.url||m.item_id||''}</div>
+      </div>
+      <div class="monitor-actions">
+        <label class="toggle">
+          <input type="checkbox" ${m.enabled!==false?'checked':''} onchange="toggleMonitor(${i})">
+          <span class="slider"></span>
+        </label>
+        <button class="btn btn-outline btn-sm" onclick="deleteMonitor(${i})">删除</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+async function toggleMonitor(idx) {
+  const c = await fetchConfig();
+  if (!c) return;
+  c.monitors[idx].enabled = !c.monitors[idx].enabled;
+  await updateConfig(c);
+  monitors = c.monitors;
+}
+
+async function deleteMonitor(idx) {
+  if (!confirm('确定删除「' + monitors[idx].label + '」？')) return;
+  const c = await fetchConfig();
+  if (!c) return;
+  c.monitors.splice(idx, 1);
+  await updateConfig(c);
+  monitors = c.monitors;
+  loadMonitors();
+}
+
+// ── 搜索缓存 ──
+async function loadSearchCache() {
+  if (searchCache.length > 0) return;
+  const s = getSettings();
+  if (!s.owner) return;
+  try {
+    const r = await fetch(`https://raw.githubusercontent.com/${s.owner}/${s.repo}/main/search_cache.json`);
+    if (r.ok) searchCache = await r.json();
+  } catch(e) {}
+}
+
+// ── Toast ──
+function toast(msg) {
+  const t = document.createElement('div');
+  t.className = 'toast';
+  t.textContent = msg;
+  document.body.appendChild(t);
+  setTimeout(() => t.remove(), 2000);
+}
+
+// ── 初始化 ──
+loadSettings();
+</script>
+</body>
+</html>
