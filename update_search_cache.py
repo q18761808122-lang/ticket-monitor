@@ -62,13 +62,14 @@ def search_all_fast(keywords: list[str]) -> list[dict]:
     """
     浏览器内 fetch() 并发调用 searchajax API。
     cookie 是浏览器自带的（含 x5sec），不会被拦截。
-    8 个并发一组，35 个关键词 ~3 秒完成。
+    16 并发，直连搜索子域，跳过首页。
     """
     results = []
     browser = None
     try:
         from playwright.sync_api import sync_playwright
 
+        t_start = time.time()
         with sync_playwright() as p:
             browser = p.chromium.launch(
                 headless=True,
@@ -77,6 +78,15 @@ def search_all_fast(keywords: list[str]) -> list[dict]:
                     "--no-sandbox",
                     "--disable-dev-shm-usage",
                     "--disable-setuid-sandbox",
+                    "--disable-gpu",
+                    "--single-process",
+                    "--disable-background-networking",
+                    "--disable-sync",
+                    "--disable-translate",
+                    "--disable-default-apps",
+                    "--mute-audio",
+                    "--no-first-run",
+                    "--no-default-browser-check",
                 ],
             )
             context = browser.new_context(
@@ -91,60 +101,51 @@ def search_all_fast(keywords: list[str]) -> list[dict]:
             page = context.new_page()
             page.add_init_script("""
                 Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
-                Object.defineProperty(navigator, 'plugins', {get: () => [1, 2, 3, 4, 5]});
             """)
+            log.info(f"浏览器启动: {time.time()-t_start:.1f}s")
 
-            # Step 1: 访问大麦首页 → 获取基础 cookie
-            log.info("获取 Cookie...")
-            try:
-                page.goto("https://www.damai.cn/", wait_until="domcontentloaded", timeout=15000)
-                page.wait_for_timeout(1500)
-            except Exception:
-                pass
-
-            # Step 2: 访问搜索页 → 获取 search.damai.cn 的子域 cookie
+            # 直连搜索子域，用 commit 模式（不等 DOM 渲染）
+            t_cookie = time.time()
             try:
                 page.goto(
-                    "https://search.damai.cn/search.htm?keyword=演唱会",
-                    wait_until="domcontentloaded",
-                    timeout=15000,
+                    "https://search.damai.cn/search.htm?keyword=test",
+                    wait_until="commit",
+                    timeout=10000,
                 )
-                page.wait_for_timeout(2000)
+                page.wait_for_timeout(600)
             except Exception:
                 pass
+            log.info(f"Cookie: {time.time()-t_cookie:.1f}s")
 
-            # Step 3: 在浏览器内用 fetch() 批量并发调 AJAX API
-            #         此时 origin = search.damai.cn，fetch 同域无 CORS 问题
-            #         cookie 是浏览器自己的，x5sec 天然有效
+            # 浏览器内 fetch() 并发，16 个一组
             log.info(f"并发搜索 {len(keywords)} 个关键词...")
-            t1 = time.time()
+            t_api = time.time()
 
             raw = page.evaluate(
                 """
                 async (keywords) => {
                     const all = [];
-                    const CONCURRENCY = 8;
+                    const BATCH = 16;
 
-                    for (let i = 0; i < keywords.length; i += CONCURRENCY) {
-                        const batch = keywords.slice(i, i + CONCURRENCY);
-                        const tasks = batch.map(kw =>
-                            fetch(
-                                `https://search.damai.cn/searchajax.html?keyword=${
-                                    encodeURIComponent(kw)
-                                }&ctl=1&page=1&ts=${Date.now()}`
-                            )
-                            .then(r => r.json())
-                            .then(data => ({
-                                kw: kw,
-                                items: (data.pageData?.resultData || []).map(it => ({
-                                    id: String(it.id || it.itemId || ''),
-                                    name: it.name || it.projectName || '',
-                                    city: it.cityName || it.venueCity || '',
-                                    time: it.showTime || it.performDate || '',
-                                })),
-                            }))
-                            .catch(() => ({ kw: kw, items: [] }))
-                        );
+                    for (let i = 0; i < keywords.length; i += BATCH) {
+                        const batch = keywords.slice(i, i + BATCH);
+                        const tasks = batch.map(kw => {
+                            const url = `https://search.damai.cn/searchajax.html?keyword=${
+                                encodeURIComponent(kw)
+                            }&ctl=1&page=1&ts=${Date.now()}`;
+                            return fetch(url, {signal: AbortSignal.timeout(5000)})
+                                .then(r => r.json())
+                                .then(data => ({
+                                    kw,
+                                    items: (data.pageData?.resultData || []).map(it => ({
+                                        id: String(it.id || it.itemId || ''),
+                                        name: it.name || it.projectName || '',
+                                        city: it.cityName || it.venueCity || '',
+                                        time: it.showTime || it.performDate || '',
+                                    })),
+                                }))
+                                .catch(() => ({kw, items: []}));
+                        });
                         const batchResults = await Promise.all(tasks);
                         all.push(...batchResults);
                     }
@@ -154,18 +155,16 @@ def search_all_fast(keywords: list[str]) -> list[dict]:
                 keywords,
             )
 
-            log.info(f"API 请求完成 ({time.time()-t1:.1f}s)，处理结果...")
+            log.info(f"API: {time.time()-t_api:.1f}s ({len(keywords)}关键词/{len(raw)}响应)")
 
-            # Step 4: 组装结果
+            # 组装结果
             for group in raw:
                 kw = group.get("kw", "")
                 for item in group.get("items", []):
                     item_id = item.get("id", "")
                     if not item_id:
                         continue
-                    name = item.get("name", "")
-                    if not name:
-                        name = f"{kw} 演出(ID {item_id})"
+                    name = item.get("name", "") or f"{kw} 演出(ID {item_id})"
                     results.append({
                         "name": name,
                         "city": item.get("city", ""),
@@ -184,8 +183,8 @@ def search_all_fast(keywords: list[str]) -> list[dict]:
             browser.close()
             browser = None
 
-            found_kw = len(set(r["keywords"] for r in results))
-            log.info(f"大麦完成: {len(results)} 个演出, 覆盖 {found_kw}/{len(keywords)} 个关键词")
+        found_kw = len(set(r["keywords"] for r in results))
+        log.info(f"完成: {len(results)} 个演出 / {found_kw} 个歌手, 总耗时 {time.time()-t_start:.1f}s")
     except ImportError:
         log.error("Playwright 未安装")
     except Exception as e:
