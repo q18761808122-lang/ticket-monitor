@@ -9,7 +9,7 @@
   "xuezhiqian_taiyuan_pxq": {
     "status": "unknown",
     "message": "http://www.xingqiupiao.com/event?id=113812 → 页面请求失败",
-    "last_change": "2026-05-02T15:34:34.445536",
+    "last_change": "2026-05-02T23:09:10.764921",
     "last_remind": "",
     "remind_count": 0
   },
@@ -17,8 +17,8 @@
     "status": "available",
     "message": "https://www.ypiao.com/t_113812/ → 可能有票（关键词同时命中）",
     "last_change": "2026-05-02T12:16:14.283864",
-    "last_remind": "2026-05-02T15:33:47.192590",
-    "remind_count": 9
+    "last_remind": "2026-05-02T23:37:48.954600",
+    "remind_count": 301
   },
   "xuezhiqian_taiyuan_dahe": {
     "status": "sold_out",
@@ -352,16 +352,16 @@
   "auto_generic_113812": {
     "status": "unknown",
     "message": "http://www.xingqiupiao.com/event?id=113812 → 页面请求失败",
-    "last_change": "2026-05-02T15:36:14.393251",
+    "last_change": "2026-05-02T23:08:31.709894",
     "last_remind": "",
     "remind_count": 0
   },
   "auto_generic_ypiao_113812": {
     "status": "available",
     "message": "https://www.ypiao.com/t_113812/ → 可能有票（关键词同时命中）",
-    "last_change": "2026-05-02T12:16:59.217977",
-    "last_remind": "2026-05-02T15:35:28.626444",
-    "remind_count": 8
+    "last_change": "2026-05-02T17:48:38.777039",
+    "last_remind": "2026-05-02T23:36:45.938274",
+    "remind_count": 156
   },
   "auto_generic_motianlun_682c3c88f1b2200001985198": {
     "status": "unknown",
@@ -373,7 +373,7 @@
   "auto_generic_dahe_xuezhiqian": {
     "status": "sold_out",
     "message": "https://m.dahepiao.com/yc/xuezhiqaintaiyuanych/ → 已售罄",
-    "last_change": "2026-05-02T12:04:05.066227",
+    "last_change": "2026-05-02T22:43:06.075093",
     "last_remind": "",
     "remind_count": 0
   },
@@ -387,42 +387,42 @@
   "auto_generic_93596": {
     "status": "unknown",
     "message": "http://www.xingqiupiao.com/event?id=93596 → 页面请求失败",
-    "last_change": "2026-05-02T15:34:34.241244",
+    "last_change": "2026-05-02T23:10:05.425973",
     "last_remind": "",
     "remind_count": 0
   },
   "auto_generic_116454": {
     "status": "unknown",
     "message": "http://www.xingqiupiao.com/event?id=116454 → 页面请求失败",
-    "last_change": "2026-05-02T15:34:35.586149",
+    "last_change": "2026-05-02T23:03:15.129741",
     "last_remind": "",
     "remind_count": 0
   },
   "auto_generic_113182": {
     "status": "unknown",
     "message": "http://www.xingqiupiao.com/event?id=113182 → 页面请求失败",
-    "last_change": "2026-05-02T15:34:35.879075",
+    "last_change": "2026-05-02T23:03:42.173991",
     "last_remind": "",
     "remind_count": 0
   },
   "auto_generic_114314": {
     "status": "unknown",
     "message": "http://www.xingqiupiao.com/event?id=114314 → 页面请求失败",
-    "last_change": "2026-05-02T15:34:36.536779",
+    "last_change": "2026-05-02T23:03:59.196720",
     "last_remind": "",
     "remind_count": 0
   },
   "auto_generic_110186": {
     "status": "unknown",
     "message": "http://www.xingqiupiao.com/event?id=110186 → 页面请求失败",
-    "last_change": "2026-05-02T15:34:36.534305",
+    "last_change": "2026-05-02T23:04:16.749833",
     "last_remind": "",
     "remind_count": 0
   },
   "auto_generic_114058": {
     "status": "unknown",
     "message": "http://www.xingqiupiao.com/event?id=114058 → 页面请求失败",
-    "last_change": "2026-05-02T15:34:36.537986",
+    "last_change": "2026-05-02T23:04:36.139164",
     "last_remind": "",
     "remind_count": 0
   },
@@ -434,107 +434,100 @@
     "remind_count": 0
   },
   "auto_generic_116044": {
-    "status": "sold_out",
-    "message": "http://www.xingqiupiao.com/event?id=116044 → 已售罄",
-    "last_change": "2026-05-02T13:19:52.174943",
+    "status": "unknown",
+    "message": "http://www.xingqiupiao.com/event?id=116044 → 页面请求失败",
+    "last_change": "2026-05-02T23:04:55.644462",
     "last_remind": "",
     "remind_count": 0
   },
   "auto_generic_115652": {
     "status": "unknown",
     "message": "http://www.xingqiupiao.com/event?id=115652 → 页面请求失败",
-    "last_change": "2026-05-02T15:35:23.589245",
+    "last_change": "2026-05-02T23:05:12.668822",
     "last_remind": "",
     "remind_count": 0
   },
   "auto_generic_116597": {
     "status": "unknown",
     "message": "http://www.xingqiupiao.com/event?id=116597 → 页面请求失败",
-    "last_change": "2026-05-02T15:35:23.587585",
+    "last_change": "2026-05-02T23:05:29.680372",
     "last_remind": "",
     "remind_count": 0
   },
   "auto_generic_115856": {
     "status": "unknown",
     "message": "http://www.xingqiupiao.com/event?id=115856 → 页面请求失败",
-    "last_change": "2026-05-02T15:35:24.806108",
+    "last_change": "2026-05-02T23:05:46.717161",
     "last_remind": "",
     "remind_count": 0
   },
   "auto_generic_113053": {
     "status": "unknown",
     "message": "http://www.xingqiupiao.com/event?id=113053 → 页面请求失败",
-    "last_change": "2026-05-02T15:35:25.191100",
+    "last_change": "2026-05-02T23:06:03.742757",
     "last_remind": "",
     "remind_count": 0
   },
   "auto_generic_115380": {
     "status": "unknown",
     "message": "http://www.xingqiupiao.com/event?id=115380 → 页面请求失败",
-    "last_change": "2026-05-02T15:35:24.806346",
+    "last_change": "2026-05-02T23:06:20.777712",
     "last_remind": "",
     "remind_count": 0
   },
   "auto_generic_113856": {
     "status": "unknown",
     "message": "http://www.xingqiupiao.com/event?id=113856 → 页面请求失败",
-    "last_change": "2026-05-02T15:35:25.682592",
+    "last_change": "2026-05-02T23:06:37.809413",
     "last_remind": "",
     "remind_count": 0
   },
   "auto_generic_115916": {
     "status": "unknown",
     "message": "http://www.xingqiupiao.com/event?id=115916 → 页面请求失败",
-    "last_change": "2026-05-02T15:35:25.684317",
+    "last_change": "2026-05-02T23:06:54.840965",
     "last_remind": "",
     "remind_count": 0
   },
   "auto_generic_111806": {
     "status": "unknown",
     "message": "http://www.xingqiupiao.com/event?id=111806 → 页面请求失败",
-    "last_change": "2026-05-02T15:35:25.686070",
+    "last_change": "2026-05-02T23:07:11.871110",
     "last_remind": "",
     "remind_count": 0
   },
   "auto_generic_114944": {
     "status": "unknown",
     "message": "http://www.xingqiupiao.com/event?id=114944 → 页面请求失败",
-    "last_change": "2026-05-02T15:36:12.300662",
+    "last_change": "2026-05-02T23:07:28.898293",
     "last_remind": "",
     "remind_count": 0
   },
   "auto_generic_112402": {
     "status": "unknown",
     "message": "http://www.xingqiupiao.com/event?id=112402 → 页面请求失败",
-    "last_change": "2026-05-02T15:36:12.272548",
+    "last_change": "2026-05-02T23:07:45.921239",
     "last_remind": "",
     "remind_count": 0
   },
   "auto_generic_114257": {
     "status": "unknown",
     "message": "http://www.xingqiupiao.com/event?id=114257 → 页面请求失败",
-    "last_change": "2026-05-02T15:36:13.955578",
+    "last_change": "2026-05-02T23:08:02.955434",
     "last_remind": "",
     "remind_count": 0
   },
   "auto_generic_chenyixunchangsha": {
     "status": "available",
     "message": "https://www.dahepiao.com/yc/chenyixunchangsha/ → 可能有票（关键词同时命中）",
-    "last_change": "2026-05-02T13:20:35.158014",
-    "last_remind": "2026-05-02T15:35:26.953480",
-    "remind_count": 1
+    "last_change": "2026-05-02T22:43:18.987917",
+    "last_remind": "2026-05-02T23:37:08.883217",
+    "remind_count": 15
   },
   "auto_generic_116094": {
     "status": "unknown",
     "message": "http://www.xingqiupiao.com/event?id=116094 → 页面请求失败",
-    "last_change": "2026-05-02T15:36:14.537242",
-    "last_remind": "",
-    "remind_count": 0
-  },
-  "generic_116044": {
-    "status": "unknown",
-    "message": "http://www.xingqiupiao.com/event?id=116044 → 页面请求失败",
-    "last_change": "2026-05-02T15:34:34.241450",
+    "last_change": "2026-05-02T23:08:51.631610",
     "last_remind": "",
     "remind_count": 0
   }
