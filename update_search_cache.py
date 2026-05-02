@@ -1,19 +1,16 @@
 #!/usr/bin/env python3
 """
-搜索缓存更新脚本 — 极速版
-Playwright 仅用一次获取 cookie → 后续全部 requests 并发调 AJAX API
+搜索缓存更新脚本 — 事件驱动版
+单浏览器 + 拦截 AJAX 响应即时处理 + DOM 回退
 """
 import hashlib
 import json
 import logging
 import re
 import sys
+import threading
 import time
-import urllib.parse
-from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
-
-import requests
 
 BASE_DIR = Path(__file__).resolve().parent
 CACHE_PATH = BASE_DIR / "public" / "search_cache.json"
@@ -50,8 +47,10 @@ def extract_time(text: str) -> str:
     return m.group(1) if m else ""
 
 
-def _get_damai_cookies() -> dict:
-    """用 Playwright 获取大麦的有效 cookie（含 x5sec）"""
+def search_all_damai(keywords: list[str]) -> list[dict]:
+    """单浏览器事件驱动：AJAX 响应一到立即提取，不等多余时间"""
+    results = []
+    browser = None
     try:
         from playwright.sync_api import sync_playwright
 
@@ -77,67 +76,133 @@ def _get_damai_cookies() -> dict:
             page = context.new_page()
             page.add_init_script("""
                 Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
+                Object.defineProperty(navigator, 'plugins', {get: () => [1, 2, 3, 4, 5]});
             """)
 
-            # 访问首页
-            page.goto("https://www.damai.cn/", wait_until="domcontentloaded", timeout=15000)
-            page.wait_for_timeout(2000)
+            # 事件驱动：AJAX 响应到达时立即触发
+            ajax_data = []
+            ajax_event = threading.Event()
 
-            # 做一次搜索让 x5sec 签发
-            page.goto("https://search.damai.cn/search.htm?keyword=演唱会", wait_until="domcontentloaded", timeout=15000)
-            page.wait_for_timeout(3000)
+            def on_response(response):
+                if "searchajax" in response.url and response.status == 200:
+                    try:
+                        data = response.json()
+                        ajax_data.append(data)
+                        ajax_event.set()
+                    except Exception:
+                        pass
 
-            cookies = context.cookies()
+            page.on("response", on_response)
+
+            # 建立 cookie（只一次）
+            try:
+                page.goto("https://www.damai.cn/", wait_until="domcontentloaded", timeout=15000)
+                page.wait_for_timeout(1000)
+            except Exception:
+                pass
+
+            success = 0
+            for i, kw in enumerate(keywords):
+                try:
+                    ajax_data.clear()
+                    ajax_event.clear()
+
+                    search_url = f"https://search.damai.cn/search.htm?keyword={kw}"
+                    page.goto(search_url, wait_until="domcontentloaded", timeout=15000)
+
+                    # 等待 AJAX 响应，最多等 4 秒
+                    got_ajax = ajax_event.wait(timeout=4)
+
+                    if got_ajax and ajax_data:
+                        for data in ajax_data:
+                            items = data.get("pageData", {}).get("resultData", [])
+                            for item in items:
+                                item_id = str(item.get("id", "") or item.get("itemId", ""))
+                                if not item_id:
+                                    continue
+                                results.append({
+                                    "name": item.get("name") or item.get("projectName") or f"{kw} 演出",
+                                    "city": item.get("cityName") or item.get("venueCity", ""),
+                                    "time": item.get("showTime") or item.get("performDate", ""),
+                                    "platform": "damai",
+                                    "item_id": item_id,
+                                    "url": f"https://detail.damai.cn/item.htm?id={item_id}",
+                                    "url_mobile": f"damai://V1/ProjectPage?id={item_id}",
+                                    "buy_url": f"https://detail.damai.cn/item.htm?id={item_id}",
+                                    "buy_keywords": ["立即购买", "立即预订", "选座购买"],
+                                    "sold_keywords": ["缺货登记", "已售罄", "暂无可售"],
+                                    "mode": "page",
+                                    "keywords": kw,
+                                })
+                        if ajax_data:
+                            success += 1
+                            log.info(f"[{i+1}/{len(keywords)}] {kw}: AJAX {len(ajax_data[0].get('pageData',{}).get('resultData',[]))}个")
+                            continue
+
+                    # 回退：DOM 提取
+                    page.wait_for_timeout(1000)
+                    dom_items = page.evaluate("""
+                        () => {
+                            const results = [];
+                            const links = document.querySelectorAll('a[href*="detail.damai.cn/item.htm?id="]');
+                            const seen = new Set();
+                            links.forEach(link => {
+                                const href = link.href;
+                                const m = href.match(/id=(\\\\d+)/);
+                                if (!m || seen.has(m[1])) return;
+                                seen.add(m[1]);
+                                const card = link.closest('li, [class*="item"], [class*="card"], div') || link;
+                                results.push({
+                                    id: m[1],
+                                    name: (link.textContent || '').trim(),
+                                    text: (card.textContent || '').substring(0, 300),
+                                });
+                            });
+                            return results;
+                        }
+                    """)
+
+                    for item in dom_items:
+                        if not item.get("id"):
+                            continue
+                        name = item.get("name", "")
+                        text = item.get("text", "")
+                        if not name or len(name) < 3:
+                            name = f"{kw} 演出(ID {item['id']})"
+                        results.append({
+                            "name": name,
+                            "city": extract_city(text),
+                            "time": extract_time(text),
+                            "platform": "damai",
+                            "item_id": item["id"],
+                            "url": f"https://detail.damai.cn/item.htm?id={item['id']}",
+                            "url_mobile": f"damai://V1/ProjectPage?id={item['id']}",
+                            "buy_url": f"https://detail.damai.cn/item.htm?id={item['id']}",
+                            "buy_keywords": ["立即购买", "立即预订", "选座购买"],
+                            "sold_keywords": ["缺货登记", "已售罄", "暂无可售"],
+                            "mode": "page",
+                            "keywords": kw,
+                        })
+
+                    if dom_items:
+                        success += 1
+                        log.info(f"[{i+1}/{len(keywords)}] {kw}: DOM {len(dom_items)}个")
+
+                except Exception as e:
+                    log.warning(f"[{kw}] 异常: {e}")
+
             browser.close()
-
-            # 转为 requests 可用的 cookie dict
-            return {c["name"]: c["value"] for c in cookies}
+            browser = None
+            log.info(f"大麦完成: {success}/{len(keywords)} 个关键词有结果")
+    except ImportError:
+        log.error("Playwright 未安装")
     except Exception as e:
-        log.warning(f"获取 cookie 失败: {e}")
-        return {}
-
-
-def _search_damai_api(kw: str, session: requests.Session) -> list[dict]:
-    """直接调大麦 AJAX API（需要有效 cookie）"""
-    results = []
-    try:
-        params = {
-            "keyword": kw,
-            "ctl": "1",
-            "page": "1",
-            "ts": str(int(time.time() * 1000)),
-        }
-        url = "https://search.damai.cn/searchajax.html?" + urllib.parse.urlencode(params)
-        resp = session.get(url, timeout=10)
-
-        if resp.status_code != 200 or len(resp.text) < 50:
-            return results
-        if "x5sec" in resp.text or "punish" in resp.text.lower():
-            log.debug(f"大麦 [{kw}]: 被拦截")
-            return results
-
-        data = resp.json()
-        items = data.get("pageData", {}).get("resultData", [])
-        for item in items:
-            item_id = str(item.get("id", "") or item.get("itemId", ""))
-            if not item_id:
-                continue
-            results.append({
-                "name": item.get("name") or item.get("projectName") or f"{kw} 演出",
-                "city": item.get("cityName") or item.get("venueCity", ""),
-                "time": item.get("showTime") or item.get("performDate", ""),
-                "platform": "damai",
-                "item_id": item_id,
-                "url": f"https://detail.damai.cn/item.htm?id={item_id}",
-                "url_mobile": f"damai://V1/ProjectPage?id={item_id}",
-                "buy_url": f"https://detail.damai.cn/item.htm?id={item_id}",
-                "buy_keywords": ["立即购买", "立即预订", "选座购买"],
-                "sold_keywords": ["缺货登记", "已售罄", "暂无可售"],
-                "mode": "page",
-                "keywords": kw,
-            })
-    except Exception:
-        pass
+        log.error(f"大麦搜索崩溃: {e}")
+        if browser:
+            try:
+                browser.close()
+            except Exception:
+                pass
     return results
 
 
@@ -166,46 +231,12 @@ def merge(existing: list[dict], new: list[dict]) -> list[dict]:
 
 def main():
     t0 = time.time()
-    log.info("搜索缓存更新 — 极速模式")
+    log.info("搜索缓存更新 — 事件驱动模式")
     existing = load_existing()
     log.info(f"现有缓存: {len(existing)} 条")
 
-    all_new = []
+    all_new = search_all_damai(DAMAI_KEYWORDS)
 
-    # ── Step 1: Playwright 获取 cookie（一次性，约 8s） ──
-    cookies = _get_damai_cookies()
-    if not cookies:
-        log.error("无法获取大麦 cookie，退出")
-        sys.exit(0)
-
-    log.info(f"获取到 {len(cookies)} 个 cookie，开始并发搜索")
-
-    # ── Step 2: 并发调 AJAX API ──
-    session = requests.Session()
-    session.cookies.update(cookies)
-    session.headers.update({
-        "User-Agent": (
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-            "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36"
-        ),
-        "Accept": "application/json, text/plain, */*",
-        "Accept-Language": "zh-CN,zh;q=0.9",
-        "Referer": "https://search.damai.cn/",
-    })
-
-    with ThreadPoolExecutor(max_workers=8) as pool:
-        futures = {pool.submit(_search_damai_api, kw, session): kw for kw in DAMAI_KEYWORDS}
-        for f in as_completed(futures):
-            kw = futures[f]
-            try:
-                results = f.result()
-                if results:
-                    log.info(f"大麦 [{kw}]: {len(results)} 个")
-                    all_new.extend(results)
-            except Exception as e:
-                log.warning(f"大麦 [{kw}] 失败: {e}")
-
-    # ── 合并写入 ──
     merged = merge(existing, all_new)
     log.info(f"新增: {len(all_new)} 条, 合并后: {len(merged)} 条, 耗时 {time.time()-t0:.0f}s")
 
