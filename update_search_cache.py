@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """
-搜索缓存更新脚本 — Playwright 版
-用真实浏览器渲染大麦搜索页，拦截 AJAX 响应 / 提取 DOM 数据
-由 GitHub Actions 定时运行，更新 public/search_cache.json
+搜索缓存更新脚本 — 单浏览器实例版
+一个浏览器跑完所有搜索，避免反复启动/关闭，大幅提速
 """
 import hashlib
 import json
@@ -18,26 +17,22 @@ CACHE_PATH = BASE_DIR / "public" / "search_cache.json"
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger("cache_updater")
 
-HOT_KEYWORDS = [
-    # 一线歌手 / 乐队
+# 大麦关键词（精简到核心高频）
+DAMAI_KEYWORDS = [
     "薛之谦", "周杰伦", "林俊杰", "五月天", "陈奕迅", "邓紫棋",
-    "张杰", "华晨宇", "蔡依林", "王菲", "张学友", "刘德华",
-    "李宗盛", "张惠妹", "周深", "张信哲", "陶喆", "梁静茹",
-    # 热门 / 巡演常客
-    "许嵩", "汪苏泷", "徐良", "李荣浩", "毛不易", "刘若英",
-    "孙燕姿", "萧敬腾", "林宥嘉", "杨千嬅", "容祖儿", "陈粒",
-    "赵雷", "李健", "朴树", "许巍", "老狼", "伍佰",
-    "凤凰传奇", "大张伟", "二手玫瑰", "痛仰", "新裤子",
-    "周传雄", "光良", "品冠", "任贤齐", "张靓颖", "谭维维",
-    "田馥甄", "苏打绿", "告五人", "八三夭", "茄子蛋",
-    # 偶像 / 流量
-    "王源", "王俊凯", "易烊千玺", "时代少年团", "鹿晗",
-    "张艺兴", "王一博", "肖战", "蔡徐坤",
-    # 日韩 / 欧美来华
-    "泰勒斯威夫特", "周兴哲", "米津玄师",
-    # 经典
-    "谭咏麟", "林子祥", "叶倩文", "罗大佑", "费玉清",
-    "那英", "韩红", "孙楠", "刀郎",
+    "张杰", "华晨宇", "蔡依林", "张学友", "刘德华", "周深",
+    "许嵩", "汪苏泷", "徐良", "李荣浩", "毛不易",
+    "孙燕姿", "林宥嘉", "赵雷", "凤凰传奇", "刀郎",
+    "陶喆", "梁静茹", "张惠妹", "李宗盛", "张信哲",
+    "王菲", "刘若英", "李健", "陈粒", "伍佰",
+    "任贤齐", "张靓颖", "谭咏麟", "那英",
+]
+
+# 抖音关键词（高频子集）
+DOUYIN_KEYWORDS = [
+    "薛之谦", "周杰伦", "林俊杰", "五月天", "陈奕迅", "邓紫棋",
+    "张杰", "华晨宇", "许嵩", "汪苏泷", "徐良", "李荣浩",
+    "周深", "赵雷", "凤凰传奇", "刀郎",
 ]
 
 CITIES_RE = re.compile(
@@ -49,17 +44,175 @@ CITIES_RE = re.compile(
 TIME_RE = re.compile(r"(\d{4}[.\-/]\d{1,2}[.\-/]\d{1,2})")
 
 
-DOUYIN_KEYWORDS = [
-    "薛之谦", "周杰伦", "林俊杰", "五月天", "陈奕迅", "邓紫棋",
-    "张杰", "华晨宇", "蔡依林", "王菲", "张学友", "刘德华",
-    "许嵩", "汪苏泷", "徐良", "李荣浩", "毛不易",
-    "孙燕姿", "林宥嘉", "赵雷", "凤凰传奇", "刀郎",
-    "周深", "张信哲", "陶喆", "梁静茹",
-]
+def extract_city(text: str) -> str:
+    m = CITIES_RE.search(text)
+    return m.group(0) if m else ""
 
 
-def search_douyin_playwright(keyword: str) -> list[dict]:
-    """用 Playwright 搜索抖音演出门票 — 移动端 UA，从搜索/商城页面提取购票链接"""
+def extract_time(text: str) -> str:
+    m = TIME_RE.search(text)
+    return m.group(1) if m else ""
+
+
+# ── 大麦：单浏览器跑全部关键词 ──
+
+def search_all_damai(keywords: list[str]) -> list[dict]:
+    """一个浏览器实例跑完所有大麦搜索"""
+    results = []
+    browser = None
+    try:
+        from playwright.sync_api import sync_playwright
+
+        with sync_playwright() as p:
+            browser = p.chromium.launch(
+                headless=True,
+                args=[
+                    "--disable-blink-features=AutomationControlled",
+                    "--no-sandbox",
+                    "--disable-dev-shm-usage",
+                    "--disable-setuid-sandbox",
+                ],
+            )
+            context = browser.new_context(
+                user_agent=(
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                    "AppleWebKit/537.36 (KHTML, like Gecko) "
+                    "Chrome/131.0.0.0 Safari/537.36"
+                ),
+                viewport={"width": 1920, "height": 1080},
+                locale="zh-CN",
+            )
+            page = context.new_page()
+            page.add_init_script("""
+                Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
+                Object.defineProperty(navigator, 'plugins', {get: () => [1, 2, 3, 4, 5]});
+                Object.defineProperty(navigator, 'languages', {get: () => ['zh-CN', 'zh', 'en']});
+            """)
+
+            # 拦截 searchajax 响应
+            ajax_data = []
+
+            def on_response(response):
+                if "searchajax" in response.url and response.status == 200:
+                    try:
+                        data = response.json()
+                        ajax_data.append(data)
+                    except Exception:
+                        pass
+
+            page.on("response", on_response)
+
+            # 先访问首页建立 cookie（只一次）
+            try:
+                page.goto("https://www.damai.cn/", wait_until="domcontentloaded", timeout=15000)
+                page.wait_for_timeout(1500)
+            except Exception:
+                pass
+
+            for i, kw in enumerate(keywords):
+                try:
+                    ajax_data.clear()
+                    search_url = f"https://search.damai.cn/search.htm?keyword={kw}"
+                    page.goto(search_url, wait_until="domcontentloaded", timeout=20000)
+                    page.wait_for_timeout(3000)  # Vue 渲染通常 2-3 秒
+
+                    # 方式1: AJAX 拦截
+                    if ajax_data:
+                        for data in ajax_data:
+                            for item in data.get("pageData", {}).get("resultData", []):
+                                item_id = str(item.get("id", "") or item.get("itemId", ""))
+                                if not item_id:
+                                    continue
+                                results.append(_build_damai_entry(
+                                    item_id=item_id,
+                                    name=item.get("name") or item.get("projectName", ""),
+                                    city=item.get("cityName") or item.get("venueCity", ""),
+                                    time_str=item.get("showTime") or item.get("performDate", ""),
+                                    keyword=kw,
+                                ))
+                        if ajax_data:
+                            log.info(f"大麦 [{kw}]({i+1}/{len(keywords)}): AJAX {len(ajax_data)}个响应")
+                            time.sleep(0.5)
+                            continue
+
+                    # 方式2: DOM 提取
+                    dom_items = page.evaluate("""
+                        () => {
+                            const results = [];
+                            const links = document.querySelectorAll('a[href*="detail.damai.cn/item.htm?id="]');
+                            const seen = new Set();
+                            links.forEach(link => {
+                                const href = link.href;
+                                const m = href.match(/id=(\\\\d+)/);
+                                if (!m || seen.has(m[1])) return;
+                                seen.add(m[1]);
+                                const card = link.closest('li, [class*="item"], [class*="card"], div') || link;
+                                results.push({
+                                    id: m[1],
+                                    name: (link.textContent || link.getAttribute('title') || '').trim(),
+                                    text: (card.textContent || '').substring(0, 500),
+                                });
+                            });
+                            return results;
+                        }
+                    """)
+
+                    for item in dom_items:
+                        if not item.get("id"):
+                            continue
+                        name = item.get("name", "")
+                        text = item.get("text", "")
+                        if not name or len(name) < 3:
+                            name = f"{kw} 演出(ID {item['id']})"
+                        results.append(_build_damai_entry(
+                            item_id=item["id"],
+                            name=name,
+                            city=extract_city(text),
+                            time_str=extract_time(text),
+                            keyword=kw,
+                        ))
+
+                    log.info(f"大麦 [{kw}]({i+1}/{len(keywords)}): DOM {len(dom_items)}个")
+                except Exception as e:
+                    log.warning(f"大麦 [{kw}] 异常: {e}")
+                time.sleep(0.8)  # 请求间隔
+
+            browser.close()
+            browser = None
+    except ImportError:
+        log.error("Playwright 未安装")
+    except Exception as e:
+        log.error(f"大麦搜索崩溃: {e}")
+        if browser:
+            try:
+                browser.close()
+            except Exception:
+                pass
+    return results
+
+
+def _build_damai_entry(item_id: str, name: str, city: str, time_str: str, keyword: str) -> dict:
+    display_name = name if name and len(name) >= 2 else f"{keyword} 演出(ID {item_id})"
+    return {
+        "name": display_name,
+        "city": city,
+        "time": time_str,
+        "platform": "damai",
+        "item_id": item_id,
+        "url": f"https://detail.damai.cn/item.htm?id={item_id}",
+        "url_mobile": f"damai://V1/ProjectPage?id={item_id}",
+        "buy_url": f"https://detail.damai.cn/item.htm?id={item_id}",
+        "buy_keywords": ["立即购买", "立即预订", "选座购买"],
+        "sold_keywords": ["缺货登记", "已售罄", "暂无可售"],
+        "mode": "page",
+        "keywords": keyword,
+    }
+
+
+# ── 抖音：单浏览器跑全部关键词 ──
+
+def search_all_douyin(keywords: list[str]) -> list[dict]:
+    """一个移动端浏览器实例跑完所有抖音搜索"""
     results = []
     browser = None
     try:
@@ -87,73 +240,68 @@ def search_douyin_playwright(keyword: str) -> list[dict]:
                 Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
             """)
 
-            # 搜索：歌手名 + 演唱会/门票
-            search_url = f"https://www.douyin.com/search/{keyword}%20演唱会%20门票?type=general"
-            try:
-                page.goto(search_url, wait_until="domcontentloaded", timeout=25000)
-                page.wait_for_timeout(5000)
-            except Exception:
-                pass
+            for i, kw in enumerate(keywords):
+                try:
+                    search_url = f"https://www.douyin.com/search/{kw}%20演唱会%20门票?type=general"
+                    page.goto(search_url, wait_until="domcontentloaded", timeout=20000)
+                    page.wait_for_timeout(3000)
 
-            # 提取商品/购票链接
-            try:
-                links_found = page.evaluate("""
-                    () => {
-                        const results = [];
-                        const seen = new Set();
-                        for (const a of document.querySelectorAll('a[href]')) {
-                            const href = a.href;
-                            if (!href) continue;
-                            const text = (a.textContent || '').trim();
-                            if (href.includes('haohuo.jinritemai.com') ||
-                                href.includes('v.douyin.com') ||
-                                (href.includes('douyin.com') && text.includes('票'))) {
-                                const key = href.substring(0, 80);
-                                if (seen.has(key)) continue;
-                                seen.add(key);
-                                results.push({url: href, text: text.substring(0, 200)});
+                    links_found = page.evaluate("""
+                        () => {
+                            const results = [];
+                            const seen = new Set();
+                            for (const a of document.querySelectorAll('a[href]')) {
+                                const href = a.href;
+                                if (!href) continue;
+                                const text = (a.textContent || '').trim();
+                                if (href.includes('haohuo.jinritemai.com') ||
+                                    href.includes('v.douyin.com') ||
+                                    (href.includes('douyin.com') && (
+                                        text.includes('票') || text.includes('购') || text.includes('演')
+                                    ))) {
+                                    const key = href.substring(0, 80);
+                                    if (seen.has(key)) continue;
+                                    seen.add(key);
+                                    results.push({url: href, text: text.substring(0, 200)});
+                                }
                             }
+                            return results;
                         }
-                        return results;
-                    }
-                """)
-            except Exception:
-                links_found = []
+                    """)
 
-            for link in links_found[:5]:
-                url = link.get("url", "")
-                text = link.get("text", "")
-                if not url:
-                    continue
-                url_hash = hashlib.md5(url.encode()).hexdigest()[:12]
-                results.append({
-                    "name": text if text and len(text) >= 3 else f"{keyword} 抖音演出",
-                    "city": extract_city(text + url),
-                    "time": extract_time(text + url),
-                    "platform": "douyin",
-                    "item_id": f"dy_{url_hash}",
-                    "url": url,
-                    "url_mobile": url,
-                    "buy_url": url,
-                    "buy_keywords": ["立即购买", "立即抢购", "马上抢", "去购买", "提交订单"],
-                    "sold_keywords": ["已售罄", "已抢光", "抢光了", "已结束", "暂时无货", "缺货"],
-                    "mode": "page",
-                    "keywords": f"{keyword},抖音",
-                })
+                    for link in links_found[:5]:
+                        url = link.get("url", "")
+                        text = link.get("text", "")
+                        if not url:
+                            continue
+                        url_hash = hashlib.md5(url.encode()).hexdigest()[:12]
+                        results.append({
+                            "name": text if text and len(text) >= 3 else f"{kw} 抖音演出",
+                            "city": extract_city(text + url),
+                            "time": extract_time(text + url),
+                            "platform": "douyin",
+                            "item_id": f"dy_{url_hash}",
+                            "url": url,
+                            "url_mobile": url,
+                            "buy_url": url,
+                            "buy_keywords": ["立即购买", "立即抢购", "马上抢", "去购买", "提交订单"],
+                            "sold_keywords": ["已售罄", "已抢光", "抢光了", "已结束", "暂时无货", "缺货"],
+                            "mode": "page",
+                            "keywords": f"{kw},抖音",
+                        })
+
+                    if links_found:
+                        log.info(f"抖音 [{kw}]({i+1}/{len(keywords)}): {len(links_found)}个链接")
+                except Exception as e:
+                    log.warning(f"抖音 [{kw}] 异常: {e}")
+                time.sleep(0.8)
 
             browser.close()
             browser = None
-
-        # 同时尝试抖音商城搜索（Playwright 已释放）
-        mall_results = _search_douyin_mall(keyword)
-        results.extend(mall_results)
-
-        if results:
-            log.info(f"抖音搜索 [{keyword}]: {len(results)} 个结果")
     except ImportError:
         log.debug("Playwright 未安装，跳过抖音搜索")
     except Exception as e:
-        log.warning(f"抖音搜索 [{keyword}] 失败: {e}")
+        log.warning(f"抖音搜索崩溃: {e}")
         if browser:
             try:
                 browser.close()
@@ -162,222 +310,7 @@ def search_douyin_playwright(keyword: str) -> list[dict]:
     return results
 
 
-def _search_douyin_mall(keyword: str) -> list[dict]:
-    """搜索抖音商城 haohuo.jinritemai.com — 补充数据源"""
-    results = []
-    try:
-        import requests
-
-        session = requests.Session()
-        session.headers.update({
-            "User-Agent": (
-                "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) "
-                "AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
-            ),
-            "Accept": "text/html,application/xhtml+xml",
-            "Accept-Language": "zh-CN,zh;q=0.9",
-        })
-
-        # 抖音商城搜索
-        search_url = f"https://haohuo.jinritemai.com/views/search?keyword={keyword}%20演唱会%20门票"
-        resp = session.get(search_url, timeout=15, allow_redirects=True)
-
-        if resp.status_code == 200 and len(resp.text) > 500:
-            import hashlib
-            from bs4 import BeautifulSoup
-            soup = BeautifulSoup(resp.text, "html.parser")
-            links = soup.select('a[href*="product"], a[href*="detail"], a[href*="item"]')
-            seen = set()
-            for link in links[:5]:
-                href = link.get("href", "")
-                if not href:
-                    continue
-                if href.startswith("/"):
-                    href = "https://haohuo.jinritemai.com" + href
-                if href in seen:
-                    continue
-                seen.add(href)
-                url_hash = hashlib.md5(href.encode()).hexdigest()[:12]
-                results.append({
-                    "name": f"{keyword} 抖音商城演出",
-                    "city": "",
-                    "time": "",
-                    "platform": "douyin",
-                    "item_id": f"dymall_{url_hash}",
-                    "url": href,
-                    "url_mobile": href,
-                    "buy_url": href,
-                    "buy_keywords": ["立即购买", "立即抢购", "马上抢"],
-                    "sold_keywords": ["已售罄", "已抢光", "抢光了"],
-                    "mode": "page",
-                    "keywords": f"{keyword},抖音商城",
-                })
-    except Exception:
-        pass
-    return results
-
-
-def extract_city(text: str) -> str:
-    m = CITIES_RE.search(text)
-    return m.group(0) if m else ""
-
-
-def extract_time(text: str) -> str:
-    m = TIME_RE.search(text)
-    return m.group(1) if m else ""
-
-
-def search_damai_playwright(keyword: str) -> list[dict]:
-    """用 Playwright 渲染大麦搜索页，优先拦截 AJAX JSON，回退到 DOM 提取"""
-    results = []
-    browser = None
-    try:
-        from playwright.sync_api import sync_playwright
-
-        with sync_playwright() as p:
-            browser = p.chromium.launch(
-                headless=True,
-                args=[
-                    "--disable-blink-features=AutomationControlled",
-                    "--no-sandbox",
-                    "--disable-dev-shm-usage",
-                    "--disable-setuid-sandbox",
-                ],
-            )
-            context = browser.new_context(
-                user_agent=(
-                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                    "AppleWebKit/537.36 (KHTML, like Gecko) "
-                    "Chrome/131.0.0.0 Safari/537.36"
-                ),
-                viewport={"width": 1920, "height": 1080},
-                locale="zh-CN",
-            )
-            page = context.new_page()
-
-            # 隐藏自动化痕迹
-            page.add_init_script("""
-                Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
-                Object.defineProperty(navigator, 'plugins', {get: () => [1, 2, 3, 4, 5]});
-                Object.defineProperty(navigator, 'languages', {get: () => ['zh-CN', 'zh', 'en']});
-            """)
-
-            # 拦截 searchajax 响应
-            ajax_data = []
-
-            def on_response(response):
-                if "searchajax" in response.url and response.status == 200:
-                    try:
-                        data = response.json()
-                        ajax_data.append(data)
-                    except Exception:
-                        pass
-
-            page.on("response", on_response)
-
-            # 先访问首页建立 cookie
-            try:
-                page.goto("https://www.damai.cn/", wait_until="domcontentloaded", timeout=20000)
-                page.wait_for_timeout(3000)
-            except Exception:
-                log.debug("访问大麦首页超时，继续搜索")
-
-            # 访问搜索页
-            search_url = f"https://search.damai.cn/search.htm?keyword={keyword}"
-            try:
-                page.goto(search_url, wait_until="domcontentloaded", timeout=30000)
-                page.wait_for_timeout(8000)
-            except Exception as e:
-                log.warning(f"搜索页加载超时 [{keyword}]: {e}")
-
-            # 方式1: 从拦截的 AJAX 响应提取
-            if ajax_data:
-                for data in ajax_data:
-                    items = data.get("pageData", {}).get("resultData", [])
-                    for item in items:
-                        item_id = str(item.get("id", "") or item.get("itemId", ""))
-                        if not item_id:
-                            continue
-                        results.append(_build_damai_entry(
-                            item_id=item_id,
-                            name=item.get("name") or item.get("projectName", ""),
-                            city=item.get("cityName") or item.get("venueCity", ""),
-                            time_str=item.get("showTime") or item.get("performDate", ""),
-                            keyword=keyword,
-                        ))
-                log.info(f"搜索 [{keyword}] AJAX 拦截: {len(results)} 个结果")
-                browser.close()
-                return results
-
-            # 方式2: 从 DOM 提取链接
-            dom_items = page.evaluate("""
-                () => {
-                    const results = [];
-                    const links = document.querySelectorAll('a[href*="detail.damai.cn/item.htm?id="]');
-                    const seen = new Set();
-                    links.forEach(link => {
-                        const href = link.href;
-                        const m = href.match(/id=(\\\\d+)/);
-                        if (!m || seen.has(m[1])) return;
-                        seen.add(m[1]);
-                        const card = link.closest('li, [class*="item"], [class*="card"], div') || link;
-                        results.push({
-                            id: m[1],
-                            name: (link.textContent || link.getAttribute('title') || '').trim(),
-                            text: (card.textContent || '').substring(0, 500),
-                        });
-                    });
-                    return results;
-                }
-            """)
-
-            for item in dom_items:
-                if not item.get("id"):
-                    continue
-                name = item.get("name", "")
-                text = item.get("text", "")
-                if not name or len(name) < 3:
-                    name = f"{keyword} 演出(ID {item['id']})"
-                results.append(_build_damai_entry(
-                    item_id=item["id"],
-                    name=name,
-                    city=extract_city(text),
-                    time_str=extract_time(text),
-                    keyword=keyword,
-                ))
-
-            browser.close()
-            log.info(f"搜索 [{keyword}] DOM 提取: {len(results)} 个结果")
-    except ImportError:
-        log.error("Playwright 未安装，无法搜索大麦")
-    except Exception as e:
-        log.error(f"搜索 [{keyword}] 失败: {e}")
-        if browser:
-            try:
-                browser.close()
-            except Exception:
-                pass
-    return results
-
-
-def _build_damai_entry(item_id: str, name: str, city: str, time_str: str, keyword: str) -> dict:
-    """构建统一的大麦演出条目"""
-    display_name = name if name and len(name) >= 2 else f"{keyword} 演出(ID {item_id})"
-    return {
-        "name": display_name,
-        "city": city,
-        "time": time_str,
-        "platform": "damai",
-        "item_id": item_id,
-        "url": f"https://detail.damai.cn/item.htm?id={item_id}",
-        "url_mobile": f"damai://V1/ProjectPage?id={item_id}",
-        "buy_url": f"https://detail.damai.cn/item.htm?id={item_id}",
-        "buy_keywords": ["立即购买", "立即预订", "选座购买"],
-        "sold_keywords": ["缺货登记", "已售罄", "暂无可售"],
-        "mode": "page",
-        "keywords": keyword,
-    }
-
+# ── 缓存管理 ──
 
 def load_existing() -> list[dict]:
     if CACHE_PATH.exists():
@@ -403,51 +336,35 @@ def merge(existing: list[dict], new: list[dict]) -> list[dict]:
 
 
 def main():
-    log.info("搜索缓存更新开始（Playwright 模式）")
+    t0 = time.time()
+    log.info("搜索缓存更新开始（单浏览器模式）")
     existing = load_existing()
     log.info(f"现有缓存: {len(existing)} 条")
 
     all_new = []
 
-    # ── 大麦搜索 ──
-    damai_count = 0
-    for kw in HOT_KEYWORDS:
-        try:
-            results = search_damai_playwright(kw)
-            if results:
-                damai_count += 1
-                all_new.extend(results)
-        except Exception as e:
-            log.warning(f"大麦搜索 [{kw}] 异常: {e}")
-        time.sleep(2)
+    # ── 大麦（单浏览器） ──
+    log.info(f"大麦搜索 — {len(DAMAI_KEYWORDS)} 个关键词")
+    damai_results = search_all_damai(DAMAI_KEYWORDS)
+    all_new.extend(damai_results)
+    log.info(f"大麦完成: {len(damai_results)} 个结果 ({time.time()-t0:.0f}s)")
 
-    log.info(f"大麦: {damai_count}/{len(HOT_KEYWORDS)} 个关键词成功")
+    # ── 抖音（单浏览器） ──
+    log.info(f"抖音搜索 — {len(DOUYIN_KEYWORDS)} 个关键词")
+    douyin_results = search_all_douyin(DOUYIN_KEYWORDS)
+    all_new.extend(douyin_results)
+    log.info(f"抖音完成: {len(douyin_results)} 个结果 ({time.time()-t0:.0f}s)")
 
-    # ── 抖音搜索（热门歌手子集） ──
-    douyin_count = 0
-    for kw in DOUYIN_KEYWORDS:
-        try:
-            results = search_douyin_playwright(kw)
-            if results:
-                douyin_count += 1
-                all_new.extend(results)
-        except Exception as e:
-            log.warning(f"抖音搜索 [{kw}] 异常: {e}")
-        time.sleep(2)
-
-    log.info(f"抖音: {douyin_count}/{len(DOUYIN_KEYWORDS)} 个关键词成功")
-
-    log.info(f"总计新增: {len(all_new)} 条")
-
+    # ── 合并写入 ──
     merged = merge(existing, all_new)
-    log.info(f"合并后总计: {len(merged)} 条")
+    log.info(f"总计新增: {len(all_new)} 条, 合并后: {len(merged)} 条")
 
     with open(CACHE_PATH, "w", encoding="utf-8") as f:
         json.dump(merged, f, ensure_ascii=False, indent=2)
 
-    log.info("缓存写入完成")
     count_file = BASE_DIR / "cache_update_count.txt"
     count_file.write_text(str(len(all_new)))
+    log.info(f"缓存写入完成，总耗时 {time.time()-t0:.0f}s")
     if all_new:
         log.info(f"::notice::新增 {len(all_new)} 条搜索结果")
 
