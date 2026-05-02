@@ -315,6 +315,66 @@ def check_showstart(event_id: str) -> tuple[str, str]:
     return STATUS_UNKNOWN, f"{detail} → 无法确定状态"
 
 
+def check_douyin(cfg: dict) -> tuple[str, str]:
+    """
+    抖音票务检测：使用移动端 User-Agent 抓取页面，匹配购票/售罄关键词。
+    抖音是重 JS 渲染的 SPA，简单 HTTP 可能拿不到完整内容。
+    如持续返回「无法确定」，建议找到抖音小程序的 API 接口后改用 api 模式。
+    """
+    url = cfg.get("buy_url") or cfg.get("url", "")
+    item_id = cfg.get("item_id", "")
+    label = cfg.get("label", "抖音")
+
+    # 抖音期望的移动端请求头
+    douyin_headers = {
+        "User-Agent": (
+            "Mozilla/5.0 (iPhone; CPU iPhone OS 17_4 like Mac OS X) "
+            "AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 "
+            "MicroMessenger/8.0.47"
+        ),
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "zh-CN,zh;q=0.9",
+        "Referer": "https://www.douyin.com/",
+    }
+    detail = f"抖音 {label}"
+
+    try:
+        resp = requests.get(url, headers=douyin_headers, timeout=15, allow_redirects=True)
+        if resp.status_code != 200:
+            return STATUS_UNKNOWN, f"{detail} → HTTP {resp.status_code}"
+        html = resp.text
+    except requests.RequestException as e:
+        log.error(f"[{detail}] 请求失败: {e}")
+        return STATUS_UNKNOWN, f"{detail} → 页面请求失败"
+
+    buy_keywords = cfg.get("buy_keywords", ["立即购买", "立即抢购", "马上抢", "去购买", "立即预订", "提交订单"])
+    sold_keywords = cfg.get("sold_keywords", ["已售罄", "已抢光", "抢光了", "已结束", "暂时无货", "缺货", "已下架"])
+
+    # 检查原始 HTML
+    has_buy = any(kw in html for kw in buy_keywords)
+    has_sold = any(kw in html for kw in sold_keywords)
+
+    # 也检查 BeautifulSoup 解析后的纯文本
+    if not has_buy and not has_sold:
+        soup = BeautifulSoup(html, "html.parser")
+        text = soup.get_text(separator=" ", strip=True)
+        has_buy = any(kw in text for kw in buy_keywords)
+        has_sold = any(kw in text for kw in sold_keywords)
+
+    if has_buy and not has_sold:
+        return STATUS_AVAILABLE, f"{detail} → 有票/可购买"
+    if has_sold and not has_buy:
+        return STATUS_SOLD_OUT, f"{detail} → 已售罄"
+    if has_buy and has_sold:
+        return STATUS_AVAILABLE, f"{detail} → 可能有票（关键词同时命中）"
+
+    # 如果页面内容极少（<500 字符），说明是 SPA 壳或反爬页
+    if len(html) < 500:
+        return STATUS_UNKNOWN, f"{detail} → 页面为 SPA 壳/反爬页，建议改用 API 模式"
+
+    return STATUS_UNKNOWN, f"{detail} → 无法确定状态"
+
+
 def check_generic(cfg: dict) -> tuple[str, str]:
     """
     通用检测：用户提供 URL + 关键词列表
@@ -376,6 +436,8 @@ def check_one(cfg: dict, state: dict, wechat_token: str = "", remind_interval: i
             status, message = check_maoyan(cfg["show_id"])
         elif platform == "showstart":
             status, message = check_showstart(cfg["event_id"])
+        elif platform == "douyin":
+            status, message = check_douyin(cfg)
         else:
             status, message = check_generic(cfg)
     except Exception as e:

@@ -47,6 +47,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;margin-right:4px}
 .tag-damai{background:#fff0f0;color:#e74c3c}
 .tag-generic{background:#f0f0ff;color:#3498db}
+.tag-douyin{background:#fff0f8;color:#ff4088}
 .spinner{display:inline-block;width:16px;height:16px;border:2px solid #ddd;border-top-color:#e74c3c;border-radius:50%;animation:spin .6s linear infinite;margin-right:8px}
 @keyframes spin{to{transform:rotate(360deg)}}
 .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:100;animation:fadeIn .3s}
@@ -82,6 +83,7 @@ input[type="text"]:focus,input[type="password"]:focus{border-color:#e74c3c}
     <select id="manual-platform" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:10px">
       <option value="generic">通用（页面关键词检测）</option>
       <option value="damai">大麦</option>
+      <option value="douyin">抖音</option>
     </select>
     <button class="btn btn-red" style="width:100%" onclick="addManual()">添加监控</button>
   </div>
@@ -416,6 +418,7 @@ function addManual() {
   const platform = document.getElementById('manual-platform').value;
   if (!url) { toast('请粘贴演出页面 URL'); return; }
   if (!label) { toast('请填写平台名称'); return; }
+  const isDouyin = platform === 'douyin';
   addToMonitors({
     id: platform + '_manual_' + Date.now(),
     enabled: true,
@@ -425,8 +428,8 @@ function addManual() {
     url: url,
     buy_url: url,
     buy_url_mobile: url,
-    buy_keywords: ['立即购买', '选座购买', '立即预订', '去购买'],
-    sold_keywords: ['已售罄', '售罄', '缺货登记', '下架'],
+    buy_keywords: isDouyin ? ['立即购买', '立即抢购', '马上抢', '去购买', '提交订单'] : ['立即购买', '选座购买', '立即预订', '去购买'],
+    sold_keywords: isDouyin ? ['已售罄', '已抢光', '抢光了', '已结束', '暂时无货', '缺货'] : ['已售罄', '售罄', '缺货登记', '下架'],
     comment: '手动添加',
   });
 }
@@ -452,7 +455,7 @@ async function loadMonitors() {
     <div class="monitor-row">
       <div class="monitor-info">
         <div class="name">
-          <span class="tag ${m.platform==='damai'?'tag-damai':'tag-generic'}">${m.platform==='damai'?'大麦':'通用'}</span>
+          <span class="tag ${m.platform==='damai'?'tag-damai':m.platform==='douyin'?'tag-douyin':'tag-generic'}">${m.platform==='damai'?'大麦':m.platform==='douyin'?'抖音':'通用'}</span>
           ${m.label}
         </div>
         <div class="url">${m.url||m.item_id||''}</div>
