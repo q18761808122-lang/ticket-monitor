@@ -1,12 +1,13 @@
 // Service Worker for 票务监控 PWA
 const CACHE = "ticket-monitor-v2";
+const BASE = self.location.pathname.replace(/\/[^/]*$/, "");
 const ASSETS = [
-  "/",
-  "/index.html",
-  "/search_cache.json",
-  "/manifest.json",
-  "/icon-192.png",
-  "/icon-512.png",
+  BASE + "/",
+  BASE + "/index.html",
+  BASE + "/search_cache.json",
+  BASE + "/manifest.json",
+  BASE + "/icon-192.png",
+  BASE + "/icon-512.png",
 ];
 
 self.addEventListener("install", (e) => {
