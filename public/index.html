@@ -27,6 +27,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .btn-gray{background:#eee;color:#666}
 .btn-gray:active{background:#ddd}
 .btn-sm{padding:6px 12px;font-size:12px}
+.btn-block{display:block;width:100%;text-align:center}
 .search-box{display:flex;gap:8px;margin-bottom:16px}
 .search-box input{flex:1;padding:10px 14px;border:1px solid #ddd;border-radius:8px;font-size:14px;outline:none}
 .search-box input:focus{border-color:#e74c3c}
@@ -53,10 +54,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#333;color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;z-index:100;animation:fadeIn .3s}
 @keyframes fadeIn{from{opacity:0;transform:translateX(-50%) translateY(-10px)}to{opacity:1;transform:translateX(-50%) translateY(0)}}
 .setup-hint{background:#fff3cd;border:1px solid #ffc107;border-radius:8px;padding:12px;margin-bottom:16px;font-size:13px;line-height:1.6}
+.stats{display:flex;gap:12px;margin-bottom:16px}
+.stats .stat{flex:1;background:#fff;border-radius:10px;padding:14px;text-align:center;box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.stats .stat .num{font-size:24px;font-weight:700;color:#e74c3c}
+.stats .stat .lbl{font-size:11px;color:#999;margin-top:4px}
 input[type="text"],input[type="password"]{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:10px;outline:none}
 input[type="text"]:focus,input[type="password"]:focus{border-color:#e74c3c}
 .form-group{margin-bottom:12px}
 .form-group label{display:block;font-size:13px;color:#666;margin-bottom:4px;font-weight:500}
+.search-tip{font-size:12px;color:#999;margin-top:6px}
+.in-monitor{opacity:.5;pointer-events:none}
+.in-monitor .btn{background:#ccc!important}
 </style>
 </head>
 <body>
@@ -71,39 +79,48 @@ input[type="text"]:focus,input[type="password"]:focus{border-color:#e74c3c}
 
 <!-- 搜索页 -->
 <div id="page-search" class="page active">
+  <div class="stats" id="cache-stats" style="display:none">
+    <div class="stat"><div class="num" id="stat-shows">0</div><div class="lbl">演出数</div></div>
+    <div class="stat"><div class="num" id="stat-singers">0</div><div class="lbl">歌手数</div></div>
+    <div class="stat"><div class="num" id="stat-monitors">0</div><div class="lbl">监控中</div></div>
+  </div>
   <div class="search-box">
-    <input id="search-input" type="text" placeholder="输入歌手名 / 演出名..." onkeydown="if(event.key==='Enter')search()">
+    <input id="search-input" type="text" placeholder="输入歌手名，如：薛之谦、周杰伦..." onkeydown="if(event.key==='Enter')search()">
     <button class="btn btn-red" onclick="search()">搜索</button>
   </div>
+  <div class="search-tip">数据来自票星球搜索结果，每 30 分钟自动更新</div>
   <div id="search-results"></div>
-  <div style="margin-top:20px">
-    <h5 style="font-size:14px;color:#666;margin-bottom:10px">或手动添加</h5>
-    <input id="manual-url" type="text" placeholder="粘贴演出页面 URL...">
-    <input id="manual-label" type="text" placeholder="平台名称，如：大麦、猫眼">
+  <div style="margin-top:24px;padding-top:16px;border-top:1px solid #eee">
+    <h5 style="font-size:14px;color:#666;margin-bottom:10px">手动添加监控</h5>
+    <input id="manual-url" type="text" placeholder="粘贴演出页面 URL（如大麦/猫眼/票星球链接）">
+    <input id="manual-label" type="text" placeholder="名称，如：薛之谦太原站（大麦）">
     <select id="manual-platform" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:10px">
       <option value="generic">通用（页面关键词检测）</option>
       <option value="damai">大麦</option>
-      <option value="douyin">抖音</option>
     </select>
-    <button class="btn btn-red" style="width:100%" onclick="addManual()">添加监控</button>
+    <button class="btn btn-red btn-block" onclick="addManual()">添加监控</button>
   </div>
 </div>
 
 <!-- 监控页 -->
 <div id="page-monitors" class="page">
+  <div id="monitor-stats" class="stats" style="display:none">
+    <div class="stat"><div class="num" id="mstat-total">0</div><div class="lbl">监控项</div></div>
+    <div class="stat"><div class="num" id="mstat-enabled">0</div><div class="lbl">已启用</div></div>
+  </div>
   <div id="monitor-list"></div>
-  <div class="empty" id="monitor-empty" style="display:none">暂无监控项<br><small>去「搜索」页面添加</small></div>
+  <div class="empty" id="monitor-empty" style="display:none">暂无监控项<br><small>去「搜索」页添加，或手动粘贴链接</small></div>
 </div>
 
 <!-- 设置页 -->
 <div id="page-settings" class="page">
   <div class="setup-hint">
-    配置 GitHub 信息后，添加/删除监控会自动同步到仓库。<br>
-    Token 仅保存在你手机本地，不会上传。
+    配置 GitHub 信息后可在手机端管理监控。<br>
+    Token 仅保存在你手机本地，不会上传到任何第三方。
   </div>
   <div class="form-group">
     <label>GitHub 用户名</label>
-    <input id="cfg-owner" type="text" placeholder="q18761808122-lang">
+    <input id="cfg-owner" type="text" placeholder="你的 GitHub 用户名">
   </div>
   <div class="form-group">
     <label>仓库名</label>
@@ -112,17 +129,21 @@ input[type="text"]:focus,input[type="password"]:focus{border-color:#e74c3c}
   <div class="form-group">
     <label>GitHub Token</label>
     <input id="cfg-token" type="password" placeholder="ghp_...">
-    <small style="color:#999">需要 repo + workflow 权限</small>
+    <small style="color:#999">需要 repo 权限。在 GitHub Settings → Developer settings → Tokens 创建</small>
   </div>
-  <button class="btn btn-red" style="width:100%" onclick="saveSettings()">保存设置</button>
+  <button class="btn btn-red btn-block" onclick="saveSettings()">保存设置</button>
   <hr style="margin:20px 0;border-color:#eee">
-  <button class="btn btn-gray" style="width:100%" onclick="loadMonitors()">刷新监控列表</button>
+  <button class="btn btn-outline btn-block" onclick="triggerScan()">触发搜索扫描（GitHub Actions）</button>
+  <small style="display:block;text-align:center;margin-top:8px;color:#999">扫描完成后等待约 2 分钟，刷新页面即可看到新演出</small>
+  <hr style="margin:20px 0;border-color:#eee">
+  <button class="btn btn-gray btn-block" onclick="loadMonitors()">刷新监控列表</button>
 </div>
 
 <script>
 // ── 状态 ──
 let monitors = [];
 let searchCache = [];
+let monitorIds = new Set();
 
 // ── 设置管理 ──
 function getSettings() {
@@ -161,17 +182,15 @@ async function gh(path, method = 'GET', body = null) {
   } catch(e) { return null; }
 }
 
-// ── 读取 config.json（raw 优先避免中文乱码） ──
+// ── 读取 config.json ──
 async function fetchConfig() {
   const s = getSettings();
-  // 方式1: Raw URL（无编码问题，公开仓库无需 token）
   if (s.owner) {
     try {
       const r = await fetch(`https://raw.githubusercontent.com/${s.owner}/${s.repo}/main/config.json`);
       if (r.ok) return await r.json();
     } catch(e) {}
   }
-  // 方式2: GitHub API（需要 token，用 TextDecoder 安全解码 UTF-8）
   const data = await gh('config.json');
   if (data && data.content) {
     try { return JSON.parse(base64ToUtf8(data.content)); } catch(e) {}
@@ -179,7 +198,6 @@ async function fetchConfig() {
   return null;
 }
 
-// ── UTF-8 安全编码 ──
 function utf8ToBase64(str) {
   const bytes = new TextEncoder().encode(str);
   let bin = '';
@@ -194,7 +212,6 @@ function base64ToUtf8(b64) {
   return new TextDecoder().decode(bytes);
 }
 
-// ── 更新 config.json ──
 async function updateConfig(newCfg) {
   const data = await gh('config.json');
   if (!data) return false;
@@ -205,6 +222,27 @@ async function updateConfig(newCfg) {
   };
   const r = await gh('config.json', 'PUT', body);
   return !!r;
+}
+
+// ── 触发 GitHub Actions 扫描 ──
+async function triggerScan() {
+  const s = getSettings();
+  if (!s.owner || !s.token) { toast('请先配置 GitHub 信息'); return; }
+  try {
+    const r = await fetch(
+      `https://api.github.com/repos/${s.owner}/${s.repo}/actions/workflows/monitor.yml/dispatches`,
+      { method: 'POST',
+        headers: { Authorization: `token ${s.token}`, Accept: 'application/vnd.github.v3+json' },
+        body: JSON.stringify({ ref: 'main', inputs: { search_only: 'true' } })
+      });
+    if (r.ok || r.status === 204) {
+      toast('扫描已触发，约 2 分钟后刷新页面查看');
+    } else {
+      toast('触发失败: HTTP ' + r.status);
+    }
+  } catch(e) {
+    toast('网络错误: ' + e.message);
+  }
 }
 
 // ── 切换标签 ──
@@ -218,173 +256,122 @@ function switchTab(name) {
   if (name==='settings') loadSettings();
 }
 
-// ── 搜索（自动搜大麦 + 缓存融合） ──
-const CORS_PROXIES = [
-  'https://api.allorigins.win/raw?url=',
-  'https://corsproxy.io/?',
-  'https://api.codetabs.com/v1/proxy?quest=',
-];
-
+// ── 搜索 ──
 async function search() {
   const q = document.getElementById('search-input').value.trim();
-  if (!q) { toast('请输入歌手名或演出名'); return; }
+  if (!q) { toast('请输入歌手名'); return; }
   const el = document.getElementById('search-results');
-  el.innerHTML = '<div class="empty"><span class="spinner"></span>搜索中…</div>';
+  el.innerHTML = '<div class="empty"><span class="spinner"></span>搜索中...</div>';
 
-  // 1. 先加载缓存（立即可用）
   await loadSearchCache();
+  await loadMonitorIds();
 
-  // 2. 缓存中搜索
   const results = searchCache.filter(item =>
     (item.name||'').includes(q) || (item.keywords||'').includes(q)
   );
 
-  // 3. 后台尝试实时搜索（大麦 API 有反爬，不保证成功）
-  searchDamaiLive(q).then(liveResults => {
-    if (liveResults.length > 0) {
-      for (const r of liveResults) {
-        if (!results.find(x => x.item_id === r.item_id)) {
-          results.push(r);
-        }
-      }
-      window._lastSearchResults = results;
-      renderSearchResults(el, results, true);
-    }
-  }).catch(() => {});
-
   if (results.length === 0) {
-    el.innerHTML = `<div class="empty">未找到「${q}」相关演出<br><small>请检查拼写或试试简称</small><br><br><button class="btn btn-outline btn-sm" onclick="document.getElementById('search-input').value='薛之谦';search()">试试搜「薛之谦」</button></div>`;
+    el.innerHTML = `<div class="empty">未找到「${q}」相关演出<br><small>试试搜索：薛之谦、周杰伦、五月天、蔡依林...</small><br><br>
+      <button class="btn btn-outline btn-sm" onclick="document.getElementById('search-input').value='薛之谦';search()">薛之谦</button>
+      <button class="btn btn-outline btn-sm" style="margin-left:8px" onclick="document.getElementById('search-input').value='周杰伦';search()">周杰伦</button>
+    </div>`;
     return;
   }
 
   window._lastSearchResults = results;
-  renderSearchResults(el, results, false);
+  renderSearchResults(el, results);
+  updateStats();
 }
 
-function renderSearchResults(el, results, hasLive) {
-  el.innerHTML = results.map((r, i) => `
-    <div class="card">
-      <h4>${r.name}${r._fromCache ? ' <small style="color:#999">(缓存)</small>' : ''}</h4>
-      <div class="meta">${r.city||''} · ${r.time||''} · <span class="tag ${r.platform==='damai'?'tag-damai':r.platform==='douyin'?'tag-douyin':'tag-generic'}">${r.platform==='damai'?'大麦':r.platform==='douyin'?'抖音':(r.platform||'其他')}</span></div>
-      <div class="actions">
-        <button class="btn btn-red btn-sm" onclick="addMonitorFromSearch(${i})">+ 监控</button>
+function renderSearchResults(el, results) {
+  el.innerHTML = results.map((r, i) => {
+    const isMonitoring = monitorIds.has(r.item_id || '') || monitorIds.has((r.platform||'generic')+'_'+r.item_id);
+    const btnHtml = isMonitoring
+      ? '<button class="btn btn-gray btn-sm" disabled>已监控</button>'
+      : `<button class="btn btn-red btn-sm" onclick="addMonitorFromSearch(${i})">+ 监控</button>`;
+    return `
+    <div class="card${isMonitoring?' in-monitor':''}">
+      <h4>${escHtml(r.name)}</h4>
+      <div class="meta">
+        ${r.city ? escHtml(r.city)+' · ' : ''}
+        ${r.time ? escHtml(r.time)+' · ' : ''}
+        <span class="tag ${r.platform==='damai'?'tag-damai':'tag-generic'}">${r.platform==='damai'?'大麦':r.platform||'其他'}</span>
       </div>
-    </div>
-  `).join('');
+      <div class="actions">${btnHtml}</div>
+    </div>`;
+  }).join('');
 }
 
-async function fetchWithProxy(targetUrl, idx) {
-  idx = idx || 0;
-  if (idx >= CORS_PROXIES.length) return null;
+function escHtml(s) {
+  const d = document.createElement('div');
+  d.textContent = s;
+  return d.innerHTML;
+}
+
+// ── 加载搜索缓存 ──
+async function loadSearchCache() {
+  if (searchCache.length > 0) return;
+  // 同源加载（GitHub Pages 部署后 work）
   try {
-    const url = CORS_PROXIES[idx] + encodeURIComponent(targetUrl);
-    const r = await fetch(url);
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    return await r.text();
-  } catch (e) {
-    return fetchWithProxy(targetUrl, idx + 1);
+    const r = await fetch('search_cache.json');
+    if (r.ok) { searchCache = await r.json(); updateStats(); return; }
+  } catch(e) {}
+  // GitHub Raw
+  const s = getSettings();
+  if (s.owner) {
+    try {
+      const r = await fetch(`https://raw.githubusercontent.com/${s.owner}/${s.repo}/main/public/search_cache.json`);
+      if (r.ok) { searchCache = await r.json(); updateStats(); return; }
+    } catch(e) {}
+  }
+  // 内置默认（精简版）
+  searchCache = [
+    {name:"薛之谦「万兽之王」巡回演唱会-太原站",city:"太原",time:"2026.04.24-05.03",platform:"damai",item_id:"1030416581941",url:"https://detail.damai.cn/item.htm?id=1030416581941",url_mobile:"damai://V1/ProjectPage?id=1030416581941",buy_url:"https://detail.damai.cn/item.htm?id=1030416581941",buy_keywords:["立即购买","立即预订","选座购买"],sold_keywords:["缺货登记","已售罄","暂无可售"],mode:"page",keywords:"薛之谦"}
+  ];
+}
+
+function updateStats() {
+  document.getElementById('cache-stats').style.display = searchCache.length ? 'flex' : 'none';
+  document.getElementById('stat-shows').textContent = searchCache.length;
+  const singers = new Set(searchCache.map(x => x.keywords).filter(Boolean));
+  document.getElementById('stat-singers').textContent = singers.size;
+  document.getElementById('stat-monitors').textContent = monitorIds.size;
+}
+
+// ── 加载当前监控 ID 集合 ──
+async function loadMonitorIds() {
+  if (monitorIds.size > 0) return;
+  const c = await fetchConfig();
+  if (c && c.monitors) {
+    monitors = c.monitors;
+    c.monitors.forEach(m => {
+      if (m.item_id) monitorIds.add(m.item_id);
+      monitorIds.add(m.id || '');
+    });
   }
 }
 
-async function searchDamaiLive(keyword) {
-  try {
-    const html = await fetchWithProxy(`https://search.damai.cn/search.htm?keyword=${keyword}`);
-    if (!html) return [];
-
-    const results = [];
-    const seen = new Set();
-
-    // 方法1: 匹配 detail.damai.cn/item.htm?id=xxxxx
-    const linkRe = /https?:\/\/detail\.damai\.cn\/item\.htm\?id=(\d+)/g;
-    let m;
-    while ((m = linkRe.exec(html)) !== null) {
-      const id = m[1];
-      if (seen.has(id)) continue;
-      seen.add(id);
-      const pos = m.index;
-      const ctx = html.substring(Math.max(0, pos - 800), Math.min(html.length, pos + 400));
-      results.push({
-        name: extractName(ctx) || `${keyword} 演出(ID ${id})`,
-        city: extractCity(ctx),
-        time: extractTime(ctx),
-        platform: 'damai',
-        item_id: id,
-        url: `https://detail.damai.cn/item.htm?id=${id}`,
-        url_mobile: `damai://V1/ProjectPage?id=${id}`,
-        buy_keywords: ['立即购买', '立即预订', '选座购买'],
-        sold_keywords: ['缺货登记', '已售罄', '暂无可售'],
-        keywords: keyword,
-      });
-    }
-
-    // 方法2: 解析内嵌 JSON 数据
-    if (results.length === 0) {
-      const jsonRe = /"items"\s*:\s*(\[[\s\S]*?\])\s*[,}]/g;
-      let jm;
-      while ((jm = jsonRe.exec(html)) !== null) {
-        try {
-          const items = JSON.parse(jm[1]);
-          for (const item of items) {
-            const id = String(item.itemId || item.projectId || '');
-            if (!id || seen.has(id)) continue;
-            seen.add(id);
-            results.push({
-              name: item.name || item.title || item.projectName || `${keyword} 演出`,
-              city: item.cityName || item.city || '',
-              time: item.showTime || item.performDate || '',
-              platform: 'damai',
-              item_id: id,
-              url: `https://detail.damai.cn/item.htm?id=${id}`,
-              url_mobile: `damai://V1/ProjectPage?id=${id}`,
-              buy_keywords: ['立即购买', '立即预订', '选座购买'],
-              sold_keywords: ['缺货登记', '已售罄', '暂无可售'],
-              keywords: keyword,
-            });
-          }
-        } catch(e) {}
-      }
-    }
-
-    return results;
-  } catch (e) {
-    console.log('实时搜索失败: ' + e.message);
-    return [];
-  }
-}
-
-function extractName(ctx) {
-  const m = ctx.match(/(?:title|alt)=["']([^"']*(?:演唱会|音乐会|话剧|展览|比赛|音乐节|Live|戏剧|歌剧|舞蹈|亲子|相声|戏曲|体育|巡演)[^"']*)/i);
-  if (m) return m[1].replace(/<[^>]+>/g, '').trim();
-  const m2 = ctx.match(/>([^<]{6,80})<\//);
-  return m2 ? m2[1].replace(/<[^>]+>/g, '').trim() : '';
-}
-
-function extractCity(ctx) {
-  const cities = '北京|上海|广州|深圳|成都|重庆|杭州|武汉|西安|南京|天津|苏州|长沙|郑州|沈阳|青岛|大连|东莞|宁波|厦门|福州|合肥|无锡|佛山|昆明|贵阳|南宁|南昌|哈尔滨|长春|石家庄|太原|济南|兰州|银川|西宁|拉萨|海口|呼和浩特|乌鲁木齐';
-  const m = ctx.match(new RegExp(cities));
-  return m ? m[0] : '';
-}
-
-function extractTime(ctx) {
-  const m = ctx.match(/(\d{4}[.\-/]\d{1,2}[.\-/]\d{1,2}[^<]{0,20})/);
-  return m ? m[1].trim() : '';
-}
-
+// ── 从搜索结果添加监控 ──
 function addMonitorFromSearch(idx) {
   const r = window._lastSearchResults[idx];
   if (!r) return;
+  const id = (r.platform || 'generic') + '_' + (r.item_id || Date.now());
+  if (monitorIds.has(id) || monitorIds.has(r.item_id || '')) {
+    toast('已在监控列表中');
+    return;
+  }
   addToMonitors({
-    id: (r.platform || 'damai') + '_' + (r.item_id || Date.now()),
+    id: id,
     enabled: true,
     platform: r.platform || 'generic',
     mode: r.mode || 'page',
     label: r.name,
-    url: r.url || '',
+    url: r.url || r.buy_url || '',
     item_id: r.item_id || '',
     buy_url: r.buy_url || r.url || '',
     buy_url_mobile: r.url_mobile || r.url || '',
-    buy_keywords: r.buy_keywords || ['立即购买', '选座购买', '立即预订'],
-    sold_keywords: r.sold_keywords || ['已售罄', '售罄', '缺货登记'],
+    buy_keywords: r.buy_keywords || ['立即购买', '选座购买', '去购买', '立即预订'],
+    sold_keywords: r.sold_keywords || ['已售罄', '售罄', '缺货登记', '下架'],
     comment: [r.city, r.time].filter(Boolean).join(' · '),
   });
 }
@@ -392,9 +379,7 @@ function addMonitorFromSearch(idx) {
 async function addToMonitors(cfg) {
   const c = await fetchConfig();
   if (!c) {
-    const s = getSettings();
-    if (!s.owner) { toast('请先在「设置」页填写 GitHub 用户名'); return; }
-    toast('读取配置失败，检查用户名和仓库名是否正确');
+    toast('请先在「设置」页填写 GitHub 信息');
     return;
   }
   c.monitors = c.monitors || [];
@@ -404,11 +389,17 @@ async function addToMonitors(cfg) {
   c.monitors.push(cfg);
   const ok = await updateConfig(c);
   if (ok) {
-    toast('已添加监控：' + cfg.label);
-    document.getElementById('manual-url').value = '';
-    document.getElementById('manual-label').value = '';
+    monitorIds.add(cfg.id);
+    if (cfg.item_id) monitorIds.add(cfg.item_id);
+    monitors = c.monitors;
+    toast('已添加: ' + cfg.label);
+    // 刷新搜索结果显示已监控
+    if (window._lastSearchResults) {
+      renderSearchResults(document.getElementById('search-results'), window._lastSearchResults);
+    }
+    updateStats();
   } else {
-    toast('写入失败，请检查 Token 是否有 repo 权限');
+    toast('写入失败，请检查 Token 权限');
   }
 }
 
@@ -417,8 +408,7 @@ function addManual() {
   const label = document.getElementById('manual-label').value.trim();
   const platform = document.getElementById('manual-platform').value;
   if (!url) { toast('请粘贴演出页面 URL'); return; }
-  if (!label) { toast('请填写平台名称'); return; }
-  const isDouyin = platform === 'douyin';
+  if (!label) { toast('请填写名称'); return; }
   addToMonitors({
     id: platform + '_manual_' + Date.now(),
     enabled: true,
@@ -428,8 +418,8 @@ function addManual() {
     url: url,
     buy_url: url,
     buy_url_mobile: url,
-    buy_keywords: isDouyin ? ['立即购买', '立即抢购', '马上抢', '去购买', '提交订单'] : ['立即购买', '选座购买', '立即预订', '去购买'],
-    sold_keywords: isDouyin ? ['已售罄', '已抢光', '抢光了', '已结束', '暂时无货', '缺货'] : ['已售罄', '售罄', '缺货登记', '下架'],
+    buy_keywords: platform === 'damai' ? ['立即购买', '立即预订', '选座购买'] : ['立即购买', '选座购买', '去购买', '立即预订'],
+    sold_keywords: platform === 'damai' ? ['缺货登记', '已售罄', '暂无可售'] : ['已售罄', '售罄', '缺货登记'],
     comment: '手动添加',
   });
 }
@@ -438,37 +428,47 @@ function addManual() {
 async function loadMonitors() {
   const el = document.getElementById('monitor-list');
   const emptyEl = document.getElementById('monitor-empty');
+  const statsEl = document.getElementById('monitor-stats');
   el.innerHTML = '<div class="empty"><span class="spinner"></span>加载中...</div>';
 
   const c = await fetchConfig();
-  if (!c) { el.innerHTML = ''; emptyEl.style.display = 'block'; return; }
-  monitors = c.monitors || [];
-
-  if (monitors.length === 0) {
+  if (!c || !c.monitors || c.monitors.length === 0) {
     el.innerHTML = '';
     emptyEl.style.display = 'block';
+    statsEl.style.display = 'none';
     return;
   }
+  monitors = c.monitors;
+  monitorIds = new Set();
+  monitors.forEach(m => {
+    if (m.item_id) monitorIds.add(m.item_id);
+    monitorIds.add(m.id || '');
+  });
+
   emptyEl.style.display = 'none';
+  statsEl.style.display = 'flex';
+  document.getElementById('mstat-total').textContent = monitors.length;
+  document.getElementById('mstat-enabled').textContent = monitors.filter(m => m.enabled !== false).length;
 
   el.innerHTML = monitors.map((m,i) => `
     <div class="monitor-row">
       <div class="monitor-info">
         <div class="name">
-          <span class="tag ${m.platform==='damai'?'tag-damai':m.platform==='douyin'?'tag-douyin':'tag-generic'}">${m.platform==='damai'?'大麦':m.platform==='douyin'?'抖音':'通用'}</span>
-          ${m.label}
+          <span class="tag ${m.platform==='damai'?'tag-damai':'tag-generic'}">${m.platform==='damai'?'大麦':m.platform||'通用'}</span>
+          ${escHtml(m.label||'')}
         </div>
-        <div class="url">${m.url||m.item_id||''}</div>
+        <div class="url">${escHtml(m.url||m.item_id||'')}</div>
       </div>
       <div class="monitor-actions">
         <label class="toggle">
           <input type="checkbox" ${m.enabled!==false?'checked':''} onchange="toggleMonitor(${i})">
           <span class="slider"></span>
         </label>
-        <button class="btn btn-outline btn-sm" onclick="deleteMonitor(${i})">删除</button>
+        <button class="btn btn-outline btn-sm" onclick="deleteMonitor(${i})">删</button>
       </div>
     </div>
   `).join('');
+  updateStats();
 }
 
 async function toggleMonitor(idx) {
@@ -480,35 +480,16 @@ async function toggleMonitor(idx) {
 }
 
 async function deleteMonitor(idx) {
-  if (!confirm('确定删除「' + monitors[idx].label + '」？')) return;
+  const m = monitors[idx];
+  if (!confirm('删除「' + m.label + '」？')) return;
   const c = await fetchConfig();
   if (!c) return;
   c.monitors.splice(idx, 1);
-  await updateConfig(c);
-  monitors = c.monitors;
-  loadMonitors();
-}
-
-// ── 搜索缓存（同源优先，无需 GitHub 配置） ──
-async function loadSearchCache() {
-  if (searchCache.length > 0) return;
-  // 方式1: 同源加载（GitHub Pages 部署后直接可用）
-  try {
-    const r = await fetch('search_cache.json');
-    if (r.ok) { searchCache = await r.json(); return; }
-  } catch(e) {}
-  // 方式2: GitHub Raw（需配置 GitHub 信息）
-  const s = getSettings();
-  if (s.owner) {
-    try {
-      const r = await fetch(`https://raw.githubusercontent.com/${s.owner}/${s.repo}/main/public/search_cache.json`);
-      if (r.ok) { searchCache = await r.json(); return; }
-    } catch(e) {}
+  const ok = await updateConfig(c);
+  if (ok) {
+    monitors = c.monitors;
+    loadMonitors();
   }
-  // 方式3: 内置默认缓存
-  searchCache = [
-    {name:"薛之谦「万兽之王」巡回演唱会-太原站",city:"太原",time:"2026.04.24-05.03",platform:"damai",item_id:"1030416581941",url:"https://detail.damai.cn/item.htm?id=1030416581941",url_mobile:"damai://V1/ProjectPage?id=1030416581941",buy_url:"https://detail.damai.cn/item.htm?id=1030416581941",buy_keywords:["立即购买","立即预订","选座购买"],sold_keywords:["缺货登记","已售罄","暂无可售"],mode:"page",keywords:"薛之谦,万兽之王,太原"}
-  ];
 }
 
 // ── Toast ──
@@ -522,6 +503,8 @@ function toast(msg) {
 
 // ── 初始化 ──
 loadSettings();
+loadSearchCache();
+loadMonitorIds();
 </script>
 </body>
 </html>

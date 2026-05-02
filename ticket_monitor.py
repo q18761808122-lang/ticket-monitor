@@ -24,12 +24,13 @@ CONFIG_PATH = BASE_DIR / "config.json"
 STATE_PATH = BASE_DIR / "state.json"
 LOG_PATH = BASE_DIR / "monitor.log"
 
+import io
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(message)s",
     handlers=[
         logging.FileHandler(LOG_PATH, encoding="utf-8"),
-        logging.StreamHandler(sys.stdout),
+        logging.StreamHandler(io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')),
     ],
 )
 log = logging.getLogger("ticket_monitor")
@@ -77,12 +78,14 @@ $notify.Dispose()
         subprocess.Popen(
             ["powershell", "-NoProfile", "-NonInteractive", "-Command", ps_script],
             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            creationflags=subprocess.CREATE_NO_WINDOW,
         )
         if url and open_browser:
             subprocess.Popen(
                 ["powershell", "-NoProfile", "-NonInteractive", "-Command",
                  f'Start-Process "{escaped_url}"'],
                 stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                creationflags=subprocess.CREATE_NO_WINDOW,
             )
         return True
     except Exception as e:
@@ -563,9 +566,38 @@ def check_one(cfg: dict, state: dict, wechat_token: str = "", remind_interval: i
     return state
 
 
+CACHE_PATH = BASE_DIR / "public" / "search_cache.json"
+
+
 def load_global_config() -> dict:
     with open(CONFIG_PATH, "r", encoding="utf-8") as f:
         return json.load(f)
+
+
+def load_cache_monitors() -> list[dict]:
+    """从搜索缓存自动生成监控项 — 无需手动配置"""
+    if not CACHE_PATH.exists():
+        return []
+    with open(CACHE_PATH, "r", encoding="utf-8") as f:
+        cache = json.load(f)
+    monitors = []
+    for item in cache:
+        cfg = {
+            "id": f"auto_{item.get('platform','generic')}_{item.get('item_id','')}",
+            "enabled": True,
+            "platform": item.get("platform", "generic"),
+            "mode": item.get("mode", "page"),
+            "label": item.get("name", "")[:60],
+            "url": item.get("url", ""),
+            "item_id": item.get("item_id", ""),
+            "buy_url": item.get("buy_url", item.get("url", "")),
+            "buy_url_mobile": item.get("url_mobile", item.get("buy_url", item.get("url", ""))),
+            "buy_keywords": item.get("buy_keywords", ["立即购买", "选座购买", "立即预订"]),
+            "sold_keywords": item.get("sold_keywords", ["已售罄", "售罄", "缺货登记"]),
+            "comment": f'{item.get("city","")} · {item.get("time","")} · 自动发现',
+        }
+        monitors.append(cfg)
+    return monitors
 
 
 def run():
@@ -574,9 +606,22 @@ def run():
     log.info("=" * 50)
 
     global_cfg = load_global_config()
-    monitors = global_cfg.get("monitors", [])
+
+    # 自动从搜索缓存加载监控项
+    cache_monitors = load_cache_monitors()
+    config_monitors = global_cfg.get("monitors", [])
+
+    # 合并：缓存优先，config 补充（去重依据 item_id + platform）
+    seen = set()
+    monitors = []
+    for m in cache_monitors + config_monitors:
+        key = f"{m.get('platform','')}_{m.get('item_id','')}_{m.get('url','')}"
+        if key not in seen and m.get("enabled", True):
+            seen.add(key)
+            monitors.append(m)
+
     if not monitors:
-        log.error("config.json 中没有配置监控项，请在 monitors 数组中添加。")
+        log.error("config.json 和搜索缓存中都没有监控项。请先运行 update_search_cache.py")
         return
 
     wechat_token = os.environ.get("PUSHPLUS_TOKEN") or global_cfg.get("wechat_token", "")
@@ -596,13 +641,31 @@ def run():
 
     state = load_state()
     check_count = 0
-    enabled_count = sum(1 for m in monitors if m.get("enabled", True))
-    log.info(f"已加载 {enabled_count} 个启用的监控项（共 {len(monitors)} 个配置）")
+    log.info(f"已加载 {len(monitors)} 个监控项（缓存 {len(cache_monitors)} + 手动 {len(config_monitors)}）")
+
+    last_cache_reload = time.time()
 
     try:
         while True:
             check_count += 1
-            log.info(f"--- 第 {check_count} 轮检查 ---")
+            # 每 5 分钟自动重载搜索缓存，发现新演出
+            if time.time() - last_cache_reload > 300:
+                new_cache = load_cache_monitors()
+                if len(new_cache) > len(cache_monitors):
+                    log.info(f"缓存更新：{len(cache_monitors)} → {len(new_cache)} 条")
+                    cache_monitors = new_cache
+                    # 重新合并
+                    seen = set()
+                    monitors = []
+                    for m in cache_monitors + config_monitors:
+                        key = f"{m.get('platform','')}_{m.get('item_id','')}_{m.get('url','')}"
+                        if key not in seen and m.get("enabled", True):
+                            seen.add(key)
+                            monitors.append(m)
+                    log.info(f"监控项更新：{len(monitors)} 个")
+                last_cache_reload = time.time()
+
+            log.info(f"--- 第 {check_count} 轮检查 ({len(monitors)}项) ---")
             for monitor_cfg in monitors:
                 if not monitor_cfg.get("enabled", True):
                     continue
@@ -620,9 +683,19 @@ def run():
 def run_once():
     """单次检查模式 —— 供 GitHub Actions / cron 使用"""
     global_cfg = load_global_config()
-    monitors = global_cfg.get("monitors", [])
+    cache_monitors = load_cache_monitors()
+    config_monitors = global_cfg.get("monitors", [])
+
+    seen = set()
+    monitors = []
+    for m in cache_monitors + config_monitors:
+        key = f"{m.get('platform','')}_{m.get('item_id','')}_{m.get('url','')}"
+        if key not in seen and m.get("enabled", True):
+            seen.add(key)
+            monitors.append(m)
+
     if not monitors:
-        log.error("config.json 中没有配置监控项。")
+        log.error("config.json 和搜索缓存中都没有监控项。")
         return
 
     wechat_token = os.environ.get("PUSHPLUS_TOKEN") or global_cfg.get("wechat_token", "")
@@ -630,10 +703,9 @@ def run_once():
     remind_interval = int(global_cfg.get("remind_interval_seconds", 300))
 
     state = load_state()
-    enabled = [m for m in monitors if m.get("enabled", True)]
-    log.info(f"单次检查：{len(enabled)} 个监控项")
+    log.info(f"单次检查：{len(monitors)} 个监控项（缓存 {len(cache_monitors)} + 手动 {len(config_monitors)}）")
 
-    for monitor_cfg in enabled:
+    for monitor_cfg in monitors:
         state = check_one(monitor_cfg, state, wechat_token, remind_interval, bark_key)
         time.sleep(2)
 

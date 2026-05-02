@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 """
-搜索缓存更新 — 搜索引擎聚合版
-用 Bing 搜索「歌手 演唱会 2026 购票」，从搜索结果中提取所有平台链接
-不直接爬票务平台，绕过反爬，一次搜索覆盖大麦/猫眼/票星球/大河/摩天轮/秀动/抖音等
+搜索缓存更新 — 票星球 HTTP + 搜狗聚合版
+直接搜索票星球（无需浏览器），搜狗作为其他平台补充
 """
 import json
 import logging
 import re
-import sys
 import time
 from pathlib import Path
-from urllib.parse import urlparse, parse_qs
+
+import requests
 
 BASE_DIR = Path(__file__).resolve().parent
 CACHE_PATH = BASE_DIR / "public" / "search_cache.json"
@@ -18,7 +17,6 @@ CACHE_PATH = BASE_DIR / "public" / "search_cache.json"
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger("cache_updater")
 
-# ── 所有要搜索的歌手 ──
 SINGERS = [
     "薛之谦", "周杰伦", "林俊杰", "五月天", "陈奕迅", "邓紫棋",
     "张杰", "华晨宇", "蔡依林", "张学友", "刘德华", "周深",
@@ -29,374 +27,221 @@ SINGERS = [
     "任贤齐", "张靓颖", "谭咏麟", "那英",
 ]
 
-# ── 各平台 URL 识别规则 ──
-PLATFORM_RULES = [
-    {
-        "host": "detail.damai.cn",
-        "id_re": r"id=(\d+)",
-        "platform": "damai",
-        "buy_keywords": ["立即购买", "立即预订", "选座购买"],
-        "sold_keywords": ["缺货登记", "已售罄", "暂无可售"],
-    },
-    {
-        "host": "show.maoyan.com",
-        "id_re": r"detail/(\d+)",
-        "platform": "maoyan",
-        "buy_keywords": ["立即购票", "选座购票", "立即预订"],
-        "sold_keywords": ["已售罄", "暂时无货"],
-    },
-    {
-        "host": "xingqiupiao.com",
-        "id_re": r"[?&]id=(\d+)",
-        "platform": "generic",
-        "buy_keywords": ["立即购买", "选座购买", "去购买", "立即预订"],
-        "sold_keywords": ["已售罄", "售罄", "缺货登记", "下架", "已下架"],
-    },
-    {
-        "host": "dahepiao.com",
-        "id_re": r"yc/([^/]+)",
-        "platform": "generic",
-        "buy_keywords": ["立即购买", "选座购买", "立即预订", "有票"],
-        "sold_keywords": ["已售罄", "售罄", "缺货登记", "等待开售"],
-    },
-    {
-        "host": "motianlun.cn",
-        "id_re": r"showId=(\w+)",
-        "platform": "generic",
-        "buy_keywords": ["立即购买", "选座购买", "去购买", "有票"],
-        "sold_keywords": ["已售罄", "售罄", "缺货登记", "已下架"],
-    },
-    {
-        "host": "ypiao.com",
-        "id_re": r"t_(\d+)",
-        "platform": "generic",
-        "buy_keywords": ["立即购买", "去购买", "立即预订", "我要买票", "有票"],
-        "sold_keywords": ["已售罄", "售罄", "缺货登记", "下架", "已下架", "等待开售"],
-    },
-    {
-        "host": "showstart.com",
-        "id_re": r"event/(\d+)",
-        "platform": "showstart",
-        "buy_keywords": ["立即购票", "立即购买"],
-        "sold_keywords": ["已售罄", "售罄", "已结束"],
-    },
-    # 抖音系列 — 无固定 ID 格式，用 URL hash 做 key
-    {
-        "host": "douyin.com",
-        "id_re": "",
-        "platform": "douyin",
-        "buy_keywords": ["立即购买", "立即抢购", "马上抢", "去购买", "提交订单"],
-        "sold_keywords": ["已售罄", "已抢光", "抢光了", "已结束", "暂时无货", "缺货"],
-    },
-    {
-        "host": "haohuo.jinritemai.com",
-        "id_re": "",
-        "platform": "douyin",
-        "buy_keywords": ["立即购买", "立即抢购", "马上抢"],
-        "sold_keywords": ["已售罄", "已抢光", "抢光了"],
-    },
-    {
-        "host": "v.douyin.com",
-        "id_re": "",
-        "platform": "douyin",
-        "buy_keywords": ["立即购买", "立即抢购", "马上抢"],
-        "sold_keywords": ["已售罄", "已抢光", "抢光了"],
-    },
-]
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 Chrome/131.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml",
+    "Accept-Language": "zh-CN,zh;q=0.9",
+}
 
-CITIES_RE = re.compile(
+CITIES_PATTERN = re.compile(
     r"北京|上海|广州|深圳|成都|重庆|杭州|武汉|西安|南京|天津|苏州|长沙|郑州|"
     r"沈阳|青岛|大连|东莞|宁波|厦门|福州|合肥|无锡|佛山|昆明|贵阳|南宁|南昌|"
-    r"哈尔滨|长春|石家庄|太原|济南|兰州|银川|西宁|拉萨|海口|呼和浩特|乌鲁木齐"
+    r"哈尔滨|长春|石家庄|太原|济南|兰州|银川|西宁|拉萨|海口|呼和浩特|乌鲁木齐|"
+    r"烟台|宜昌|洛阳|温州|泉州|惠州|珠海|金华|嘉兴|绍兴|中山"
 )
-
-TIME_RE = re.compile(r"(\d{4}[.\-/]\d{1,2}[.\-/]\d{1,2})")
-
-YEAR_RE = re.compile(r"202[56]")
+DATE_PATTERN = re.compile(r"(\d{4}[.\-/年]\d{1,2}[.\-/月]\d{1,2}[日]?)")
+CONCERT_KW = re.compile(r"演唱|巡演|音乐节|音乐会|见面会|庆典|晚会|盛典")
 
 
-def _match_platform(url: str):
-    """识别 URL 所属平台并提取 ID / buy_url"""
-    if not url:
-        return None
-    parsed = urlparse(url)
-    host = parsed.hostname or ""
-    for rule in PLATFORM_RULES:
-        if rule["host"] in host:
-            item_id = ""
-            buy_url = url  # 默认用原始 URL
-
-            if rule["id_re"]:
-                m = re.search(rule["id_re"], url)
-                if m:
-                    item_id = m.group(1)
-                    # 统一用原始 URL 作为 buy_url，保证能直接打开
-                else:
-                    continue  # 没匹配到 ID，跳过这个平台
-            else:
-                # 无固定 ID 格式（如抖音），用 URL hash
-                import hashlib
-                item_id = hashlib.md5(url.encode()).hexdigest()[:12]
-
-            return {
-                "platform": rule["platform"],
-                "item_id": item_id,
-                "url": url,
-                "buy_url": buy_url,
-                "buy_url_mobile": buy_url,
-                "buy_keywords": rule["buy_keywords"],
-                "sold_keywords": rule["sold_keywords"],
-            }
-    return None
-
-
-def search_bing(keyword: str) -> list[dict]:
-    """
-    用 Bing 搜索「歌手 演唱会 2026 购票」
-    从搜索结果中提取所有已知票务平台的链接
-    """
+def search_xingqiupiao(singer: str) -> list[dict]:
+    """搜索票星球（HTTP），从 Nuxt SSR payload 中提取演出信息"""
     results = []
-    browser = None
     try:
-        from playwright.sync_api import sync_playwright
+        r = requests.get(
+            f"http://www.xingqiupiao.com/search?keyword={singer}",
+            headers=HEADERS, timeout=15
+        )
+        if r.status_code != 200:
+            return results
 
-        with sync_playwright() as p:
-            browser = p.chromium.launch(
-                headless=True,
-                args=[
-                    "--no-sandbox", "--disable-dev-shm-usage",
-                    "--disable-blink-features=AutomationControlled",
-                ],
-            )
-            ctx = browser.new_context(
-                user_agent=(
-                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                    "AppleWebKit/537.36 (KHTML, like Gecko) "
-                    "Chrome/131.0.0.0 Safari/537.36"
-                ),
-                viewport={"width": 1920, "height": 1080},
-                locale="zh-CN",
-            )
-            page = ctx.new_page()
+        # 提取 Nuxt SSR payload
+        scripts = re.findall(r"<script[^>]*>(.*?)</script>", r.text, re.DOTALL)
+        if len(scripts) < 4:
+            return results
 
-            query = f"{keyword} 演唱会 2026 购票"
-            bing_url = f"https://www.bing.com/search?q={query}&setlang=zh-cn"
+        try:
+            payload = json.loads(scripts[3])
+        except json.JSONDecodeError:
+            return results
 
+        # 提取所有演出名称字符串
+        all_strings = [x for x in payload if isinstance(x, str)]
+        seen_names = set()
+
+        for name in all_strings:
+            if not CONCERT_KW.search(name) or len(name) < 4 or len(name) > 150:
+                continue
+            if singer not in name:
+                continue
+            if name in seen_names:
+                continue
+            seen_names.add(name)
+
+            # 提取城市
+            city = ""
+            city_m = re.search(r"[【\[]([^】\]]+)[】\]]", name)
+            if city_m:
+                inner = city_m.group(1)
+                city_m2 = CITIES_PATTERN.search(inner)
+                if city_m2:
+                    city = city_m2.group(0)
+            if not city:
+                city_m = CITIES_PATTERN.search(name)
+                if city_m:
+                    city = city_m.group(0)
+
+            # 提取日期
+            date_str = ""
+            date_m = DATE_PATTERN.search(name)
+            if date_m:
+                date_str = date_m.group(0)
+
+            # 在 payload 中查找附近的 event_id
+            eid = ""
             try:
-                page.goto(bing_url, wait_until="domcontentloaded", timeout=15000)
-                page.wait_for_timeout(2000)
-            except Exception:
+                name_idx = payload.index(name)
+                for offset in range(-15, 15):
+                    check_idx = name_idx + offset
+                    if 0 <= check_idx < len(payload):
+                        val = payload[check_idx]
+                        if isinstance(val, str) and val.isdigit() and 4 <= len(val) <= 8:
+                            eid = val
+                            break
+                        if isinstance(val, (int, float)) and 1000 < val < 99999999:
+                            eid = str(int(val))
+                            break
+            except ValueError:
                 pass
 
-            # 从搜索结果提取所有链接
-            links = page.evaluate("""
-                () => {
-                    const results = [];
-                    const seen = new Set();
-                    // Bing 搜索结果在 #b_results 里
-                    const container = document.querySelector('#b_results');
-                    const allLinks = (container || document).querySelectorAll('a[href]');
-                    allLinks.forEach(a => {
-                        const href = a.href;
-                        if (!href || seen.has(href)) return;
-                        seen.add(href);
-                        const parentText = (a.closest('li, .b_algo, div')?.textContent || a.textContent || '').substring(0, 500);
-                        results.push({
-                            url: href,
-                            name: a.textContent.trim().substring(0, 200),
-                            text: parentText,
-                        });
-                    });
-                    return results;
-                }
-            """)
+            if not eid:
+                for d in payload:
+                    if isinstance(d, dict) and "event_id" in d:
+                        eid = str(d["event_id"])
+                        break
 
-            for link in links:
-                url = link.get("url", "")
-                text = link.get("text", "") or link.get("name", "")
-                full_text = link.get("text", "")
+            if not eid:
+                eid = str(abs(hash(name)) % 900000 + 100000)
 
-                if not url:
-                    continue
+            results.append({
+                "name": name[:80],
+                "city": city,
+                "time": date_str,
+                "platform": "generic",
+                "item_id": eid,
+                "url": f"http://www.xingqiupiao.com/event?id={eid}",
+                "url_mobile": f"http://www.xingqiupiao.com/event?id={eid}",
+                "buy_url": f"http://www.xingqiupiao.com/event?id={eid}",
+                "buy_keywords": ["立即购买", "选座购买", "去购买", "立即预订"],
+                "sold_keywords": ["已售罄", "售罄", "缺货登记", "下架", "已下架"],
+                "mode": "page",
+                "keywords": singer,
+            })
 
-                match = _match_platform(url)
-                if not match:
-                    continue
-
-                # 检查是否包含年份（过滤过期内容）
-                if not YEAR_RE.search(text + full_text + url):
-                    continue
-
-                city = ""
-                time_str = ""
-                m_city = CITIES_RE.search(text + full_text)
-                if m_city:
-                    city = m_city.group(0)
-                m_time = TIME_RE.search(text + full_text)
-                if m_time:
-                    time_str = m_time.group(1)
-
-                name = text if len(text) >= 3 else f"{keyword} 演出"
-                # 清理名称中混入的 URL
-                name = re.sub(r'https?://\S+', '', name).strip()
-                if len(name) < 3:
-                    name = f"{keyword} 演出"
-
-                results.append({
-                    "name": name,
-                    "city": city,
-                    "time": time_str,
-                    "platform": match["platform"],
-                    "item_id": match["item_id"],
-                    "url": match["url"],
-                    "url_mobile": match["url"],
-                    "buy_url": match["buy_url"],
-                    "buy_keywords": match["buy_keywords"],
-                    "sold_keywords": match["sold_keywords"],
-                    "mode": "page",
-                    "keywords": f"{keyword},{match['platform']}",
-                })
-
-            browser.close()
-            browser = None
-    except ImportError:
-        log.error("Playwright 未安装")
     except Exception as e:
-        log.error(f"Bing 搜索 [{keyword}] 失败: {e}")
-        if browser:
-            try:
-                browser.close()
-            except Exception:
-                pass
+        log.warning(f"票星球 [{singer}]: {e}")
+
     return results
 
 
-def search_all(keywords: list[str]) -> list[dict]:
-    """单浏览器顺序搜索所有歌手（Bing 不限速）"""
+def search_sogou(singer: str) -> list[dict]:
+    """搜索搜狗，提取大河/摩天轮/有票网/抖音等平台的链接"""
     results = []
-    browser = None
     try:
-        from playwright.sync_api import sync_playwright
+        r = requests.get(
+            f"https://www.sogou.com/web?query={singer}+演唱会+2026+购票",
+            headers=HEADERS, timeout=15
+        )
+        text = r.content.decode("gbk", errors="ignore")
 
-        t0 = time.time()
-        with sync_playwright() as p:
-            browser = p.chromium.launch(
-                headless=True,
-                args=[
-                    "--no-sandbox", "--disable-dev-shm-usage",
-                    "--disable-blink-features=AutomationControlled",
-                    "--disable-gpu", "--single-process",
-                ],
-            )
-            ctx = browser.new_context(
-                user_agent=(
-                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                    "AppleWebKit/537.36 (KHTML, like Gecko) "
-                    "Chrome/131.0.0.0 Safari/537.36"
-                ),
-                viewport={"width": 1920, "height": 1080},
-                locale="zh-CN",
-            )
-            page = ctx.new_page()
-            page.add_init_script("""
-                Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
-            """)
+        # 提取非票星球的票务链接
+        url_pattern = r'https?://[^\s"\'<>]+'
+        all_urls = re.findall(url_pattern, text)
 
-            log.info(f"浏览器就绪 ({time.time()-t0:.0f}s)，开始搜索 {len(keywords)} 位歌手")
+        for url in all_urls:
+            url = url.rstrip(".,;:!?）)")
 
-            hit_count = 0
-            for i, kw in enumerate(keywords):
-                try:
-                    query = f"{kw} 演唱会 2026 购票"
-                    bing_url = f"https://www.bing.com/search?q={query}&setlang=zh-cn"
-                    page.goto(bing_url, wait_until="domcontentloaded", timeout=12000)
-                    page.wait_for_timeout(1500)
+            # 识别平台
+            platform = None
+            item_id = ""
+            buy_keywords = ["立即购买"]
+            sold_keywords = ["已售罄"]
 
-                    links = page.evaluate("""
-                        () => {
-                            const results = [];
-                            const seen = new Set();
-                            const container = document.querySelector('#b_results');
-                            (container || document).querySelectorAll('a[href]').forEach(a => {
-                                const href = a.href;
-                                if (!href || seen.has(href) || href.includes('bing.com')) return;
-                                seen.add(href);
-                                const el = a.closest('li, .b_algo, div');
-                                results.push({
-                                    url: href,
-                                    name: a.textContent.trim().substring(0, 200),
-                                    text: (el?.textContent || '').substring(0, 500),
-                                });
-                            });
-                            return results;
-                        }
-                    """)
+            if "dahepiao.com" in url:
+                platform = "generic"
+                m = re.search(r"/(?:yc|yanchu)/([^/\s]+)", url)
+                item_id = m.group(1) if m else f"dahe_{abs(hash(url))%10000}"
+                buy_keywords = ["立即购买", "选座购买", "立即预订", "有票"]
+                sold_keywords = ["已售罄", "售罄", "缺货登记", "等待开售"]
+            elif "motianlun.cn" in url:
+                platform = "generic"
+                m = re.search(r"showId=(\w+)", url)
+                item_id = m.group(1) if m else f"mtl_{abs(hash(url))%10000}"
+                buy_keywords = ["立即购买", "选座购买", "去购买", "有票"]
+                sold_keywords = ["已售罄", "售罄", "缺货登记", "已下架"]
+            elif "ypiao.com" in url:
+                platform = "generic"
+                m = re.search(r"t_(\d+)", url)
+                item_id = m.group(1) if m else f"ypiao_{abs(hash(url))%10000}"
+                buy_keywords = ["立即购买", "去购买", "立即预订", "我要买票", "有票"]
+                sold_keywords = ["已售罄", "售罄", "缺货登记", "下架", "已下架"]
+            elif "douyin.com" in url and "video" in url:
+                platform = "douyin"
+                import hashlib
+                item_id = hashlib.md5(url.encode()).hexdigest()[:12]
+                buy_keywords = ["立即购买", "立即抢购", "马上抢"]
+                sold_keywords = ["已售罄", "已抢光", "抢光了"]
+            else:
+                continue
 
-                    kw_results = 0
-                    for link in links:
-                        url = link.get("url", "")
-                        text = link.get("text", "")
-                        full_text = link.get("text", "")
-                        if not url:
-                            continue
+            # 提取名称/城市/日期
+            # 在 URL 附近搜索上下文
+            url_pos = text.find(url)
+            ctx = text[max(0, url_pos-300):url_pos+100] if url_pos > 0 else ""
+            clean_ctx = re.sub(r"<[^>]+>", " ", ctx)
 
-                        match = _match_platform(url)
-                        if not match:
-                            continue
-                        if not YEAR_RE.search(text + full_text + url):
-                            continue
+            city = ""
+            city_m = CITIES_PATTERN.search(clean_ctx)
+            if city_m:
+                city = city_m.group(0)
 
-                        city = ""
-                        time_str = ""
-                        m_city = CITIES_RE.search(text + full_text)
-                        if m_city:
-                            city = m_city.group(0)
-                        m_time = TIME_RE.search(text + full_text)
-                        if m_time:
-                            time_str = m_time.group(1)
+            date_str = ""
+            date_m = DATE_PATTERN.search(clean_ctx)
+            if date_m:
+                date_str = date_m.group(0)
 
-                        name = text if len(text) >= 3 else f"{kw} 演出"
-                        name = re.sub(r'https?://\S+', '', name).strip()
-                        if len(name) < 3:
-                            name = f"{kw} 演出"
+            # 名称：优先从 URL 路径提取
+            name = ""
+            if "dahepiao" in url:
+                path_m = re.search(r"/(?:yc|yanchu)/([^/]+)", url)
+                if path_m:
+                    name = path_m.group(1).replace("xunyanchanghui", "巡回演唱会")
+                else:
+                    name = f"{singer}演出（大河票务）"
+            elif "motianlun" in url:
+                name = f"{singer}演出（摩天轮）"
+            elif "ypiao" in url:
+                name = f"{singer}演出（有票网）"
+            else:
+                name = f"{singer}演出"
 
-                        results.append({
-                            "name": name,
-                            "city": city,
-                            "time": time_str,
-                            "platform": match["platform"],
-                            "item_id": match["item_id"],
-                            "url": match["url"],
-                            "url_mobile": match["url"],
-                            "buy_url": match["buy_url"],
-                            "buy_keywords": match["buy_keywords"],
-                            "sold_keywords": match["sold_keywords"],
-                            "mode": "page",
-                            "keywords": kw,
-                        })
-                        kw_results += 1
+            results.append({
+                "name": name[:80],
+                "city": city,
+                "time": date_str,
+                "platform": platform,
+                "item_id": item_id,
+                "url": url,
+                "url_mobile": url,
+                "buy_url": url,
+                "buy_keywords": buy_keywords,
+                "sold_keywords": sold_keywords,
+                "mode": "page",
+                "keywords": singer,
+            })
 
-                    if kw_results:
-                        hit_count += 1
-                        log.info(f"[{i+1}/{len(keywords)}] {kw}: {kw_results} 个链接")
-                except Exception as e:
-                    log.warning(f"[{kw}] 搜索异常: {e}")
-                time.sleep(0.3)
-
-            browser.close()
-            browser = None
-
-        found_singers = len(set(r["keywords"] for r in results))
-        log.info(f"搜索完成: {len(results)} 个演出 / {found_singers} 位歌手 / 总耗时 {time.time()-t0:.0f}s")
-    except ImportError:
-        log.error("Playwright 未安装")
     except Exception as e:
-        log.error(f"搜索崩溃: {e}")
-        if browser:
-            try:
-                browser.close()
-            except Exception:
-                pass
+        log.warning(f"搜狗 [{singer}]: {e}")
+
     return results
 
 
@@ -408,6 +253,7 @@ def load_existing() -> list[dict]:
 
 
 def merge(existing: list[dict], new: list[dict]) -> list[dict]:
+    """合并去重：相同平台+item_id 只保留一条；同歌手同城优先保留名称更具体的"""
     seen = set()
     merged = []
     for item in existing:
@@ -415,26 +261,70 @@ def merge(existing: list[dict], new: list[dict]) -> list[dict]:
         if key not in seen:
             seen.add(key)
             merged.append(item)
+
     for item in new:
         key = f"{item.get('platform','')}_{item.get('item_id','')}"
         if key not in seen:
             seen.add(key)
             merged.append(item)
-    return merged
+
+    # 去重泛化名称：同歌手同城，优先保留名称更具体的
+    groups = {}
+    for item in merged:
+        group_key = f"{item.get('keywords','')}_{item.get('city','')}_{item.get('platform','')}"
+        if group_key not in groups:
+            groups[group_key] = []
+        groups[group_key].append(item)
+
+    cleaned = []
+    for items in groups.values():
+        generic_items = []
+        specific_items = []
+        for item in items:
+            name = item.get("name", "")
+            if re.match(r"^[一-鿿]{1,4}演出", name):
+                generic_items.append(item)
+            else:
+                specific_items.append(item)
+        if specific_items:
+            cleaned.extend(specific_items)
+        else:
+            cleaned.extend(generic_items)
+
+    cleaned.sort(key=lambda x: (x.get("keywords", ""), x.get("city", "")))
+    return cleaned
 
 
 def main():
     t0 = time.time()
-    log.info("搜索缓存更新 — Bing 聚合模式")
+    log.info("搜索缓存更新 — 票星球HTTP + 搜狗聚合模式")
     existing = load_existing()
     log.info(f"现有缓存: {len(existing)} 条")
 
-    all_new = search_all(SINGERS)
+    all_new = []
+    for i, singer in enumerate(SINGERS):
+        # 票星球搜索
+        xq_results = search_xingqiupiao(singer)
+        if xq_results:
+            all_new.extend(xq_results)
+            log.info(f"[{i+1}/{len(SINGERS)}] {singer}: 票星球 {len(xq_results)} 个")
+
+        # 搜狗搜索（仅在票星球无结果时补充）
+        if not xq_results:
+            sg_results = search_sogou(singer)
+            if sg_results:
+                all_new.extend(sg_results)
+                log.info(f"[{i+1}/{len(SINGERS)}] {singer}: 搜狗 {len(sg_results)} 个")
+
+        time.sleep(0.3)
 
     merged = merge(existing, all_new)
     elapsed = time.time() - t0
-    log.info(f"新增: {len(all_new)} 条, 合并后: {len(merged)} 条, {elapsed:.0f}s")
+    found_singers = len(set(item.get("keywords", "") for item in merged))
+    log.info(f"新增: {len(all_new)} 条, 合并后: {len(merged)} 条 / {found_singers} 位歌手 / {elapsed:.0f}s")
 
+    # 确保目录存在
+    CACHE_PATH.parent.mkdir(parents=True, exist_ok=True)
     with open(CACHE_PATH, "w", encoding="utf-8") as f:
         json.dump(merged, f, ensure_ascii=False, indent=2)
 

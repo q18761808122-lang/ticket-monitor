@@ -115,70 +115,7 @@
       "comment": "二级票务撮合平台 — 太原站 2026.04.24-05.03 — 回流票较多"
     },
     {
-      "id": "example_generic_page",
-      "enabled": false,
-      "platform": "generic",
-      "mode": "page",
-      "label": "通用页面监控示例",
-      "url": "https://example.com/ticket-page",
-      "buy_keywords": [
-        "立即购买",
-        "立即购票",
-        "选座购买"
-      ],
-      "sold_keywords": [
-        "已售罄",
-        "缺货登记",
-        "暂时无货"
-      ],
-      "comment": "mode=page 时抓取 HTML 全文匹配关键词"
-    },
-    {
       "id": "damai_1021197513737",
-      "enabled": true,
-      "platform": "damai",
-      "mode": "page",
-      "label": "周杰伦「嘉年华」2026巡回-杭州站",
-      "url": "https://detail.damai.cn/item.htm?id=1021197513737",
-      "item_id": "1021197513737",
-      "buy_url": "https://detail.damai.cn/item.htm?id=1021197513737",
-      "buy_url_mobile": "damai://V1/ProjectPage?id=1021197513737",
-      "buy_keywords": [
-        "立即购买",
-        "立即预订",
-        "选座购买"
-      ],
-      "sold_keywords": [
-        "缺货登记",
-        "已售罄",
-        "暂无可售"
-      ],
-      "comment": "杭州 · 2026.04.03-04.05"
-    },
-    {
-      "id": "damai_1021197513737_q3db",
-      "enabled": true,
-      "platform": "damai",
-      "mode": "page",
-      "label": "周杰伦「嘉年华」2026巡回-杭州站",
-      "url": "https://detail.damai.cn/item.htm?id=1021197513737",
-      "item_id": "1021197513737",
-      "buy_url": "https://detail.damai.cn/item.htm?id=1021197513737",
-      "buy_url_mobile": "damai://V1/ProjectPage?id=1021197513737",
-      "buy_keywords": [
-        "立即购买",
-        "立即预订",
-        "选座购买"
-      ],
-      "sold_keywords": [
-        "缺货登记",
-        "已售罄",
-        "暂无可售"
-      ],
-      "comment": "杭州 · 2026.04.03-04.05"
-    },
-    {
-      "id": "damai_1021197513737_wxry",
       "enabled": true,
       "platform": "damai",
       "mode": "page",
