@@ -29,8 +29,19 @@
       "mode": "page",
       "label": "票星球",
       "url": "http://www.xingqiupiao.com/event?id=113812",
-      "buy_keywords": ["立即购买", "选座购买", "去购买", "立即预订"],
-      "sold_keywords": ["已售罄", "售罄", "缺货登记", "下架", "已下架"],
+      "buy_keywords": [
+        "立即购买",
+        "选座购买",
+        "去购买",
+        "立即预订"
+      ],
+      "sold_keywords": [
+        "已售罄",
+        "售罄",
+        "缺货登记",
+        "下架",
+        "已下架"
+      ],
       "buy_url": "http://www.xingqiupiao.com/event?id=113812",
       "buy_url_mobile": "http://www.xingqiupiao.com/event?id=113812",
       "comment": "代拍平台 — 太原站 2026.04.24-05.03"
@@ -42,8 +53,21 @@
       "mode": "page",
       "label": "有票网",
       "url": "https://www.ypiao.com/t_113812/",
-      "buy_keywords": ["立即购买", "去购买", "立即预订", "我要买票", "有票"],
-      "sold_keywords": ["已售罄", "售罄", "缺货登记", "下架", "已下架", "等待开售"],
+      "buy_keywords": [
+        "立即购买",
+        "去购买",
+        "立即预订",
+        "我要买票",
+        "有票"
+      ],
+      "sold_keywords": [
+        "已售罄",
+        "售罄",
+        "缺货登记",
+        "下架",
+        "已下架",
+        "等待开售"
+      ],
       "buy_url": "https://www.ypiao.com/t_113812/",
       "buy_url_mobile": "https://www.ypiao.com/t_113812/",
       "comment": "代拍平台 — 太原站 2026.04.24-05.03"
@@ -55,8 +79,18 @@
       "mode": "page",
       "label": "大河票务",
       "url": "https://m.dahepiao.com/yc/xuezhiqaintaiyuanych/",
-      "buy_keywords": ["立即购买", "选座购买", "立即预订", "有票"],
-      "sold_keywords": ["已售罄", "售罄", "缺货登记", "等待开售"],
+      "buy_keywords": [
+        "立即购买",
+        "选座购买",
+        "立即预订",
+        "有票"
+      ],
+      "sold_keywords": [
+        "已售罄",
+        "售罄",
+        "缺货登记",
+        "等待开售"
+      ],
       "buy_url": "https://m.dahepiao.com/yc/xuezhiqaintaiyuanych/",
       "buy_url_mobile": "https://m.dahepiao.com/yc/xuezhiqaintaiyuanych/",
       "comment": "第三方票务 — 太原站 2026.04.24-05.03"
@@ -68,8 +102,18 @@
       "mode": "page",
       "label": "摩天轮",
       "url": "https://m.motianlun.cn/pages/show-detail/show-detail?showId=682c3c88f1b2200001985198",
-      "buy_keywords": ["立即购买", "选座购买", "去购买", "有票"],
-      "sold_keywords": ["已售罄", "售罄", "缺货登记", "已下架"],
+      "buy_keywords": [
+        "立即购买",
+        "选座购买",
+        "去购买",
+        "有票"
+      ],
+      "sold_keywords": [
+        "已售罄",
+        "售罄",
+        "缺货登记",
+        "已下架"
+      ],
       "buy_url": "https://m.motianlun.cn/pages/show-detail/show-detail?showId=682c3c88f1b2200001985198",
       "buy_url_mobile": "https://m.motianlun.cn/pages/show-detail/show-detail?showId=682c3c88f1b2200001985198",
       "comment": "二级票务撮合平台 — 太原站 2026.04.24-05.03 — 回流票较多"
@@ -108,6 +152,31 @@
         "已下架"
       ],
       "comment": "南昌"
+    },
+    {
+      "id": "generic_111806",
+      "enabled": true,
+      "platform": "generic",
+      "mode": "page",
+      "label": "【北京】JOLIN 蔡依林 PLEASURE世界巡回演唱会-北京站",
+      "url": "http://www.xingqiupiao.com/event?id=111806",
+      "item_id": "111806",
+      "buy_url": "http://www.xingqiupiao.com/event?id=111806",
+      "buy_url_mobile": "http://www.xingqiupiao.com/event?id=111806",
+      "buy_keywords": [
+        "立即购买",
+        "选座购买",
+        "去购买",
+        "立即预订"
+      ],
+      "sold_keywords": [
+        "已售罄",
+        "售罄",
+        "缺货登记",
+        "下架",
+        "已下架"
+      ],
+      "comment": "北京"
     }
   ],
   "_how_to_find_api": [
