@@ -2,7 +2,7 @@ name: 更新搜索缓存
 
 on:
   schedule:
-    - cron: "0 19 * * *"
+    - cron: "0 */6 * * *"
   workflow_dispatch:
 
 jobs:
@@ -20,7 +20,7 @@ jobs:
           cache: "pip"
 
       - name: 安装 Python 依赖
-        run: pip install -r requirements.txt
+        run: pip install requests
 
       - name: 运行搜索缓存更新
         run: python update_search_cache.py
@@ -28,13 +28,13 @@ jobs:
 
       - name: 提交缓存更新
         run: |
-          if [ -n "$(git status --porcelain public/search_cache.json)" ]; then
+          if [ -n "$(git status --porcelain public/search_cache.json cache_update_count.txt 2>/dev/null)" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add public/search_cache.json
+            git add public/search_cache.json cache_update_count.txt 2>/dev/null || true
             COUNT=$(cat cache_update_count.txt 2>/dev/null || echo "0")
-            git commit -m "更新搜索缓存 — 新增 ${COUNT} 条 [skip ci]"
-            git push
+            git commit -m "更新搜索缓存 — 新增 ${COUNT} 条 [skip ci]" || true
+            git push || true
           fi
 
       - name: 部署到 GitHub Pages

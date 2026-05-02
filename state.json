@@ -16,9 +16,9 @@
   "xuezhiqian_taiyuan_ypiao": {
     "status": "available",
     "message": "https://www.ypiao.com/t_113812/ → 可能有票（关键词同时命中）",
-    "last_change": "2026-05-02T03:37:08.655550",
-    "last_remind": "2026-05-02T05:24:50.387807",
-    "remind_count": 1
+    "last_change": "2026-05-02T12:16:14.283864",
+    "last_remind": "2026-05-02T13:20:44.845750",
+    "remind_count": 8
   },
   "xuezhiqian_taiyuan_dahe": {
     "status": "sold_out",
@@ -83,192 +83,451 @@
     "last_remind": "",
     "remind_count": 0
   },
-  "auto_generic_93596": {
-    "status": "sold_out",
-    "message": "http://www.xingqiupiao.com/event?id=93596 → 已售罄",
-    "last_change": "2026-05-02T05:23:07.510614",
-    "last_remind": "",
-    "remind_count": 0
-  },
-  "auto_generic_116454": {
-    "status": "sold_out",
-    "message": "http://www.xingqiupiao.com/event?id=116454 → 已售罄",
-    "last_change": "2026-05-02T05:23:10.356606",
-    "last_remind": "",
-    "remind_count": 0
-  },
-  "auto_generic_113182": {
-    "status": "sold_out",
-    "message": "http://www.xingqiupiao.com/event?id=113182 → 已售罄",
-    "last_change": "2026-05-02T05:23:13.108982",
-    "last_remind": "",
-    "remind_count": 0
-  },
-  "auto_generic_114314": {
-    "status": "sold_out",
-    "message": "http://www.xingqiupiao.com/event?id=114314 → 已售罄",
-    "last_change": "2026-05-02T05:23:15.873983",
-    "last_remind": "",
-    "remind_count": 0
-  },
-  "auto_generic_110186": {
-    "status": "sold_out",
-    "message": "http://www.xingqiupiao.com/event?id=110186 → 已售罄",
-    "last_change": "2026-05-02T05:23:18.671809",
-    "last_remind": "",
-    "remind_count": 0
-  },
-  "auto_damai_1021197513737": {
+  "xuezhiqian_taiyuan_douyin": {
     "status": "unknown",
-    "message": "大麦 item=1021197513737 → 无法确定状态",
-    "last_change": "2026-05-02T05:23:22.498202",
+    "message": "抖音 抖音 → 页面请求失败",
+    "last_change": "2026-05-02T11:56:24.856949",
     "last_remind": "",
     "remind_count": 0
   },
-  "auto_generic_114058": {
-    "status": "sold_out",
-    "message": "http://www.xingqiupiao.com/event?id=114058 → 已售罄",
-    "last_change": "2026-05-02T05:23:25.274103",
-    "last_remind": "",
-    "remind_count": 0
-  },
-  "auto_generic_zhangjiechengduyanchanghui": {
-    "status": "sold_out",
-    "message": "https://m.dahepiao.com/yc/zhangjiechengduyanchanghui → 已售罄",
-    "last_change": "2026-05-02T05:23:28.420350",
-    "last_remind": "",
-    "remind_count": 0
-  },
-  "auto_generic_116044": {
-    "status": "sold_out",
-    "message": "http://www.xingqiupiao.com/event?id=116044 → 已售罄",
-    "last_change": "2026-05-02T05:23:31.178480",
-    "last_remind": "",
-    "remind_count": 0
-  },
-  "auto_generic_115652": {
-    "status": "sold_out",
-    "message": "http://www.xingqiupiao.com/event?id=115652 → 已售罄",
-    "last_change": "2026-05-02T05:23:33.952715",
-    "last_remind": "",
-    "remind_count": 0
-  },
-  "auto_generic_116597": {
-    "status": "sold_out",
-    "message": "http://www.xingqiupiao.com/event?id=116597 → 已售罄",
-    "last_change": "2026-05-02T05:23:36.769336",
-    "last_remind": "",
-    "remind_count": 0
-  },
-  "auto_generic_115856": {
-    "status": "sold_out",
-    "message": "http://www.xingqiupiao.com/event?id=115856 → 已售罄",
-    "last_change": "2026-05-02T05:23:40.070135",
-    "last_remind": "",
-    "remind_count": 0
-  },
-  "auto_generic_113053": {
-    "status": "sold_out",
-    "message": "http://www.xingqiupiao.com/event?id=113053 → 已售罄",
-    "last_change": "2026-05-02T05:23:43.009984",
-    "last_remind": "",
-    "remind_count": 0
-  },
-  "auto_generic_115380": {
-    "status": "sold_out",
-    "message": "http://www.xingqiupiao.com/event?id=115380 → 已售罄",
-    "last_change": "2026-05-02T05:23:45.941243",
-    "last_remind": "",
-    "remind_count": 0
-  },
-  "auto_generic_113856": {
-    "status": "sold_out",
-    "message": "http://www.xingqiupiao.com/event?id=113856 → 已售罄",
-    "last_change": "2026-05-02T05:23:48.744850",
-    "last_remind": "",
-    "remind_count": 0
-  },
-  "auto_generic_115916": {
-    "status": "sold_out",
-    "message": "http://www.xingqiupiao.com/event?id=115916 → 已售罄",
-    "last_change": "2026-05-02T05:23:52.112647",
-    "last_remind": "",
-    "remind_count": 0
-  },
-  "auto_generic_111806": {
-    "status": "sold_out",
-    "message": "http://www.xingqiupiao.com/event?id=111806 → 已售罄",
-    "last_change": "2026-05-02T05:23:54.879587",
-    "last_remind": "",
-    "remind_count": 0
-  },
-  "auto_generic_114944": {
-    "status": "sold_out",
-    "message": "http://www.xingqiupiao.com/event?id=114944 → 已售罄",
-    "last_change": "2026-05-02T05:23:57.654711",
-    "last_remind": "",
-    "remind_count": 0
-  },
-  "auto_generic_112402": {
-    "status": "sold_out",
-    "message": "http://www.xingqiupiao.com/event?id=112402 → 已售罄",
-    "last_change": "2026-05-02T05:24:00.503546",
-    "last_remind": "",
-    "remind_count": 0
-  },
-  "auto_generic_114257": {
-    "status": "sold_out",
-    "message": "http://www.xingqiupiao.com/event?id=114257 → 已售罄",
-    "last_change": "2026-05-02T05:24:03.507227",
-    "last_remind": "",
-    "remind_count": 0
-  },
-  "auto_generic_dahe_xuezhiqian": {
-    "status": "sold_out",
-    "message": "https://m.dahepiao.com/yc/xuezhiqaintaiyuanych/ → 已售罄",
-    "last_change": "2026-05-02T05:24:05.853228",
-    "last_remind": "",
-    "remind_count": 0
-  },
-  "auto_generic_motianlun_682c3c88f1b2200001985198": {
+  "douyin_薛之谦_search": {
     "status": "unknown",
-    "message": "https://m.motianlun.cn/pages/show-detail/show-detail?showId=682c3c88f1b2200001985198 → 页面请求失败",
-    "last_change": "2026-05-02T05:24:09.446132",
+    "message": "抖音 抖音_薛之谦 → 页面请求失败",
+    "last_change": "2026-05-02T11:58:18.068527",
     "last_remind": "",
     "remind_count": 0
   },
-  "auto_generic_ypiao_113812": {
-    "status": "available",
-    "message": "https://www.ypiao.com/t_113812/ → 可能有票（关键词同时命中）",
-    "last_change": "2026-05-02T05:24:17.957585",
-    "last_remind": "2026-05-02T05:24:17.957585",
+  "douyin_周杰伦_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_周杰伦 → 页面请求失败",
+    "last_change": "2026-05-02T11:58:25.347851",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_林俊杰_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_林俊杰 → 页面请求失败",
+    "last_change": "2026-05-02T11:58:32.652976",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_五月天_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_五月天 → 页面请求失败",
+    "last_change": "2026-05-02T11:58:39.948762",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_陈奕迅_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_陈奕迅 → 页面请求失败",
+    "last_change": "2026-05-02T11:58:47.141640",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_邓紫棋_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_邓紫棋 → 页面请求失败",
+    "last_change": "2026-05-02T11:58:55.323553",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_张杰_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_张杰 → 页面请求失败",
+    "last_change": "2026-05-02T11:59:02.601388",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_华晨宇_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_华晨宇 → 页面请求失败",
+    "last_change": "2026-05-02T11:59:09.902921",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_蔡依林_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_蔡依林 → 页面请求失败",
+    "last_change": "2026-05-02T11:59:17.105207",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_张学友_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_张学友 → 页面请求失败",
+    "last_change": "2026-05-02T11:59:24.400897",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_刘德华_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_刘德华 → 页面请求失败",
+    "last_change": "2026-05-02T11:59:31.702033",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_周深_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_周深 → 页面请求失败",
+    "last_change": "2026-05-02T11:59:39.002179",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_许嵩_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_许嵩 → 页面请求失败",
+    "last_change": "2026-05-02T11:59:46.312756",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_汪苏泷_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_汪苏泷 → 页面请求失败",
+    "last_change": "2026-05-02T11:59:53.619575",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_徐良_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_徐良 → 页面请求失败",
+    "last_change": "2026-05-02T12:00:00.922969",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_李荣浩_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_李荣浩 → 页面请求失败",
+    "last_change": "2026-05-02T12:00:08.200115",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_毛不易_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_毛不易 → 页面请求失败",
+    "last_change": "2026-05-02T12:00:15.494400",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_孙燕姿_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_孙燕姿 → 页面请求失败",
+    "last_change": "2026-05-02T12:00:22.707801",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_林宥嘉_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_林宥嘉 → 页面请求失败",
+    "last_change": "2026-05-02T12:00:30.014498",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_赵雷_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_赵雷 → 页面请求失败",
+    "last_change": "2026-05-02T12:00:37.319779",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_凤凰传奇_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_凤凰传奇 → 页面请求失败",
+    "last_change": "2026-05-02T12:00:44.616830",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_刀郎_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_刀郎 → 页面请求失败",
+    "last_change": "2026-05-02T12:00:51.916358",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_陶喆_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_陶喆 → 页面请求失败",
+    "last_change": "2026-05-02T12:00:59.137983",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_梁静茹_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_梁静茹 → 页面请求失败",
+    "last_change": "2026-05-02T12:01:06.582400",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_张惠妹_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_张惠妹 → 页面请求失败",
+    "last_change": "2026-05-02T12:01:13.885206",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_李宗盛_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_李宗盛 → 页面请求失败",
+    "last_change": "2026-05-02T12:01:21.179358",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_张信哲_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_张信哲 → 页面请求失败",
+    "last_change": "2026-05-02T12:01:28.471356",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_王菲_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_王菲 → 页面请求失败",
+    "last_change": "2026-05-02T12:01:35.776518",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_刘若英_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_刘若英 → 页面请求失败",
+    "last_change": "2026-05-02T12:01:53.087173",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_李健_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_李健 → 页面请求失败",
+    "last_change": "2026-05-02T12:02:00.378224",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_陈粒_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_陈粒 → 页面请求失败",
+    "last_change": "2026-05-02T12:02:07.921100",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_伍佰_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_伍佰 → 页面请求失败",
+    "last_change": "2026-05-02T12:02:15.203873",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_任贤齐_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_任贤齐 → 页面请求失败",
+    "last_change": "2026-05-02T12:02:22.560104",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_张靓颖_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_张靓颖 → 页面请求失败",
+    "last_change": "2026-05-02T12:02:29.866349",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_谭咏麟_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_谭咏麟 → 页面请求失败",
+    "last_change": "2026-05-02T12:02:37.080772",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "douyin_那英_search": {
+    "status": "unknown",
+    "message": "抖音 抖音_那英 → 页面请求失败",
+    "last_change": "2026-05-02T12:02:44.407885",
+    "last_remind": "",
     "remind_count": 0
   },
   "auto_damai_1030416581941": {
     "status": "unknown",
     "message": "大麦 item=1030416581941 → 无法确定状态",
-    "last_change": "2026-05-02T05:24:22.721234",
+    "last_change": "2026-05-02T12:03:54.975636",
     "last_remind": "",
     "remind_count": 0
   },
   "auto_generic_113812": {
     "status": "sold_out",
     "message": "http://www.xingqiupiao.com/event?id=113812 → 已售罄",
-    "last_change": "2026-05-02T05:24:25.980793",
+    "last_change": "2026-05-02T12:03:57.637846",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_ypiao_113812": {
+    "status": "available",
+    "message": "https://www.ypiao.com/t_113812/ → 可能有票（关键词同时命中）",
+    "last_change": "2026-05-02T12:16:59.217977",
+    "last_remind": "2026-05-02T13:20:27.543160",
+    "remind_count": 7
+  },
+  "auto_generic_motianlun_682c3c88f1b2200001985198": {
+    "status": "unknown",
+    "message": "https://m.motianlun.cn/pages/show-detail/show-detail?showId=682c3c88f1b2200001985198 → 无法确定状态",
+    "last_change": "2026-05-02T12:04:02.635968",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_dahe_xuezhiqian": {
+    "status": "sold_out",
+    "message": "https://m.dahepiao.com/yc/xuezhiqaintaiyuanych/ → 已售罄",
+    "last_change": "2026-05-02T12:04:05.066227",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_damai_1021197513737": {
+    "status": "unknown",
+    "message": "大麦 item=1021197513737 → 无法确定状态",
+    "last_change": "2026-05-02T12:04:07.168602",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_93596": {
+    "status": "sold_out",
+    "message": "http://www.xingqiupiao.com/event?id=93596 → 已售罄",
+    "last_change": "2026-05-02T13:19:30.791535",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_116454": {
+    "status": "sold_out",
+    "message": "http://www.xingqiupiao.com/event?id=116454 → 已售罄",
+    "last_change": "2026-05-02T13:19:33.308482",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_113182": {
+    "status": "sold_out",
+    "message": "http://www.xingqiupiao.com/event?id=113182 → 已售罄",
+    "last_change": "2026-05-02T13:19:35.833878",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_114314": {
+    "status": "sold_out",
+    "message": "http://www.xingqiupiao.com/event?id=114314 → 已售罄",
+    "last_change": "2026-05-02T13:19:38.772751",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_110186": {
+    "status": "sold_out",
+    "message": "http://www.xingqiupiao.com/event?id=110186 → 已售罄",
+    "last_change": "2026-05-02T13:19:41.293940",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_114058": {
+    "status": "sold_out",
+    "message": "http://www.xingqiupiao.com/event?id=114058 → 已售罄",
+    "last_change": "2026-05-02T13:19:46.542600",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_zhangjiechengduyanchanghui": {
+    "status": "sold_out",
+    "message": "https://m.dahepiao.com/yc/zhangjiechengduyanchanghui → 已售罄",
+    "last_change": "2026-05-02T13:19:49.650447",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_116044": {
+    "status": "sold_out",
+    "message": "http://www.xingqiupiao.com/event?id=116044 → 已售罄",
+    "last_change": "2026-05-02T13:19:52.174943",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_115652": {
+    "status": "sold_out",
+    "message": "http://www.xingqiupiao.com/event?id=115652 → 已售罄",
+    "last_change": "2026-05-02T13:19:54.735092",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_116597": {
+    "status": "sold_out",
+    "message": "http://www.xingqiupiao.com/event?id=116597 → 已售罄",
+    "last_change": "2026-05-02T13:19:57.225008",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_115856": {
+    "status": "sold_out",
+    "message": "http://www.xingqiupiao.com/event?id=115856 → 已售罄",
+    "last_change": "2026-05-02T13:19:59.683649",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_113053": {
+    "status": "sold_out",
+    "message": "http://www.xingqiupiao.com/event?id=113053 → 已售罄",
+    "last_change": "2026-05-02T13:20:02.236169",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_115380": {
+    "status": "sold_out",
+    "message": "http://www.xingqiupiao.com/event?id=115380 → 已售罄",
+    "last_change": "2026-05-02T13:20:04.799384",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_113856": {
+    "status": "sold_out",
+    "message": "http://www.xingqiupiao.com/event?id=113856 → 已售罄",
+    "last_change": "2026-05-02T13:20:07.312374",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_115916": {
+    "status": "sold_out",
+    "message": "http://www.xingqiupiao.com/event?id=115916 → 已售罄",
+    "last_change": "2026-05-02T13:20:09.832115",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_111806": {
+    "status": "sold_out",
+    "message": "http://www.xingqiupiao.com/event?id=111806 → 已售罄",
+    "last_change": "2026-05-02T13:20:12.274492",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_114944": {
+    "status": "sold_out",
+    "message": "http://www.xingqiupiao.com/event?id=114944 → 已售罄",
+    "last_change": "2026-05-02T13:20:14.750339",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_112402": {
+    "status": "sold_out",
+    "message": "http://www.xingqiupiao.com/event?id=112402 → 已售罄",
+    "last_change": "2026-05-02T13:20:17.222203",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_114257": {
+    "status": "sold_out",
+    "message": "http://www.xingqiupiao.com/event?id=114257 → 已售罄",
+    "last_change": "2026-05-02T13:20:19.779907",
     "last_remind": "",
     "remind_count": 0
   },
   "auto_generic_chenyixunchangsha": {
     "status": "available",
     "message": "https://www.dahepiao.com/yc/chenyixunchangsha/ → 可能有票（关键词同时命中）",
-    "last_change": "2026-05-02T05:24:29.899637",
-    "last_remind": "2026-05-02T05:24:29.899637",
+    "last_change": "2026-05-02T13:20:35.158014",
+    "last_remind": "2026-05-02T13:20:35.158014",
     "remind_count": 0
   },
   "auto_generic_116094": {
     "status": "sold_out",
     "message": "http://www.xingqiupiao.com/event?id=116094 → 已售罄",
-    "last_change": "2026-05-02T05:24:34.344182",
+    "last_change": "2026-05-02T13:20:37.743500",
     "last_remind": "",
     "remind_count": 0
   }
