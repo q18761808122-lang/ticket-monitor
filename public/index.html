@@ -265,7 +265,7 @@ function renderSearchResults(el, results, hasLive) {
   el.innerHTML = results.map((r, i) => `
     <div class="card">
       <h4>${r.name}${r._fromCache ? ' <small style="color:#999">(缓存)</small>' : ''}</h4>
-      <div class="meta">${r.city||''} · ${r.time||''} · <span class="tag ${r.platform==='damai'?'tag-damai':'tag-generic'}">${r.platform==='damai'?'大麦':(r.platform||'其他')}</span></div>
+      <div class="meta">${r.city||''} · ${r.time||''} · <span class="tag ${r.platform==='damai'?'tag-damai':r.platform==='douyin'?'tag-douyin':'tag-generic'}">${r.platform==='damai'?'大麦':r.platform==='douyin'?'抖音':(r.platform||'其他')}</span></div>
       <div class="actions">
         <button class="btn btn-red btn-sm" onclick="addMonitorFromSearch(${i})">+ 监控</button>
       </div>
@@ -376,7 +376,7 @@ function addMonitorFromSearch(idx) {
   addToMonitors({
     id: (r.platform || 'damai') + '_' + (r.item_id || Date.now()),
     enabled: true,
-    platform: r.platform === 'damai' ? 'damai' : 'generic',
+    platform: r.platform || 'generic',
     mode: r.mode || 'page',
     label: r.name,
     url: r.url || '',

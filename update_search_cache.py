@@ -48,6 +48,186 @@ CITIES_RE = re.compile(
 TIME_RE = re.compile(r"(\d{4}[.\-/]\d{1,2}[.\-/]\d{1,2})")
 
 
+DOUYIN_KEYWORDS = [
+    "薛之谦", "周杰伦", "林俊杰", "五月天", "陈奕迅", "邓紫棋",
+    "张杰", "华晨宇", "蔡依林", "王菲", "张学友", "刘德华",
+    "许嵩", "汪苏泷", "徐良", "李荣浩", "毛不易",
+    "孙燕姿", "林宥嘉", "赵雷", "凤凰传奇", "刀郎",
+    "周深", "张信哲", "陶喆", "梁静茹",
+]
+
+
+def search_douyin_playwright(keyword: str) -> list[dict]:
+    """用 Playwright 搜索抖音演出门票 — 移动端 UA，从搜索/商城页面提取购票链接"""
+    results = []
+    browser = None
+    try:
+        from playwright.sync_api import sync_playwright
+
+        with sync_playwright() as p:
+            browser = p.chromium.launch(
+                headless=True,
+                args=[
+                    "--disable-blink-features=AutomationControlled",
+                    "--no-sandbox",
+                    "--disable-dev-shm-usage",
+                ],
+            )
+            context = browser.new_context(
+                user_agent=(
+                    "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) "
+                    "AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
+                ),
+                viewport={"width": 390, "height": 844},
+                locale="zh-CN",
+            )
+            page = context.new_page()
+            page.add_init_script("""
+                Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
+            """)
+
+            # 搜索：歌手名 + 演唱会/门票
+            search_url = f"https://www.douyin.com/search/{keyword}%20演唱会%20门票?type=general"
+            try:
+                page.goto(search_url, wait_until="domcontentloaded", timeout=30000)
+                page.wait_for_timeout(6000)
+            except Exception:
+                pass
+
+            html = page.content()
+
+            # 提取商品/购票链接
+            links_found = page.evaluate("""
+                () => {
+                    const results = [];
+                    const seen = new Set();
+
+                    // douyin.com 商品页
+                    for (const a of document.querySelectorAll('a[href]')) {
+                        const href = a.href;
+                        if (!href) continue;
+                        const text = (a.textContent || '').trim();
+
+                        // 匹配抖音小店/商品链接
+                        if (href.includes('haohuo.jinritemai.com') ||
+                            href.includes('v.douyin.com') ||
+                            href.includes('www.douyin.com/goods') ||
+                            href.includes('www.douyin.com/user/') && text.includes('票') ||
+                            href.includes('douyin.com/video/') && text.includes('票')) {
+
+                            const key = href.substring(0, 80);
+                            if (seen.has(key)) continue;
+                            seen.add(key);
+                            results.push({url: href, text: text.substring(0, 200)});
+                        }
+                    }
+                    return results;
+                }
+            """)
+
+            for link in links_found[:5]:  # 最多取 5 个
+                url = link.get("url", "")
+                text = link.get("text", "")
+                if not url:
+                    continue
+
+                # 生成唯一 ID
+                import hashlib
+                url_hash = hashlib.md5(url.encode()).hexdigest()[:12]
+                item_id = f"dy_{url_hash}"
+
+                # 从文本或 URL 中提取演出名
+                name = text if text and len(text) >= 3 else f"{keyword} 抖音演出"
+                results.append({
+                    "name": name,
+                    "city": extract_city(text + url),
+                    "time": extract_time(text + url),
+                    "platform": "douyin",
+                    "item_id": item_id,
+                    "url": url,
+                    "url_mobile": url,
+                    "buy_url": url,
+                    "buy_keywords": ["立即购买", "立即抢购", "马上抢", "去购买", "提交订单"],
+                    "sold_keywords": ["已售罄", "已抢光", "抢光了", "已结束", "暂时无货", "缺货"],
+                    "mode": "page",
+                    "keywords": f"{keyword},抖音",
+                })
+
+            browser.close()
+
+            # 同时尝试抖音商城搜索
+            mall_results = _search_douyin_mall(keyword)
+            results.extend(mall_results)
+
+            if results:
+                log.info(f"抖音搜索 [{keyword}]: {len(results)} 个结果")
+    except ImportError:
+        log.debug("Playwright 未安装，跳过抖音搜索")
+    except Exception as e:
+        log.warning(f"抖音搜索 [{keyword}] 失败: {e}")
+        if browser:
+            try:
+                browser.close()
+            except Exception:
+                pass
+    return results
+
+
+def _search_douyin_mall(keyword: str) -> list[dict]:
+    """搜索抖音商城 haohuo.jinritemai.com — 补充数据源"""
+    results = []
+    try:
+        import requests
+
+        session = requests.Session()
+        session.headers.update({
+            "User-Agent": (
+                "Mozilla/5.0 (iPhone; CPU iPhone OS 17_5 like Mac OS X) "
+                "AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148"
+            ),
+            "Accept": "text/html,application/xhtml+xml",
+            "Accept-Language": "zh-CN,zh;q=0.9",
+        })
+
+        # 抖音商城搜索
+        search_url = f"https://haohuo.jinritemai.com/views/search?keyword={keyword}%20演唱会%20门票"
+        resp = session.get(search_url, timeout=15, allow_redirects=True)
+
+        if resp.status_code == 200 and len(resp.text) > 500:
+            import hashlib
+            from bs4 import BeautifulSoup
+            soup = BeautifulSoup(resp.text, "html.parser")
+            links = soup.select('a[href*="product"], a[href*="detail"], a[href*="item"]')
+            seen = set()
+            for link in links[:5]:
+                href = link.get("href", "")
+                if not href:
+                    continue
+                if href.startswith("/"):
+                    href = "https://haohuo.jinritemai.com" + href
+                if href in seen:
+                    continue
+                seen.add(href)
+                url_hash = hashlib.md5(href.encode()).hexdigest()[:12]
+                results.append({
+                    "name": f"{keyword} 抖音商城演出",
+                    "city": "",
+                    "time": "",
+                    "platform": "douyin",
+                    "item_id": f"dymall_{url_hash}",
+                    "url": href,
+                    "url_mobile": href,
+                    "buy_url": href,
+                    "buy_keywords": ["立即购买", "立即抢购", "马上抢"],
+                    "sold_keywords": ["已售罄", "已抢光", "抢光了"],
+                    "mode": "page",
+                    "keywords": f"{keyword},抖音商城",
+                })
+    except Exception:
+        pass
+    return results
+
+
 def extract_city(text: str) -> str:
     m = CITIES_RE.search(text)
     return m.group(0) if m else ""
@@ -239,15 +419,30 @@ def main():
     log.info(f"现有缓存: {len(existing)} 条")
 
     all_new = []
-    success_count = 0
+
+    # ── 大麦搜索 ──
+    damai_count = 0
     for kw in HOT_KEYWORDS:
         results = search_damai_playwright(kw)
         if results:
-            success_count += 1
+            damai_count += 1
             all_new.extend(results)
         time.sleep(2)
 
-    log.info(f"成功搜索: {success_count}/{len(HOT_KEYWORDS)} 个关键词, 新增结果: {len(all_new)} 条")
+    log.info(f"大麦: {damai_count}/{len(HOT_KEYWORDS)} 个关键词成功")
+
+    # ── 抖音搜索（热门歌手子集） ──
+    douyin_count = 0
+    for kw in DOUYIN_KEYWORDS:
+        results = search_douyin_playwright(kw)
+        if results:
+            douyin_count += 1
+            all_new.extend(results)
+        time.sleep(2)
+
+    log.info(f"抖音: {douyin_count}/{len(DOUYIN_KEYWORDS)} 个关键词成功")
+
+    log.info(f"总计新增: {len(all_new)} 条")
 
     merged = merge(existing, all_new)
     log.info(f"合并后总计: {len(merged)} 条")
