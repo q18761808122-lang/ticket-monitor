@@ -1,17 +1,16 @@
 #!/usr/bin/env python3
 """
-搜索缓存更新脚本 — 三阶段自适应
-Phase 1: 完整渲染首页+搜索页 → 建立有效 x5sec cookie
-Phase 2: 浏览器内 fetch() 12 并发调 AJAX API
-Phase 3: fetch 被拦截时自动回退逐页渲染
+搜索缓存更新 — 搜索引擎聚合版
+用 Bing 搜索「歌手 演唱会 2026 购票」，从搜索结果中提取所有平台链接
+不直接爬票务平台，绕过反爬，一次搜索覆盖大麦/猫眼/票星球/大河/摩天轮/秀动/抖音等
 """
 import json
 import logging
 import re
 import sys
-import threading
 import time
 from pathlib import Path
+from urllib.parse import urlparse, parse_qs
 
 BASE_DIR = Path(__file__).resolve().parent
 CACHE_PATH = BASE_DIR / "public" / "search_cache.json"
@@ -19,7 +18,8 @@ CACHE_PATH = BASE_DIR / "public" / "search_cache.json"
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger("cache_updater")
 
-DAMAI_KEYWORDS = [
+# ── 所有要搜索的歌手 ──
+SINGERS = [
     "薛之谦", "周杰伦", "林俊杰", "五月天", "陈奕迅", "邓紫棋",
     "张杰", "华晨宇", "蔡依林", "张学友", "刘德华", "周深",
     "许嵩", "汪苏泷", "徐良", "李荣浩", "毛不易",
@@ -29,6 +29,81 @@ DAMAI_KEYWORDS = [
     "任贤齐", "张靓颖", "谭咏麟", "那英",
 ]
 
+# ── 各平台 URL 识别规则 ──
+PLATFORM_RULES = [
+    {
+        "host": "detail.damai.cn",
+        "id_re": r"id=(\d+)",
+        "platform": "damai",
+        "buy_keywords": ["立即购买", "立即预订", "选座购买"],
+        "sold_keywords": ["缺货登记", "已售罄", "暂无可售"],
+    },
+    {
+        "host": "show.maoyan.com",
+        "id_re": r"detail/(\d+)",
+        "platform": "maoyan",
+        "buy_keywords": ["立即购票", "选座购票", "立即预订"],
+        "sold_keywords": ["已售罄", "暂时无货"],
+    },
+    {
+        "host": "xingqiupiao.com",
+        "id_re": r"[?&]id=(\d+)",
+        "platform": "generic",
+        "buy_keywords": ["立即购买", "选座购买", "去购买", "立即预订"],
+        "sold_keywords": ["已售罄", "售罄", "缺货登记", "下架", "已下架"],
+    },
+    {
+        "host": "dahepiao.com",
+        "id_re": r"yc/([^/]+)",
+        "platform": "generic",
+        "buy_keywords": ["立即购买", "选座购买", "立即预订", "有票"],
+        "sold_keywords": ["已售罄", "售罄", "缺货登记", "等待开售"],
+    },
+    {
+        "host": "motianlun.cn",
+        "id_re": r"showId=(\w+)",
+        "platform": "generic",
+        "buy_keywords": ["立即购买", "选座购买", "去购买", "有票"],
+        "sold_keywords": ["已售罄", "售罄", "缺货登记", "已下架"],
+    },
+    {
+        "host": "ypiao.com",
+        "id_re": r"t_(\d+)",
+        "platform": "generic",
+        "buy_keywords": ["立即购买", "去购买", "立即预订", "我要买票", "有票"],
+        "sold_keywords": ["已售罄", "售罄", "缺货登记", "下架", "已下架", "等待开售"],
+    },
+    {
+        "host": "showstart.com",
+        "id_re": r"event/(\d+)",
+        "platform": "showstart",
+        "buy_keywords": ["立即购票", "立即购买"],
+        "sold_keywords": ["已售罄", "售罄", "已结束"],
+    },
+    # 抖音系列 — 无固定 ID 格式，用 URL hash 做 key
+    {
+        "host": "douyin.com",
+        "id_re": "",
+        "platform": "douyin",
+        "buy_keywords": ["立即购买", "立即抢购", "马上抢", "去购买", "提交订单"],
+        "sold_keywords": ["已售罄", "已抢光", "抢光了", "已结束", "暂时无货", "缺货"],
+    },
+    {
+        "host": "haohuo.jinritemai.com",
+        "id_re": "",
+        "platform": "douyin",
+        "buy_keywords": ["立即购买", "立即抢购", "马上抢"],
+        "sold_keywords": ["已售罄", "已抢光", "抢光了"],
+    },
+    {
+        "host": "v.douyin.com",
+        "id_re": "",
+        "platform": "douyin",
+        "buy_keywords": ["立即购买", "立即抢购", "马上抢"],
+        "sold_keywords": ["已售罄", "已抢光", "抢光了"],
+    },
+]
+
 CITIES_RE = re.compile(
     r"北京|上海|广州|深圳|成都|重庆|杭州|武汉|西安|南京|天津|苏州|长沙|郑州|"
     r"沈阳|青岛|大连|东莞|宁波|厦门|福州|合肥|无锡|佛山|昆明|贵阳|南宁|南昌|"
@@ -36,6 +111,293 @@ CITIES_RE = re.compile(
 )
 
 TIME_RE = re.compile(r"(\d{4}[.\-/]\d{1,2}[.\-/]\d{1,2})")
+
+YEAR_RE = re.compile(r"202[56]")
+
+
+def _match_platform(url: str):
+    """识别 URL 所属平台并提取 ID / buy_url"""
+    if not url:
+        return None
+    parsed = urlparse(url)
+    host = parsed.hostname or ""
+    for rule in PLATFORM_RULES:
+        if rule["host"] in host:
+            item_id = ""
+            buy_url = url  # 默认用原始 URL
+
+            if rule["id_re"]:
+                m = re.search(rule["id_re"], url)
+                if m:
+                    item_id = m.group(1)
+                    # 统一用原始 URL 作为 buy_url，保证能直接打开
+                else:
+                    continue  # 没匹配到 ID，跳过这个平台
+            else:
+                # 无固定 ID 格式（如抖音），用 URL hash
+                import hashlib
+                item_id = hashlib.md5(url.encode()).hexdigest()[:12]
+
+            return {
+                "platform": rule["platform"],
+                "item_id": item_id,
+                "url": url,
+                "buy_url": buy_url,
+                "buy_url_mobile": buy_url,
+                "buy_keywords": rule["buy_keywords"],
+                "sold_keywords": rule["sold_keywords"],
+            }
+    return None
+
+
+def search_bing(keyword: str) -> list[dict]:
+    """
+    用 Bing 搜索「歌手 演唱会 2026 购票」
+    从搜索结果中提取所有已知票务平台的链接
+    """
+    results = []
+    browser = None
+    try:
+        from playwright.sync_api import sync_playwright
+
+        with sync_playwright() as p:
+            browser = p.chromium.launch(
+                headless=True,
+                args=[
+                    "--no-sandbox", "--disable-dev-shm-usage",
+                    "--disable-blink-features=AutomationControlled",
+                ],
+            )
+            ctx = browser.new_context(
+                user_agent=(
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                    "AppleWebKit/537.36 (KHTML, like Gecko) "
+                    "Chrome/131.0.0.0 Safari/537.36"
+                ),
+                viewport={"width": 1920, "height": 1080},
+                locale="zh-CN",
+            )
+            page = ctx.new_page()
+
+            query = f"{keyword} 演唱会 2026 购票"
+            bing_url = f"https://www.bing.com/search?q={query}&setlang=zh-cn"
+
+            try:
+                page.goto(bing_url, wait_until="domcontentloaded", timeout=15000)
+                page.wait_for_timeout(2000)
+            except Exception:
+                pass
+
+            # 从搜索结果提取所有链接
+            links = page.evaluate("""
+                () => {
+                    const results = [];
+                    const seen = new Set();
+                    // Bing 搜索结果在 #b_results 里
+                    const container = document.querySelector('#b_results');
+                    const allLinks = (container || document).querySelectorAll('a[href]');
+                    allLinks.forEach(a => {
+                        const href = a.href;
+                        if (!href || seen.has(href)) return;
+                        seen.add(href);
+                        const parentText = (a.closest('li, .b_algo, div')?.textContent || a.textContent || '').substring(0, 500);
+                        results.push({
+                            url: href,
+                            name: a.textContent.trim().substring(0, 200),
+                            text: parentText,
+                        });
+                    });
+                    return results;
+                }
+            """)
+
+            for link in links:
+                url = link.get("url", "")
+                text = link.get("text", "") or link.get("name", "")
+                full_text = link.get("text", "")
+
+                if not url:
+                    continue
+
+                match = _match_platform(url)
+                if not match:
+                    continue
+
+                # 检查是否包含年份（过滤过期内容）
+                if not YEAR_RE.search(text + full_text + url):
+                    continue
+
+                city = ""
+                time_str = ""
+                m_city = CITIES_RE.search(text + full_text)
+                if m_city:
+                    city = m_city.group(0)
+                m_time = TIME_RE.search(text + full_text)
+                if m_time:
+                    time_str = m_time.group(1)
+
+                name = text if len(text) >= 3 else f"{keyword} 演出"
+                # 清理名称中混入的 URL
+                name = re.sub(r'https?://\S+', '', name).strip()
+                if len(name) < 3:
+                    name = f"{keyword} 演出"
+
+                results.append({
+                    "name": name,
+                    "city": city,
+                    "time": time_str,
+                    "platform": match["platform"],
+                    "item_id": match["item_id"],
+                    "url": match["url"],
+                    "url_mobile": match["url"],
+                    "buy_url": match["buy_url"],
+                    "buy_keywords": match["buy_keywords"],
+                    "sold_keywords": match["sold_keywords"],
+                    "mode": "page",
+                    "keywords": f"{keyword},{match['platform']}",
+                })
+
+            browser.close()
+            browser = None
+    except ImportError:
+        log.error("Playwright 未安装")
+    except Exception as e:
+        log.error(f"Bing 搜索 [{keyword}] 失败: {e}")
+        if browser:
+            try:
+                browser.close()
+            except Exception:
+                pass
+    return results
+
+
+def search_all(keywords: list[str]) -> list[dict]:
+    """单浏览器顺序搜索所有歌手（Bing 不限速）"""
+    results = []
+    browser = None
+    try:
+        from playwright.sync_api import sync_playwright
+
+        t0 = time.time()
+        with sync_playwright() as p:
+            browser = p.chromium.launch(
+                headless=True,
+                args=[
+                    "--no-sandbox", "--disable-dev-shm-usage",
+                    "--disable-blink-features=AutomationControlled",
+                    "--disable-gpu", "--single-process",
+                ],
+            )
+            ctx = browser.new_context(
+                user_agent=(
+                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+                    "AppleWebKit/537.36 (KHTML, like Gecko) "
+                    "Chrome/131.0.0.0 Safari/537.36"
+                ),
+                viewport={"width": 1920, "height": 1080},
+                locale="zh-CN",
+            )
+            page = ctx.new_page()
+            page.add_init_script("""
+                Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
+            """)
+
+            log.info(f"浏览器就绪 ({time.time()-t0:.0f}s)，开始搜索 {len(keywords)} 位歌手")
+
+            hit_count = 0
+            for i, kw in enumerate(keywords):
+                try:
+                    query = f"{kw} 演唱会 2026 购票"
+                    bing_url = f"https://www.bing.com/search?q={query}&setlang=zh-cn"
+                    page.goto(bing_url, wait_until="domcontentloaded", timeout=12000)
+                    page.wait_for_timeout(1500)
+
+                    links = page.evaluate("""
+                        () => {
+                            const results = [];
+                            const seen = new Set();
+                            const container = document.querySelector('#b_results');
+                            (container || document).querySelectorAll('a[href]').forEach(a => {
+                                const href = a.href;
+                                if (!href || seen.has(href) || href.includes('bing.com')) return;
+                                seen.add(href);
+                                const el = a.closest('li, .b_algo, div');
+                                results.push({
+                                    url: href,
+                                    name: a.textContent.trim().substring(0, 200),
+                                    text: (el?.textContent || '').substring(0, 500),
+                                });
+                            });
+                            return results;
+                        }
+                    """)
+
+                    kw_results = 0
+                    for link in links:
+                        url = link.get("url", "")
+                        text = link.get("text", "")
+                        full_text = link.get("text", "")
+                        if not url:
+                            continue
+
+                        match = _match_platform(url)
+                        if not match:
+                            continue
+                        if not YEAR_RE.search(text + full_text + url):
+                            continue
+
+                        city = ""
+                        time_str = ""
+                        m_city = CITIES_RE.search(text + full_text)
+                        if m_city:
+                            city = m_city.group(0)
+                        m_time = TIME_RE.search(text + full_text)
+                        if m_time:
+                            time_str = m_time.group(1)
+
+                        name = text if len(text) >= 3 else f"{kw} 演出"
+                        name = re.sub(r'https?://\S+', '', name).strip()
+                        if len(name) < 3:
+                            name = f"{kw} 演出"
+
+                        results.append({
+                            "name": name,
+                            "city": city,
+                            "time": time_str,
+                            "platform": match["platform"],
+                            "item_id": match["item_id"],
+                            "url": match["url"],
+                            "url_mobile": match["url"],
+                            "buy_url": match["buy_url"],
+                            "buy_keywords": match["buy_keywords"],
+                            "sold_keywords": match["sold_keywords"],
+                            "mode": "page",
+                            "keywords": kw,
+                        })
+                        kw_results += 1
+
+                    if kw_results:
+                        hit_count += 1
+                        log.info(f"[{i+1}/{len(keywords)}] {kw}: {kw_results} 个链接")
+                except Exception as e:
+                    log.warning(f"[{kw}] 搜索异常: {e}")
+                time.sleep(0.3)
+
+            browser.close()
+            browser = None
+
+        found_singers = len(set(r["keywords"] for r in results))
+        log.info(f"搜索完成: {len(results)} 个演出 / {found_singers} 位歌手 / 总耗时 {time.time()-t0:.0f}s")
+    except ImportError:
+        log.error("Playwright 未安装")
+    except Exception as e:
+        log.error(f"搜索崩溃: {e}")
+        if browser:
+            try:
+                browser.close()
+            except Exception:
+                pass
+    return results
 
 
 def load_existing() -> list[dict]:
@@ -61,272 +423,17 @@ def merge(existing: list[dict], new: list[dict]) -> list[dict]:
     return merged
 
 
-def search_all_fast(keywords: list[str]) -> list[dict]:
-    """
-    两阶段策略：
-      Phase 1 — 第一个搜索页完整渲染，建立有效 x5sec cookie
-      Phase 2 — 利用已建立的 cookie，浏览器内 fetch() 并发调 AJAX
-      若 Phase 2 全部被拦，回退到逐页渲染+AJAX拦截模式
-    """
-    results = []
-    browser = None
-    try:
-        from playwright.sync_api import sync_playwright
-
-        t_start = time.time()
-        with sync_playwright() as p:
-            browser = p.chromium.launch(
-                headless=True,
-                args=[
-                    "--disable-blink-features=AutomationControlled",
-                    "--no-sandbox",
-                    "--disable-dev-shm-usage",
-                    "--disable-setuid-sandbox",
-                    "--disable-gpu",
-                    "--single-process",
-                ],
-            )
-            context = browser.new_context(
-                user_agent=(
-                    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-                    "AppleWebKit/537.36 (KHTML, like Gecko) "
-                    "Chrome/131.0.0.0 Safari/537.36"
-                ),
-                viewport={"width": 1920, "height": 1080},
-                locale="zh-CN",
-            )
-            page = context.new_page()
-            page.add_init_script("""
-                Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
-                Object.defineProperty(navigator, 'plugins', {get: () => [1, 2, 3, 4, 5]});
-            """)
-            log.info(f"浏览器启动: {time.time()-t_start:.1f}s")
-
-            # ═══ Phase 1: 完整渲染第一个搜索页建立 x5sec ═══
-            t_cookie = time.time()
-            first_kw = keywords[0]
-
-            # 拦截 AJAX（如果页面触发）
-            ajax_data = []
-            ajax_got = threading.Event()
-
-            def on_response(response):
-                if "searchajax" in response.url and response.status == 200:
-                    try:
-                        ajax_data.append(response.json())
-                        ajax_got.set()
-                    except Exception:
-                        pass
-
-            page.on("response", on_response)
-
-            # 访问大麦首页
-            try:
-                page.goto("https://www.damai.cn/", wait_until="domcontentloaded", timeout=15000)
-                page.wait_for_timeout(1500)
-            except Exception:
-                pass
-
-            # 完整渲染第一个关键词的搜索页
-            try:
-                page.goto(
-                    f"https://search.damai.cn/search.htm?keyword={first_kw}",
-                    wait_until="domcontentloaded",
-                    timeout=20000,
-                )
-                ajax_got.wait(timeout=5)  # 等 AJAX 或超时
-                page.wait_for_timeout(500)
-            except Exception:
-                pass
-            log.info(f"x5sec 建立: {time.time()-t_cookie:.1f}s")
-
-            # 提取第一个关键词的结果
-            first_results = _extract_from_ajax_or_dom(page, ajax_data, first_kw)
-            results.extend(first_results)
-            log.info(f"首个 [{first_kw}]: {len(first_results)} 个结果")
-
-            # ═══ Phase 2: 用 fetch() 并发跑剩余关键词 ═══
-            remaining = keywords[1:]
-            if remaining:
-                t_api = time.time()
-                raw = page.evaluate(
-                    """
-                    async (keywords) => {
-                        const all = [];
-                        const BATCH = 12;
-                        for (let i = 0; i < keywords.length; i += BATCH) {
-                            const batch = keywords.slice(i, i + BATCH);
-                            const tasks = batch.map(kw =>
-                                fetch(`https://search.damai.cn/searchajax.html?keyword=${
-                                    encodeURIComponent(kw)
-                                }&ctl=1&page=1&ts=${Date.now()}`, {
-                                    signal: AbortSignal.timeout(6000),
-                                    headers: {
-                                        'Accept': 'application/json',
-                                        'X-Requested-With': 'XMLHttpRequest',
-                                    }
-                                })
-                                .then(r => r.json())
-                                .then(data => ({
-                                    kw,
-                                    items: (data.pageData?.resultData || []).map(it => ({
-                                        id: String(it.id || it.itemId || ''),
-                                        name: it.name || it.projectName || '',
-                                        city: it.cityName || it.venueCity || '',
-                                        time: it.showTime || it.performDate || '',
-                                    })),
-                                }))
-                                .catch(() => ({kw, items: []}))
-                            );
-                            const batchResults = await Promise.all(tasks);
-                            all.push(...batchResults);
-                        }
-                        return all;
-                    }
-                    """,
-                    remaining,
-                )
-
-                fetch_count = 0
-                for group in raw:
-                    kw = group.get("kw", "")
-                    for item in group.get("items", []):
-                        item_id = item.get("id", "")
-                        if not item_id:
-                            continue
-                        fetch_count += 1
-                        results.append({
-                            "name": item.get("name", "") or f"{kw} 演出(ID {item_id})",
-                            "city": item.get("city", ""),
-                            "time": item.get("time", ""),
-                            "platform": "damai",
-                            "item_id": item_id,
-                            "url": f"https://detail.damai.cn/item.htm?id={item_id}",
-                            "url_mobile": f"damai://V1/ProjectPage?id={item_id}",
-                            "buy_url": f"https://detail.damai.cn/item.htm?id={item_id}",
-                            "buy_keywords": ["立即购买", "立即预订", "选座购买"],
-                            "sold_keywords": ["缺货登记", "已售罄", "暂无可售"],
-                            "mode": "page",
-                            "keywords": kw,
-                        })
-                log.info(f"fetch 并发: {time.time()-t_api:.1f}s, {fetch_count} 个结果")
-
-                # ═══ Phase 3: fetch 全被拦截 → 回退逐页渲染 ═══
-                if fetch_count == 0 and first_results:
-                    log.warning("fetch 全部被拦截，回退到逐页渲染模式...")
-                    for i, kw in enumerate(remaining):
-                        try:
-                            ajax_data.clear()
-                            ajax_got.clear()
-                            page.goto(
-                                f"https://search.damai.cn/search.htm?keyword={kw}",
-                                wait_until="domcontentloaded",
-                                timeout=15000,
-                            )
-                            ajax_got.wait(timeout=3)
-                            page.wait_for_timeout(300)
-                            kw_results = _extract_from_ajax_or_dom(page, ajax_data, kw)
-                            results.extend(kw_results)
-                            if kw_results:
-                                log.info(f"渲染 [{kw}]({i+2}/{len(keywords)}): {len(kw_results)}个")
-                        except Exception as e:
-                            log.warning(f"渲染 [{kw}] 失败: {e}")
-
-            browser.close()
-            browser = None
-
-        found_kw = len(set(r["keywords"] for r in results))
-        log.info(f"完成: {len(results)} 个演出 / {found_kw} 个歌手, 总耗时 {time.time()-t_start:.0f}s")
-    except ImportError:
-        log.error("Playwright 未安装")
-    except Exception as e:
-        log.error(f"搜索失败: {e}")
-        if browser:
-            try:
-                browser.close()
-            except Exception:
-                pass
-    return results
-
-
-def _extract_from_ajax_or_dom(page, ajax_data: list, kw: str) -> list[dict]:
-    """从拦截到的 AJAX 或 DOM 提取当前页的演出数据"""
-    results = []
-
-    # AJAX 数据
-    for data in ajax_data:
-        items = data.get("pageData", {}).get("resultData", [])
-        for item in items:
-            item_id = str(item.get("id", "") or item.get("itemId", ""))
-            if not item_id:
-                continue
-            results.append({
-                "name": item.get("name") or item.get("projectName") or f"{kw} 演出",
-                "city": item.get("cityName") or item.get("venueCity", ""),
-                "time": item.get("showTime") or item.get("performDate", ""),
-                "platform": "damai",
-                "item_id": item_id,
-                "url": f"https://detail.damai.cn/item.htm?id={item_id}",
-                "url_mobile": f"damai://V1/ProjectPage?id={item_id}",
-                "buy_url": f"https://detail.damai.cn/item.htm?id={item_id}",
-                "buy_keywords": ["立即购买", "立即预订", "选座购买"],
-                "sold_keywords": ["缺货登记", "已售罄", "暂无可售"],
-                "mode": "page",
-                "keywords": kw,
-            })
-
-    if results:
-        return results
-
-    # DOM 回退
-    try:
-        dom_items = page.evaluate("""
-            () => {
-                const results = [];
-                const links = document.querySelectorAll('a[href*="detail.damai.cn/item.htm?id="]');
-                const seen = new Set();
-                links.forEach(link => {
-                    const href = link.href;
-                    const m = href.match(/id=(\\\\d+)/);
-                    if (!m || seen.has(m[1])) return;
-                    seen.add(m[1]);
-                    results.push({id: m[1], name: (link.textContent||'').trim()});
-                });
-                return results;
-            }
-        """)
-        for item in dom_items:
-            results.append({
-                "name": item.get("name") or f"{kw} 演出(ID {item['id']})",
-                "city": "",
-                "time": "",
-                "platform": "damai",
-                "item_id": item["id"],
-                "url": f"https://detail.damai.cn/item.htm?id={item['id']}",
-                "url_mobile": f"damai://V1/ProjectPage?id={item['id']}",
-                "buy_url": f"https://detail.damai.cn/item.htm?id={item['id']}",
-                "buy_keywords": ["立即购买", "立即预订", "选座购买"],
-                "sold_keywords": ["缺货登记", "已售罄", "暂无可售"],
-                "mode": "page",
-                "keywords": kw,
-            })
-    except Exception:
-        pass
-
-    return results
-
-
 def main():
     t0 = time.time()
-    log.info("搜索缓存更新 — 极致模式（浏览器内 fetch 并发）")
+    log.info("搜索缓存更新 — Bing 聚合模式")
     existing = load_existing()
     log.info(f"现有缓存: {len(existing)} 条")
 
-    all_new = search_all_fast(DAMAI_KEYWORDS)
+    all_new = search_all(SINGERS)
 
     merged = merge(existing, all_new)
     elapsed = time.time() - t0
-    log.info(f"新增: {len(all_new)} 条, 合并后: {len(merged)} 条, 总耗时 {elapsed:.0f}s")
+    log.info(f"新增: {len(all_new)} 条, 合并后: {len(merged)} 条, {elapsed:.0f}s")
 
     with open(CACHE_PATH, "w", encoding="utf-8") as f:
         json.dump(merged, f, ensure_ascii=False, indent=2)
