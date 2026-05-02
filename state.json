@@ -1,10 +1,10 @@
 {
   "xuezhiqian_taiyuan_damai": {
-    "status": "available",
-    "message": "大麦 item=1030416581941 → 有票/可购买",
-    "last_change": "2026-05-01T23:47:55.666833",
+    "status": "unknown",
+    "message": "大麦 item=1030416581941 → 无法确定状态",
+    "last_change": "2026-05-02T01:53:43.899890",
     "last_remind": "2026-05-02T01:52:27.968456",
-    "remind_count": 5
+    "remind_count": 0
   },
   "xuezhiqian_taiyuan_pxq": {
     "status": "sold_out",
@@ -17,8 +17,8 @@
     "status": "available",
     "message": "https://www.ypiao.com/t_113812/ → 可能有票（关键词同时命中）",
     "last_change": "2026-05-01T23:53:35.084314",
-    "last_remind": "2026-05-02T01:52:40.300955",
-    "remind_count": 4
+    "last_remind": "2026-05-02T01:53:56.720474",
+    "remind_count": 5
   },
   "xuezhiqian_taiyuan_dahe": {
     "status": "sold_out",
@@ -49,11 +49,11 @@
     "remind_count": 0
   },
   "damai_1021197513737": {
-    "status": "available",
-    "message": "大麦 item=1021197513737 → 有票/可购买",
-    "last_change": "2026-05-02T01:41:38.237956",
+    "status": "unknown",
+    "message": "大麦 item=1021197513737 → 无法确定状态",
+    "last_change": "2026-05-02T01:54:08.985308",
     "last_remind": "2026-05-02T01:52:52.194289",
-    "remind_count": 2
+    "remind_count": 0
   },
   "damai_1021197513737_0gtd": {
     "status": "available",
@@ -67,6 +67,13 @@
     "message": "大麦 item=1021197513737 → 有票/可购买",
     "last_change": "2026-05-02T01:52:56.205138",
     "last_remind": "2026-05-02T01:52:56.205138",
+    "remind_count": 0
+  },
+  "damai_1021197513737_q3db": {
+    "status": "unknown",
+    "message": "大麦 item=1021197513737 → 无法确定状态",
+    "last_change": "2026-05-02T01:54:11.250853",
+    "last_remind": "",
     "remind_count": 0
   }
 }
