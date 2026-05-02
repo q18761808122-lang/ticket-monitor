@@ -1,12 +1,15 @@
 #!/usr/bin/env python3
 """
-搜索缓存更新脚本 — 极致版
-浏览器内 fetch() 并发调 AJAX API → cookie 天然有效 + 8 并发秒级完成
+搜索缓存更新脚本 — 三阶段自适应
+Phase 1: 完整渲染首页+搜索页 → 建立有效 x5sec cookie
+Phase 2: 浏览器内 fetch() 12 并发调 AJAX API
+Phase 3: fetch 被拦截时自动回退逐页渲染
 """
 import json
 import logging
 import re
 import sys
+import threading
 import time
 from pathlib import Path
 
@@ -60,9 +63,10 @@ def merge(existing: list[dict], new: list[dict]) -> list[dict]:
 
 def search_all_fast(keywords: list[str]) -> list[dict]:
     """
-    浏览器内 fetch() 并发调用 searchajax API。
-    cookie 是浏览器自带的（含 x5sec），不会被拦截。
-    16 并发，直连搜索子域，跳过首页。
+    两阶段策略：
+      Phase 1 — 第一个搜索页完整渲染，建立有效 x5sec cookie
+      Phase 2 — 利用已建立的 cookie，浏览器内 fetch() 并发调 AJAX
+      若 Phase 2 全部被拦，回退到逐页渲染+AJAX拦截模式
     """
     results = []
     browser = None
@@ -80,13 +84,6 @@ def search_all_fast(keywords: list[str]) -> list[dict]:
                     "--disable-setuid-sandbox",
                     "--disable-gpu",
                     "--single-process",
-                    "--disable-background-networking",
-                    "--disable-sync",
-                    "--disable-translate",
-                    "--disable-default-apps",
-                    "--mute-audio",
-                    "--no-first-run",
-                    "--no-default-browser-check",
                 ],
             )
             context = browser.new_context(
@@ -101,39 +98,74 @@ def search_all_fast(keywords: list[str]) -> list[dict]:
             page = context.new_page()
             page.add_init_script("""
                 Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
+                Object.defineProperty(navigator, 'plugins', {get: () => [1, 2, 3, 4, 5]});
             """)
             log.info(f"浏览器启动: {time.time()-t_start:.1f}s")
 
-            # 直连搜索子域，用 commit 模式（不等 DOM 渲染）
+            # ═══ Phase 1: 完整渲染第一个搜索页建立 x5sec ═══
             t_cookie = time.time()
+            first_kw = keywords[0]
+
+            # 拦截 AJAX（如果页面触发）
+            ajax_data = []
+            ajax_got = threading.Event()
+
+            def on_response(response):
+                if "searchajax" in response.url and response.status == 200:
+                    try:
+                        ajax_data.append(response.json())
+                        ajax_got.set()
+                    except Exception:
+                        pass
+
+            page.on("response", on_response)
+
+            # 访问大麦首页
             try:
-                page.goto(
-                    "https://search.damai.cn/search.htm?keyword=test",
-                    wait_until="commit",
-                    timeout=10000,
-                )
-                page.wait_for_timeout(600)
+                page.goto("https://www.damai.cn/", wait_until="domcontentloaded", timeout=15000)
+                page.wait_for_timeout(1500)
             except Exception:
                 pass
-            log.info(f"Cookie: {time.time()-t_cookie:.1f}s")
 
-            # 浏览器内 fetch() 并发，16 个一组
-            log.info(f"并发搜索 {len(keywords)} 个关键词...")
-            t_api = time.time()
+            # 完整渲染第一个关键词的搜索页
+            try:
+                page.goto(
+                    f"https://search.damai.cn/search.htm?keyword={first_kw}",
+                    wait_until="domcontentloaded",
+                    timeout=20000,
+                )
+                ajax_got.wait(timeout=5)  # 等 AJAX 或超时
+                page.wait_for_timeout(500)
+            except Exception:
+                pass
+            log.info(f"x5sec 建立: {time.time()-t_cookie:.1f}s")
 
-            raw = page.evaluate(
-                """
-                async (keywords) => {
-                    const all = [];
-                    const BATCH = 16;
+            # 提取第一个关键词的结果
+            first_results = _extract_from_ajax_or_dom(page, ajax_data, first_kw)
+            results.extend(first_results)
+            log.info(f"首个 [{first_kw}]: {len(first_results)} 个结果")
 
-                    for (let i = 0; i < keywords.length; i += BATCH) {
-                        const batch = keywords.slice(i, i + BATCH);
-                        const tasks = batch.map(kw => {
-                            const url = `https://search.damai.cn/searchajax.html?keyword=${
-                                encodeURIComponent(kw)
-                            }&ctl=1&page=1&ts=${Date.now()}`;
-                            return fetch(url, {signal: AbortSignal.timeout(5000)})
+            # ═══ Phase 2: 用 fetch() 并发跑剩余关键词 ═══
+            remaining = keywords[1:]
+            if remaining:
+                t_api = time.time()
+                raw = page.evaluate(
+                    """
+                    async (keywords) => {
+                        const all = [];
+                        const BATCH = 12;
+                        for (let i = 0; i < keywords.length; i += BATCH) {
+                            const batch = keywords.slice(i, i + BATCH);
+                            const tasks = batch.map(kw =>
+                                fetch(`https://search.damai.cn/searchajax.html?keyword=${
+                                    encodeURIComponent(kw)
+                                }&ctl=1&page=1&ts=${Date.now()}`, {
+                                    signal: AbortSignal.timeout(6000),
+                                    headers: {
+                                        'Accept': 'application/json',
+                                        'X-Requested-With': 'XMLHttpRequest',
+                                    }
+                                })
                                 .then(r => r.json())
                                 .then(data => ({
                                     kw,
@@ -144,47 +176,67 @@ def search_all_fast(keywords: list[str]) -> list[dict]:
                                         time: it.showTime || it.performDate || '',
                                     })),
                                 }))
-                                .catch(() => ({kw, items: []}));
-                        });
-                        const batchResults = await Promise.all(tasks);
-                        all.push(...batchResults);
+                                .catch(() => ({kw, items: []}))
+                            );
+                            const batchResults = await Promise.all(tasks);
+                            all.push(...batchResults);
+                        }
+                        return all;
                     }
-                    return all;
-                }
-                """,
-                keywords,
-            )
+                    """,
+                    remaining,
+                )
 
-            log.info(f"API: {time.time()-t_api:.1f}s ({len(keywords)}关键词/{len(raw)}响应)")
+                fetch_count = 0
+                for group in raw:
+                    kw = group.get("kw", "")
+                    for item in group.get("items", []):
+                        item_id = item.get("id", "")
+                        if not item_id:
+                            continue
+                        fetch_count += 1
+                        results.append({
+                            "name": item.get("name", "") or f"{kw} 演出(ID {item_id})",
+                            "city": item.get("city", ""),
+                            "time": item.get("time", ""),
+                            "platform": "damai",
+                            "item_id": item_id,
+                            "url": f"https://detail.damai.cn/item.htm?id={item_id}",
+                            "url_mobile": f"damai://V1/ProjectPage?id={item_id}",
+                            "buy_url": f"https://detail.damai.cn/item.htm?id={item_id}",
+                            "buy_keywords": ["立即购买", "立即预订", "选座购买"],
+                            "sold_keywords": ["缺货登记", "已售罄", "暂无可售"],
+                            "mode": "page",
+                            "keywords": kw,
+                        })
+                log.info(f"fetch 并发: {time.time()-t_api:.1f}s, {fetch_count} 个结果")
 
-            # 组装结果
-            for group in raw:
-                kw = group.get("kw", "")
-                for item in group.get("items", []):
-                    item_id = item.get("id", "")
-                    if not item_id:
-                        continue
-                    name = item.get("name", "") or f"{kw} 演出(ID {item_id})"
-                    results.append({
-                        "name": name,
-                        "city": item.get("city", ""),
-                        "time": item.get("time", ""),
-                        "platform": "damai",
-                        "item_id": item_id,
-                        "url": f"https://detail.damai.cn/item.htm?id={item_id}",
-                        "url_mobile": f"damai://V1/ProjectPage?id={item_id}",
-                        "buy_url": f"https://detail.damai.cn/item.htm?id={item_id}",
-                        "buy_keywords": ["立即购买", "立即预订", "选座购买"],
-                        "sold_keywords": ["缺货登记", "已售罄", "暂无可售"],
-                        "mode": "page",
-                        "keywords": kw,
-                    })
+                # ═══ Phase 3: fetch 全被拦截 → 回退逐页渲染 ═══
+                if fetch_count == 0 and first_results:
+                    log.warning("fetch 全部被拦截，回退到逐页渲染模式...")
+                    for i, kw in enumerate(remaining):
+                        try:
+                            ajax_data.clear()
+                            ajax_got.clear()
+                            page.goto(
+                                f"https://search.damai.cn/search.htm?keyword={kw}",
+                                wait_until="domcontentloaded",
+                                timeout=15000,
+                            )
+                            ajax_got.wait(timeout=3)
+                            page.wait_for_timeout(300)
+                            kw_results = _extract_from_ajax_or_dom(page, ajax_data, kw)
+                            results.extend(kw_results)
+                            if kw_results:
+                                log.info(f"渲染 [{kw}]({i+2}/{len(keywords)}): {len(kw_results)}个")
+                        except Exception as e:
+                            log.warning(f"渲染 [{kw}] 失败: {e}")
 
             browser.close()
             browser = None
 
         found_kw = len(set(r["keywords"] for r in results))
-        log.info(f"完成: {len(results)} 个演出 / {found_kw} 个歌手, 总耗时 {time.time()-t_start:.1f}s")
+        log.info(f"完成: {len(results)} 个演出 / {found_kw} 个歌手, 总耗时 {time.time()-t_start:.0f}s")
     except ImportError:
         log.error("Playwright 未安装")
     except Exception as e:
@@ -194,6 +246,73 @@ def search_all_fast(keywords: list[str]) -> list[dict]:
                 browser.close()
             except Exception:
                 pass
+    return results
+
+
+def _extract_from_ajax_or_dom(page, ajax_data: list, kw: str) -> list[dict]:
+    """从拦截到的 AJAX 或 DOM 提取当前页的演出数据"""
+    results = []
+
+    # AJAX 数据
+    for data in ajax_data:
+        items = data.get("pageData", {}).get("resultData", [])
+        for item in items:
+            item_id = str(item.get("id", "") or item.get("itemId", ""))
+            if not item_id:
+                continue
+            results.append({
+                "name": item.get("name") or item.get("projectName") or f"{kw} 演出",
+                "city": item.get("cityName") or item.get("venueCity", ""),
+                "time": item.get("showTime") or item.get("performDate", ""),
+                "platform": "damai",
+                "item_id": item_id,
+                "url": f"https://detail.damai.cn/item.htm?id={item_id}",
+                "url_mobile": f"damai://V1/ProjectPage?id={item_id}",
+                "buy_url": f"https://detail.damai.cn/item.htm?id={item_id}",
+                "buy_keywords": ["立即购买", "立即预订", "选座购买"],
+                "sold_keywords": ["缺货登记", "已售罄", "暂无可售"],
+                "mode": "page",
+                "keywords": kw,
+            })
+
+    if results:
+        return results
+
+    # DOM 回退
+    try:
+        dom_items = page.evaluate("""
+            () => {
+                const results = [];
+                const links = document.querySelectorAll('a[href*="detail.damai.cn/item.htm?id="]');
+                const seen = new Set();
+                links.forEach(link => {
+                    const href = link.href;
+                    const m = href.match(/id=(\\\\d+)/);
+                    if (!m || seen.has(m[1])) return;
+                    seen.add(m[1]);
+                    results.push({id: m[1], name: (link.textContent||'').trim()});
+                });
+                return results;
+            }
+        """)
+        for item in dom_items:
+            results.append({
+                "name": item.get("name") or f"{kw} 演出(ID {item['id']})",
+                "city": "",
+                "time": "",
+                "platform": "damai",
+                "item_id": item["id"],
+                "url": f"https://detail.damai.cn/item.htm?id={item['id']}",
+                "url_mobile": f"damai://V1/ProjectPage?id={item['id']}",
+                "buy_url": f"https://detail.damai.cn/item.htm?id={item['id']}",
+                "buy_keywords": ["立即购买", "立即预订", "选座购买"],
+                "sold_keywords": ["缺货登记", "已售罄", "暂无可售"],
+                "mode": "page",
+                "keywords": kw,
+            })
+    except Exception:
+        pass
+
     return results
 
 
