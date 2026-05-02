@@ -4,6 +4,7 @@
 用真实浏览器渲染大麦搜索页，拦截 AJAX 响应 / 提取 DOM 数据
 由 GitHub Actions 定时运行，更新 public/search_cache.json
 """
+import hashlib
 import json
 import logging
 import re
@@ -89,61 +90,48 @@ def search_douyin_playwright(keyword: str) -> list[dict]:
             # 搜索：歌手名 + 演唱会/门票
             search_url = f"https://www.douyin.com/search/{keyword}%20演唱会%20门票?type=general"
             try:
-                page.goto(search_url, wait_until="domcontentloaded", timeout=30000)
-                page.wait_for_timeout(6000)
+                page.goto(search_url, wait_until="domcontentloaded", timeout=25000)
+                page.wait_for_timeout(5000)
             except Exception:
                 pass
 
-            html = page.content()
-
             # 提取商品/购票链接
-            links_found = page.evaluate("""
-                () => {
-                    const results = [];
-                    const seen = new Set();
-
-                    // douyin.com 商品页
-                    for (const a of document.querySelectorAll('a[href]')) {
-                        const href = a.href;
-                        if (!href) continue;
-                        const text = (a.textContent || '').trim();
-
-                        // 匹配抖音小店/商品链接
-                        if (href.includes('haohuo.jinritemai.com') ||
-                            href.includes('v.douyin.com') ||
-                            href.includes('www.douyin.com/goods') ||
-                            href.includes('www.douyin.com/user/') && text.includes('票') ||
-                            href.includes('douyin.com/video/') && text.includes('票')) {
-
-                            const key = href.substring(0, 80);
-                            if (seen.has(key)) continue;
-                            seen.add(key);
-                            results.push({url: href, text: text.substring(0, 200)});
+            try:
+                links_found = page.evaluate("""
+                    () => {
+                        const results = [];
+                        const seen = new Set();
+                        for (const a of document.querySelectorAll('a[href]')) {
+                            const href = a.href;
+                            if (!href) continue;
+                            const text = (a.textContent || '').trim();
+                            if (href.includes('haohuo.jinritemai.com') ||
+                                href.includes('v.douyin.com') ||
+                                (href.includes('douyin.com') && text.includes('票'))) {
+                                const key = href.substring(0, 80);
+                                if (seen.has(key)) continue;
+                                seen.add(key);
+                                results.push({url: href, text: text.substring(0, 200)});
+                            }
                         }
+                        return results;
                     }
-                    return results;
-                }
-            """)
+                """)
+            except Exception:
+                links_found = []
 
-            for link in links_found[:5]:  # 最多取 5 个
+            for link in links_found[:5]:
                 url = link.get("url", "")
                 text = link.get("text", "")
                 if not url:
                     continue
-
-                # 生成唯一 ID
-                import hashlib
                 url_hash = hashlib.md5(url.encode()).hexdigest()[:12]
-                item_id = f"dy_{url_hash}"
-
-                # 从文本或 URL 中提取演出名
-                name = text if text and len(text) >= 3 else f"{keyword} 抖音演出"
                 results.append({
-                    "name": name,
+                    "name": text if text and len(text) >= 3 else f"{keyword} 抖音演出",
                     "city": extract_city(text + url),
                     "time": extract_time(text + url),
                     "platform": "douyin",
-                    "item_id": item_id,
+                    "item_id": f"dy_{url_hash}",
                     "url": url,
                     "url_mobile": url,
                     "buy_url": url,
@@ -154,13 +142,14 @@ def search_douyin_playwright(keyword: str) -> list[dict]:
                 })
 
             browser.close()
+            browser = None
 
-            # 同时尝试抖音商城搜索
-            mall_results = _search_douyin_mall(keyword)
-            results.extend(mall_results)
+        # 同时尝试抖音商城搜索（Playwright 已释放）
+        mall_results = _search_douyin_mall(keyword)
+        results.extend(mall_results)
 
-            if results:
-                log.info(f"抖音搜索 [{keyword}]: {len(results)} 个结果")
+        if results:
+            log.info(f"抖音搜索 [{keyword}]: {len(results)} 个结果")
     except ImportError:
         log.debug("Playwright 未安装，跳过抖音搜索")
     except Exception as e:
@@ -423,10 +412,13 @@ def main():
     # ── 大麦搜索 ──
     damai_count = 0
     for kw in HOT_KEYWORDS:
-        results = search_damai_playwright(kw)
-        if results:
-            damai_count += 1
-            all_new.extend(results)
+        try:
+            results = search_damai_playwright(kw)
+            if results:
+                damai_count += 1
+                all_new.extend(results)
+        except Exception as e:
+            log.warning(f"大麦搜索 [{kw}] 异常: {e}")
         time.sleep(2)
 
     log.info(f"大麦: {damai_count}/{len(HOT_KEYWORDS)} 个关键词成功")
@@ -434,10 +426,13 @@ def main():
     # ── 抖音搜索（热门歌手子集） ──
     douyin_count = 0
     for kw in DOUYIN_KEYWORDS:
-        results = search_douyin_playwright(kw)
-        if results:
-            douyin_count += 1
-            all_new.extend(results)
+        try:
+            results = search_douyin_playwright(kw)
+            if results:
+                douyin_count += 1
+                all_new.extend(results)
+        except Exception as e:
+            log.warning(f"抖音搜索 [{kw}] 异常: {e}")
         time.sleep(2)
 
     log.info(f"抖音: {douyin_count}/{len(DOUYIN_KEYWORDS)} 个关键词成功")
@@ -451,9 +446,9 @@ def main():
         json.dump(merged, f, ensure_ascii=False, indent=2)
 
     log.info("缓存写入完成")
+    count_file = BASE_DIR / "cache_update_count.txt"
+    count_file.write_text(str(len(all_new)))
     if all_new:
-        with open(BASE_DIR / "cache_update_count.txt", "w") as f:
-            f.write(str(len(all_new)))
         log.info(f"::notice::新增 {len(all_new)} 条搜索结果")
 
 
