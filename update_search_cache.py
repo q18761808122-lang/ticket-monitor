@@ -1,14 +1,12 @@
 #!/usr/bin/env python3
 """
-搜索缓存更新脚本 — 事件驱动版
-单浏览器 + 拦截 AJAX 响应即时处理 + DOM 回退
+搜索缓存更新脚本 — 极致版
+浏览器内 fetch() 并发调 AJAX API → cookie 天然有效 + 8 并发秒级完成
 """
-import hashlib
 import json
 import logging
 import re
 import sys
-import threading
 import time
 from pathlib import Path
 
@@ -37,18 +35,35 @@ CITIES_RE = re.compile(
 TIME_RE = re.compile(r"(\d{4}[.\-/]\d{1,2}[.\-/]\d{1,2})")
 
 
-def extract_city(text: str) -> str:
-    m = CITIES_RE.search(text)
-    return m.group(0) if m else ""
+def load_existing() -> list[dict]:
+    if CACHE_PATH.exists():
+        with open(CACHE_PATH, "r", encoding="utf-8") as f:
+            return json.load(f)
+    return []
 
 
-def extract_time(text: str) -> str:
-    m = TIME_RE.search(text)
-    return m.group(1) if m else ""
+def merge(existing: list[dict], new: list[dict]) -> list[dict]:
+    seen = set()
+    merged = []
+    for item in existing:
+        key = f"{item.get('platform','')}_{item.get('item_id','')}"
+        if key not in seen:
+            seen.add(key)
+            merged.append(item)
+    for item in new:
+        key = f"{item.get('platform','')}_{item.get('item_id','')}"
+        if key not in seen:
+            seen.add(key)
+            merged.append(item)
+    return merged
 
 
-def search_all_damai(keywords: list[str]) -> list[dict]:
-    """单浏览器事件驱动：AJAX 响应一到立即提取，不等多余时间"""
+def search_all_fast(keywords: list[str]) -> list[dict]:
+    """
+    浏览器内 fetch() 并发调用 searchajax API。
+    cookie 是浏览器自带的（含 x5sec），不会被拦截。
+    8 个并发一组，35 个关键词 ~3 秒完成。
+    """
     results = []
     browser = None
     try:
@@ -79,125 +94,102 @@ def search_all_damai(keywords: list[str]) -> list[dict]:
                 Object.defineProperty(navigator, 'plugins', {get: () => [1, 2, 3, 4, 5]});
             """)
 
-            # 事件驱动：AJAX 响应到达时立即触发
-            ajax_data = []
-            ajax_event = threading.Event()
-
-            def on_response(response):
-                if "searchajax" in response.url and response.status == 200:
-                    try:
-                        data = response.json()
-                        ajax_data.append(data)
-                        ajax_event.set()
-                    except Exception:
-                        pass
-
-            page.on("response", on_response)
-
-            # 建立 cookie（只一次）
+            # Step 1: 访问大麦首页 → 获取基础 cookie
+            log.info("获取 Cookie...")
             try:
                 page.goto("https://www.damai.cn/", wait_until="domcontentloaded", timeout=15000)
-                page.wait_for_timeout(1000)
+                page.wait_for_timeout(1500)
             except Exception:
                 pass
 
-            success = 0
-            for i, kw in enumerate(keywords):
-                try:
-                    ajax_data.clear()
-                    ajax_event.clear()
+            # Step 2: 访问搜索页 → 获取 search.damai.cn 的子域 cookie
+            try:
+                page.goto(
+                    "https://search.damai.cn/search.htm?keyword=演唱会",
+                    wait_until="domcontentloaded",
+                    timeout=15000,
+                )
+                page.wait_for_timeout(2000)
+            except Exception:
+                pass
 
-                    search_url = f"https://search.damai.cn/search.htm?keyword={kw}"
-                    page.goto(search_url, wait_until="domcontentloaded", timeout=15000)
+            # Step 3: 在浏览器内用 fetch() 批量并发调 AJAX API
+            #         此时 origin = search.damai.cn，fetch 同域无 CORS 问题
+            #         cookie 是浏览器自己的，x5sec 天然有效
+            log.info(f"并发搜索 {len(keywords)} 个关键词...")
+            t1 = time.time()
 
-                    # 等待 AJAX 响应，最多等 4 秒
-                    got_ajax = ajax_event.wait(timeout=4)
+            raw = page.evaluate(
+                """
+                async (keywords) => {
+                    const all = [];
+                    const CONCURRENCY = 8;
 
-                    if got_ajax and ajax_data:
-                        for data in ajax_data:
-                            items = data.get("pageData", {}).get("resultData", [])
-                            for item in items:
-                                item_id = str(item.get("id", "") or item.get("itemId", ""))
-                                if not item_id:
-                                    continue
-                                results.append({
-                                    "name": item.get("name") or item.get("projectName") or f"{kw} 演出",
-                                    "city": item.get("cityName") or item.get("venueCity", ""),
-                                    "time": item.get("showTime") or item.get("performDate", ""),
-                                    "platform": "damai",
-                                    "item_id": item_id,
-                                    "url": f"https://detail.damai.cn/item.htm?id={item_id}",
-                                    "url_mobile": f"damai://V1/ProjectPage?id={item_id}",
-                                    "buy_url": f"https://detail.damai.cn/item.htm?id={item_id}",
-                                    "buy_keywords": ["立即购买", "立即预订", "选座购买"],
-                                    "sold_keywords": ["缺货登记", "已售罄", "暂无可售"],
-                                    "mode": "page",
-                                    "keywords": kw,
-                                })
-                        if ajax_data:
-                            success += 1
-                            log.info(f"[{i+1}/{len(keywords)}] {kw}: AJAX {len(ajax_data[0].get('pageData',{}).get('resultData',[]))}个")
-                            continue
+                    for (let i = 0; i < keywords.length; i += CONCURRENCY) {
+                        const batch = keywords.slice(i, i + CONCURRENCY);
+                        const tasks = batch.map(kw =>
+                            fetch(
+                                `https://search.damai.cn/searchajax.html?keyword=${
+                                    encodeURIComponent(kw)
+                                }&ctl=1&page=1&ts=${Date.now()}`
+                            )
+                            .then(r => r.json())
+                            .then(data => ({
+                                kw: kw,
+                                items: (data.pageData?.resultData || []).map(it => ({
+                                    id: String(it.id || it.itemId || ''),
+                                    name: it.name || it.projectName || '',
+                                    city: it.cityName || it.venueCity || '',
+                                    time: it.showTime || it.performDate || '',
+                                })),
+                            }))
+                            .catch(() => ({ kw: kw, items: [] }))
+                        );
+                        const batchResults = await Promise.all(tasks);
+                        all.push(...batchResults);
+                    }
+                    return all;
+                }
+                """,
+                keywords,
+            )
 
-                    # 回退：DOM 提取
-                    page.wait_for_timeout(1000)
-                    dom_items = page.evaluate("""
-                        () => {
-                            const results = [];
-                            const links = document.querySelectorAll('a[href*="detail.damai.cn/item.htm?id="]');
-                            const seen = new Set();
-                            links.forEach(link => {
-                                const href = link.href;
-                                const m = href.match(/id=(\\\\d+)/);
-                                if (!m || seen.has(m[1])) return;
-                                seen.add(m[1]);
-                                const card = link.closest('li, [class*="item"], [class*="card"], div') || link;
-                                results.push({
-                                    id: m[1],
-                                    name: (link.textContent || '').trim(),
-                                    text: (card.textContent || '').substring(0, 300),
-                                });
-                            });
-                            return results;
-                        }
-                    """)
+            log.info(f"API 请求完成 ({time.time()-t1:.1f}s)，处理结果...")
 
-                    for item in dom_items:
-                        if not item.get("id"):
-                            continue
-                        name = item.get("name", "")
-                        text = item.get("text", "")
-                        if not name or len(name) < 3:
-                            name = f"{kw} 演出(ID {item['id']})"
-                        results.append({
-                            "name": name,
-                            "city": extract_city(text),
-                            "time": extract_time(text),
-                            "platform": "damai",
-                            "item_id": item["id"],
-                            "url": f"https://detail.damai.cn/item.htm?id={item['id']}",
-                            "url_mobile": f"damai://V1/ProjectPage?id={item['id']}",
-                            "buy_url": f"https://detail.damai.cn/item.htm?id={item['id']}",
-                            "buy_keywords": ["立即购买", "立即预订", "选座购买"],
-                            "sold_keywords": ["缺货登记", "已售罄", "暂无可售"],
-                            "mode": "page",
-                            "keywords": kw,
-                        })
-
-                    if dom_items:
-                        success += 1
-                        log.info(f"[{i+1}/{len(keywords)}] {kw}: DOM {len(dom_items)}个")
-
-                except Exception as e:
-                    log.warning(f"[{kw}] 异常: {e}")
+            # Step 4: 组装结果
+            for group in raw:
+                kw = group.get("kw", "")
+                for item in group.get("items", []):
+                    item_id = item.get("id", "")
+                    if not item_id:
+                        continue
+                    name = item.get("name", "")
+                    if not name:
+                        name = f"{kw} 演出(ID {item_id})"
+                    results.append({
+                        "name": name,
+                        "city": item.get("city", ""),
+                        "time": item.get("time", ""),
+                        "platform": "damai",
+                        "item_id": item_id,
+                        "url": f"https://detail.damai.cn/item.htm?id={item_id}",
+                        "url_mobile": f"damai://V1/ProjectPage?id={item_id}",
+                        "buy_url": f"https://detail.damai.cn/item.htm?id={item_id}",
+                        "buy_keywords": ["立即购买", "立即预订", "选座购买"],
+                        "sold_keywords": ["缺货登记", "已售罄", "暂无可售"],
+                        "mode": "page",
+                        "keywords": kw,
+                    })
 
             browser.close()
             browser = None
-            log.info(f"大麦完成: {success}/{len(keywords)} 个关键词有结果")
+
+            found_kw = len(set(r["keywords"] for r in results))
+            log.info(f"大麦完成: {len(results)} 个演出, 覆盖 {found_kw}/{len(keywords)} 个关键词")
     except ImportError:
         log.error("Playwright 未安装")
     except Exception as e:
-        log.error(f"大麦搜索崩溃: {e}")
+        log.error(f"搜索失败: {e}")
         if browser:
             try:
                 browser.close()
@@ -206,39 +198,17 @@ def search_all_damai(keywords: list[str]) -> list[dict]:
     return results
 
 
-def load_existing() -> list[dict]:
-    if CACHE_PATH.exists():
-        with open(CACHE_PATH, "r", encoding="utf-8") as f:
-            return json.load(f)
-    return []
-
-
-def merge(existing: list[dict], new: list[dict]) -> list[dict]:
-    seen = set()
-    merged = []
-    for item in existing:
-        key = f"{item.get('platform','')}_{item.get('item_id','')}"
-        if key not in seen:
-            seen.add(key)
-            merged.append(item)
-    for item in new:
-        key = f"{item.get('platform','')}_{item.get('item_id','')}"
-        if key not in seen:
-            seen.add(key)
-            merged.append(item)
-    return merged
-
-
 def main():
     t0 = time.time()
-    log.info("搜索缓存更新 — 事件驱动模式")
+    log.info("搜索缓存更新 — 极致模式（浏览器内 fetch 并发）")
     existing = load_existing()
     log.info(f"现有缓存: {len(existing)} 条")
 
-    all_new = search_all_damai(DAMAI_KEYWORDS)
+    all_new = search_all_fast(DAMAI_KEYWORDS)
 
     merged = merge(existing, all_new)
-    log.info(f"新增: {len(all_new)} 条, 合并后: {len(merged)} 条, 耗时 {time.time()-t0:.0f}s")
+    elapsed = time.time() - t0
+    log.info(f"新增: {len(all_new)} 条, 合并后: {len(merged)} 条, 总耗时 {elapsed:.0f}s")
 
     with open(CACHE_PATH, "w", encoding="utf-8") as f:
         json.dump(merged, f, ensure_ascii=False, indent=2)
