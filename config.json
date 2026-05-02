@@ -1,12 +1,16 @@
 {
   "check_interval_seconds": 30,
-  "remind_interval_seconds": 30,
-  "wechat_token": "你的PushPlusToken",
+  "remind_interval_seconds": 60,
+  "pushplus_token": "你的PushPlusToken",
   "bark_key": "你的BarkKey",
-  "_comment_wechat": "去 http://www.pushplus.plus 注册 → 登录 → 一键生成Token → 替换上方 wechat_token",
+  "dingtalk_webhook": "你的钉钉Webhook",
+  "feishu_webhook": "你的飞书Webhook",
+  "_comment_pushplus": "去 http://www.pushplus.plus 注册 → 登录 → 一键生成Token → 替换上方 pushplus_token",
   "_comment_bark": "App Store 搜索 'Bark' 安装 → 复制 Key → 替换上方 bark_key",
+  "_comment_dingtalk": "钉钉群 → 群设置 → 智能群助手 → 添加机器人 → Webhook → 复制 access_token 到 dingtalk_webhook",
+  "_comment_feishu": "飞书群 → 设置 → 群机器人 → 添加 → 自定义机器人 → Webhook → 复制到 feishu_webhook",
   "_comment_check": "check_interval_seconds: 每轮检查间隔（建议 15-60 秒）",
-  "_comment_remind": "remind_interval_seconds: 持续有票时每隔多少秒重复提醒（默认 300 秒 = 5 分钟）",
+  "_comment_remind": "remind_interval_seconds: 持续有票时每隔多少秒重复提醒（默认 60 秒）",
   "monitors": [
     {
       "id": "xuezhiqian_taiyuan_damai",
@@ -25,19 +29,8 @@
       "mode": "page",
       "label": "票星球",
       "url": "http://www.xingqiupiao.com/event?id=113812",
-      "buy_keywords": [
-        "立即购买",
-        "选座购买",
-        "去购买",
-        "立即预订"
-      ],
-      "sold_keywords": [
-        "已售罄",
-        "售罄",
-        "缺货登记",
-        "下架",
-        "已下架"
-      ],
+      "buy_keywords": ["立即购买", "选座购买", "去购买", "立即预订"],
+      "sold_keywords": ["已售罄", "售罄", "缺货登记", "下架", "已下架"],
       "buy_url": "http://www.xingqiupiao.com/event?id=113812",
       "buy_url_mobile": "http://www.xingqiupiao.com/event?id=113812",
       "comment": "代拍平台 — 太原站 2026.04.24-05.03"
@@ -49,21 +42,8 @@
       "mode": "page",
       "label": "有票网",
       "url": "https://www.ypiao.com/t_113812/",
-      "buy_keywords": [
-        "立即购买",
-        "去购买",
-        "立即预订",
-        "我要买票",
-        "有票"
-      ],
-      "sold_keywords": [
-        "已售罄",
-        "售罄",
-        "缺货登记",
-        "下架",
-        "已下架",
-        "等待开售"
-      ],
+      "buy_keywords": ["立即购买", "去购买", "立即预订", "我要买票", "有票"],
+      "sold_keywords": ["已售罄", "售罄", "缺货登记", "下架", "已下架", "等待开售"],
       "buy_url": "https://www.ypiao.com/t_113812/",
       "buy_url_mobile": "https://www.ypiao.com/t_113812/",
       "comment": "代拍平台 — 太原站 2026.04.24-05.03"
@@ -75,18 +55,8 @@
       "mode": "page",
       "label": "大河票务",
       "url": "https://m.dahepiao.com/yc/xuezhiqaintaiyuanych/",
-      "buy_keywords": [
-        "立即购买",
-        "选座购买",
-        "立即预订",
-        "有票"
-      ],
-      "sold_keywords": [
-        "已售罄",
-        "售罄",
-        "缺货登记",
-        "等待开售"
-      ],
+      "buy_keywords": ["立即购买", "选座购买", "立即预订", "有票"],
+      "sold_keywords": ["已售罄", "售罄", "缺货登记", "等待开售"],
       "buy_url": "https://m.dahepiao.com/yc/xuezhiqaintaiyuanych/",
       "buy_url_mobile": "https://m.dahepiao.com/yc/xuezhiqaintaiyuanych/",
       "comment": "第三方票务 — 太原站 2026.04.24-05.03"
@@ -98,18 +68,8 @@
       "mode": "page",
       "label": "摩天轮",
       "url": "https://m.motianlun.cn/pages/show-detail/show-detail?showId=682c3c88f1b2200001985198",
-      "buy_keywords": [
-        "立即购买",
-        "选座购买",
-        "去购买",
-        "有票"
-      ],
-      "sold_keywords": [
-        "已售罄",
-        "售罄",
-        "缺货登记",
-        "已下架"
-      ],
+      "buy_keywords": ["立即购买", "选座购买", "去购买", "有票"],
+      "sold_keywords": ["已售罄", "售罄", "缺货登记", "已下架"],
       "buy_url": "https://m.motianlun.cn/pages/show-detail/show-detail?showId=682c3c88f1b2200001985198",
       "buy_url_mobile": "https://m.motianlun.cn/pages/show-detail/show-detail?showId=682c3c88f1b2200001985198",
       "comment": "二级票务撮合平台 — 太原站 2026.04.24-05.03 — 回流票较多"
@@ -118,22 +78,10 @@
       "id": "damai_1021197513737",
       "enabled": true,
       "platform": "damai",
-      "mode": "page",
-      "label": "周杰伦「嘉年华」2026巡回-杭州站",
-      "url": "https://detail.damai.cn/item.htm?id=1021197513737",
+      "label": "周杰伦「嘉年华」杭州站",
       "item_id": "1021197513737",
       "buy_url": "https://detail.damai.cn/item.htm?id=1021197513737",
       "buy_url_mobile": "damai://V1/ProjectPage?id=1021197513737",
-      "buy_keywords": [
-        "立即购买",
-        "立即预订",
-        "选座购买"
-      ],
-      "sold_keywords": [
-        "缺货登记",
-        "已售罄",
-        "暂无可售"
-      ],
       "comment": "杭州 · 2026.04.03-04.05"
     }
   ],

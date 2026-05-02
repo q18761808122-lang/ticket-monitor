@@ -5,12 +5,16 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="票务监控">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icon-192.png">
 <title>票务监控</title>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#f5f5f5;color:#333;max-width:500px;margin:0 auto;min-height:100vh}
-.header{background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;padding:16px 20px;text-align:center;font-size:18px;font-weight:600;position:sticky;top:0;z-index:10}
-.tabs{display:flex;background:#fff;border-bottom:1px solid #eee;position:sticky;top:52px;z-index:10}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:#f5f5f5;color:#333;max-width:500px;margin:0 auto;min-height:100vh;padding-bottom:20px}
+.header{background:linear-gradient(135deg,#e74c3c,#c0392b);color:#fff;padding:14px 20px;text-align:center;font-size:17px;font-weight:600;position:sticky;top:0;z-index:10;display:flex;align-items:center;justify-content:space-between}
+.header .badge{background:rgba(255,255,255,.25);color:#fff;font-size:11px;padding:3px 8px;border-radius:10px;font-weight:400}
+.tabs{display:flex;background:#fff;border-bottom:1px solid #eee;position:sticky;top:44px;z-index:10}
 .tab{flex:1;text-align:center;padding:12px;font-size:14px;color:#999;border-bottom:2px solid transparent;cursor:pointer;transition:.2s}
 .tab.active{color:#e74c3c;border-bottom-color:#e74c3c;font-weight:600}
 .page{display:none;padding:16px}
@@ -19,6 +23,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .card h4{font-size:15px;margin-bottom:6px;line-height:1.4}
 .card .meta{font-size:12px;color:#999;margin-bottom:8px}
 .card .actions{display:flex;gap:8px;justify-content:flex-end}
+.status-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:4px}
+.status-available{background:#2ecc71}
+.status-sold_out{background:#e74c3c}
+.status-unknown{background:#f39c12}
 .btn{padding:8px 16px;border-radius:6px;font-size:13px;border:none;cursor:pointer;font-weight:500;transition:.2s}
 .btn-red{background:#e74c3c;color:#fff}
 .btn-red:active{background:#c0392b}
@@ -44,6 +52,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;b
 .monitor-info{flex:1;min-width:0}
 .monitor-info .name{font-size:14px;font-weight:500;margin-bottom:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .monitor-info .url{font-size:11px;color:#999;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.monitor-info .st{font-size:11px;margin-top:2px}
 .monitor-actions{display:flex;align-items:center;gap:10px;flex-shrink:0}
 .tag{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;margin-right:4px}
 .tag-damai{background:#fff0f0;color:#e74c3c}
@@ -62,14 +71,25 @@ input[type="text"],input[type="password"]{width:100%;padding:10px;border:1px sol
 input[type="text"]:focus,input[type="password"]:focus{border-color:#e74c3c}
 .form-group{margin-bottom:12px}
 .form-group label{display:block;font-size:13px;color:#666;margin-bottom:4px;font-weight:500}
+.form-group small{color:#999;font-size:11px}
 .search-tip{font-size:12px;color:#999;margin-top:6px}
 .in-monitor{opacity:.5;pointer-events:none}
 .in-monitor .btn{background:#ccc!important}
+.quick-singers{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.quick-singers .chip{background:#fff;border:1px solid #ddd;border-radius:14px;padding:5px 12px;font-size:13px;cursor:pointer;transition:.2s}
+.quick-singers .chip:active{background:#fef0ef;border-color:#e74c3c;color:#e74c3c}
+.notify-status{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+.notify-status span{font-size:11px;padding:2px 8px;border-radius:10px}
+.notify-on{background:#e8f8e8;color:#27ae60}
+.notify-off{background:#f0f0f0;color:#999}
 </style>
 </head>
 <body>
 
-<div class="header">票务监控</div>
+<div class="header">
+  <span>票务监控</span>
+  <span class="badge" id="header-badge">--</span>
+</div>
 
 <div class="tabs">
   <div class="tab active" onclick="switchTab('search')">搜索</div>
@@ -88,7 +108,17 @@ input[type="text"]:focus,input[type="password"]:focus{border-color:#e74c3c}
     <input id="search-input" type="text" placeholder="输入歌手名，如：薛之谦、周杰伦..." onkeydown="if(event.key==='Enter')search()">
     <button class="btn btn-red" onclick="search()">搜索</button>
   </div>
-  <div class="search-tip">数据来自票星球搜索结果，每 30 分钟自动更新</div>
+  <div class="quick-singers">
+    <span class="chip" onclick="quickSearch('薛之谦')">薛之谦</span>
+    <span class="chip" onclick="quickSearch('周杰伦')">周杰伦</span>
+    <span class="chip" onclick="quickSearch('林俊杰')">林俊杰</span>
+    <span class="chip" onclick="quickSearch('五月天')">五月天</span>
+    <span class="chip" onclick="quickSearch('陈奕迅')">陈奕迅</span>
+    <span class="chip" onclick="quickSearch('邓紫棋')">邓紫棋</span>
+    <span class="chip" onclick="quickSearch('张杰')">张杰</span>
+    <span class="chip" onclick="quickSearch('蔡依林')">蔡依林</span>
+  </div>
+  <div class="search-tip">数据来自票星球/大河/摩天轮，每 6 小时自动更新</div>
   <div id="search-results"></div>
   <div style="margin-top:24px;padding-top:16px;border-top:1px solid #eee">
     <h5 style="font-size:14px;color:#666;margin-bottom:10px">手动添加监控</h5>
@@ -97,6 +127,9 @@ input[type="text"]:focus,input[type="password"]:focus{border-color:#e74c3c}
     <select id="manual-platform" style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:10px">
       <option value="generic">通用（页面关键词检测）</option>
       <option value="damai">大麦</option>
+      <option value="maoyan">猫眼</option>
+      <option value="showstart">秀动</option>
+      <option value="douyin">抖音</option>
     </select>
     <button class="btn btn-red btn-block" onclick="addManual()">添加监控</button>
   </div>
@@ -107,6 +140,7 @@ input[type="text"]:focus,input[type="password"]:focus{border-color:#e74c3c}
   <div id="monitor-stats" class="stats" style="display:none">
     <div class="stat"><div class="num" id="mstat-total">0</div><div class="lbl">监控项</div></div>
     <div class="stat"><div class="num" id="mstat-enabled">0</div><div class="lbl">已启用</div></div>
+    <div class="stat"><div class="num" id="mstat-available" style="color:#2ecc71">0</div><div class="lbl">有票</div></div>
   </div>
   <div id="monitor-list"></div>
   <div class="empty" id="monitor-empty" style="display:none">暂无监控项<br><small>去「搜索」页添加，或手动粘贴链接</small></div>
@@ -115,8 +149,7 @@ input[type="text"]:focus,input[type="password"]:focus{border-color:#e74c3c}
 <!-- 设置页 -->
 <div id="page-settings" class="page">
   <div class="setup-hint">
-    配置 GitHub 信息后可在手机端管理监控。<br>
-    Token 仅保存在你手机本地，不会上传到任何第三方。
+    配置后可手机端管理监控。所有信息仅保存在你手机本地。
   </div>
   <div class="form-group">
     <label>GitHub 用户名</label>
@@ -129,21 +162,37 @@ input[type="text"]:focus,input[type="password"]:focus{border-color:#e74c3c}
   <div class="form-group">
     <label>GitHub Token</label>
     <input id="cfg-token" type="password" placeholder="ghp_...">
-    <small style="color:#999">需要 repo 权限。在 GitHub Settings → Developer settings → Tokens 创建</small>
+    <small>需 repo 权限。GitHub Settings → Developer settings → Tokens</small>
+  </div>
+  <div class="form-group">
+    <label>PushPlus Token（微信通知）</label>
+    <input id="cfg-pushplus" type="text" placeholder="PushPlus Token">
+    <small>去 pushplus.plus 注册获取，通知发到微信</small>
+  </div>
+  <div class="form-group">
+    <label>Bark Key（iOS 推送）</label>
+    <input id="cfg-bark" type="text" placeholder="Bark Key">
+    <small>App Store 安装 Bark，复制 Key</small>
   </div>
   <button class="btn btn-red btn-block" onclick="saveSettings()">保存设置</button>
   <hr style="margin:20px 0;border-color:#eee">
-  <button class="btn btn-outline btn-block" onclick="triggerScan()">触发搜索扫描（GitHub Actions）</button>
-  <small style="display:block;text-align:center;margin-top:8px;color:#999">扫描完成后等待约 2 分钟，刷新页面即可看到新演出</small>
+  <button class="btn btn-outline btn-block" onclick="triggerScan()">触发搜索扫描</button>
+  <small style="display:block;text-align:center;margin-top:8px;color:#999">扫描完成后等约 2 分钟，刷新即可看到新演出</small>
   <hr style="margin:20px 0;border-color:#eee">
   <button class="btn btn-gray btn-block" onclick="loadMonitors()">刷新监控列表</button>
 </div>
 
 <script>
+// ── PWA 注册 ──
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js');
+}
+
 // ── 状态 ──
 let monitors = [];
 let searchCache = [];
 let monitorIds = new Set();
+let stateData = {};
 
 // ── 设置管理 ──
 function getSettings() {
@@ -151,6 +200,8 @@ function getSettings() {
     owner: localStorage.getItem('gh_owner') || '',
     repo: localStorage.getItem('gh_repo') || 'ticket-monitor',
     token: localStorage.getItem('gh_token') || '',
+    pushplus: localStorage.getItem('pushplus_token') || '',
+    bark: localStorage.getItem('bark_key') || '',
   };
 }
 
@@ -158,6 +209,8 @@ function saveSettings() {
   localStorage.setItem('gh_owner', document.getElementById('cfg-owner').value.trim());
   localStorage.setItem('gh_repo', document.getElementById('cfg-repo').value.trim() || 'ticket-monitor');
   localStorage.setItem('gh_token', document.getElementById('cfg-token').value.trim());
+  localStorage.setItem('pushplus_token', document.getElementById('cfg-pushplus').value.trim());
+  localStorage.setItem('bark_key', document.getElementById('cfg-bark').value.trim());
   toast('设置已保存');
 }
 
@@ -166,6 +219,8 @@ function loadSettings() {
   document.getElementById('cfg-owner').value = s.owner;
   document.getElementById('cfg-repo').value = s.repo;
   document.getElementById('cfg-token').value = s.token;
+  document.getElementById('cfg-pushplus').value = s.pushplus;
+  document.getElementById('cfg-bark').value = s.bark;
 }
 
 // ── GitHub API ──
@@ -182,7 +237,6 @@ async function gh(path, method = 'GET', body = null) {
   } catch(e) { return null; }
 }
 
-// ── 读取 config.json ──
 async function fetchConfig() {
   const s = getSettings();
   if (s.owner) {
@@ -196,6 +250,17 @@ async function fetchConfig() {
     try { return JSON.parse(base64ToUtf8(data.content)); } catch(e) {}
   }
   return null;
+}
+
+async function fetchState() {
+  const s = getSettings();
+  if (s.owner) {
+    try {
+      const r = await fetch(`https://raw.githubusercontent.com/${s.owner}/${s.repo}/main/state.json`);
+      if (r.ok) return await r.json();
+    } catch(e) {}
+  }
+  return {};
 }
 
 function utf8ToBase64(str) {
@@ -224,16 +289,15 @@ async function updateConfig(newCfg) {
   return !!r;
 }
 
-// ── 触发 GitHub Actions 扫描 ──
 async function triggerScan() {
   const s = getSettings();
   if (!s.owner || !s.token) { toast('请先配置 GitHub 信息'); return; }
   try {
     const r = await fetch(
-      `https://api.github.com/repos/${s.owner}/${s.repo}/actions/workflows/monitor.yml/dispatches`,
+      `https://api.github.com/repos/${s.owner}/${s.repo}/actions/workflows/update_cache.yml/dispatches`,
       { method: 'POST',
         headers: { Authorization: `token ${s.token}`, Accept: 'application/vnd.github.v3+json' },
-        body: JSON.stringify({ ref: 'main', inputs: { search_only: 'true' } })
+        body: JSON.stringify({ ref: 'main' })
       });
     if (r.ok || r.status === 204) {
       toast('扫描已触发，约 2 分钟后刷新页面查看');
@@ -256,6 +320,12 @@ function switchTab(name) {
   if (name==='settings') loadSettings();
 }
 
+// ── 快速搜索 ──
+function quickSearch(name) {
+  document.getElementById('search-input').value = name;
+  search();
+}
+
 // ── 搜索 ──
 async function search() {
   const q = document.getElementById('search-input').value.trim();
@@ -271,10 +341,7 @@ async function search() {
   );
 
   if (results.length === 0) {
-    el.innerHTML = `<div class="empty">未找到「${q}」相关演出<br><small>试试搜索：薛之谦、周杰伦、五月天、蔡依林...</small><br><br>
-      <button class="btn btn-outline btn-sm" onclick="document.getElementById('search-input').value='薛之谦';search()">薛之谦</button>
-      <button class="btn btn-outline btn-sm" style="margin-left:8px" onclick="document.getElementById('search-input').value='周杰伦';search()">周杰伦</button>
-    </div>`;
+    el.innerHTML = `<div class="empty">未找到「${q}」相关演出<br><small>试试搜索：薛之谦、周杰伦、五月天...</small></div>`;
     return;
   }
 
@@ -285,7 +352,7 @@ async function search() {
 
 function renderSearchResults(el, results) {
   el.innerHTML = results.map((r, i) => {
-    const isMonitoring = monitorIds.has(r.item_id || '') || monitorIds.has((r.platform||'generic')+'_'+r.item_id);
+    const isMonitoring = monitorIds.has(r.item_id) || monitorIds.has((r.platform||'generic')+'_'+r.item_id);
     const btnHtml = isMonitoring
       ? '<button class="btn btn-gray btn-sm" disabled>已监控</button>'
       : `<button class="btn btn-red btn-sm" onclick="addMonitorFromSearch(${i})">+ 监控</button>`;
@@ -304,19 +371,16 @@ function renderSearchResults(el, results) {
 
 function escHtml(s) {
   const d = document.createElement('div');
-  d.textContent = s;
+  d.textContent = s || '';
   return d.innerHTML;
 }
 
-// ── 加载搜索缓存 ──
 async function loadSearchCache() {
   if (searchCache.length > 0) return;
-  // 同源加载（GitHub Pages 部署后 work）
   try {
     const r = await fetch('search_cache.json');
     if (r.ok) { searchCache = await r.json(); updateStats(); return; }
   } catch(e) {}
-  // GitHub Raw
   const s = getSettings();
   if (s.owner) {
     try {
@@ -324,10 +388,6 @@ async function loadSearchCache() {
       if (r.ok) { searchCache = await r.json(); updateStats(); return; }
     } catch(e) {}
   }
-  // 内置默认（精简版）
-  searchCache = [
-    {name:"薛之谦「万兽之王」巡回演唱会-太原站",city:"太原",time:"2026.04.24-05.03",platform:"damai",item_id:"1030416581941",url:"https://detail.damai.cn/item.htm?id=1030416581941",url_mobile:"damai://V1/ProjectPage?id=1030416581941",buy_url:"https://detail.damai.cn/item.htm?id=1030416581941",buy_keywords:["立即购买","立即预订","选座购买"],sold_keywords:["缺货登记","已售罄","暂无可售"],mode:"page",keywords:"薛之谦"}
-  ];
 }
 
 function updateStats() {
@@ -338,7 +398,6 @@ function updateStats() {
   document.getElementById('stat-monitors').textContent = monitorIds.size;
 }
 
-// ── 加载当前监控 ID 集合 ──
 async function loadMonitorIds() {
   if (monitorIds.size > 0) return;
   const c = await fetchConfig();
@@ -351,12 +410,11 @@ async function loadMonitorIds() {
   }
 }
 
-// ── 从搜索结果添加监控 ──
 function addMonitorFromSearch(idx) {
   const r = window._lastSearchResults[idx];
   if (!r) return;
   const id = (r.platform || 'generic') + '_' + (r.item_id || Date.now());
-  if (monitorIds.has(id) || monitorIds.has(r.item_id || '')) {
+  if (monitorIds.has(id) || monitorIds.has(r.item_id)) {
     toast('已在监控列表中');
     return;
   }
@@ -378,10 +436,7 @@ function addMonitorFromSearch(idx) {
 
 async function addToMonitors(cfg) {
   const c = await fetchConfig();
-  if (!c) {
-    toast('请先在「设置」页填写 GitHub 信息');
-    return;
-  }
+  if (!c) { toast('请先在「设置」页填写 GitHub 信息'); return; }
   c.monitors = c.monitors || [];
   if (c.monitors.find(m => m.id === cfg.id)) {
     cfg.id = cfg.id + '_' + Math.random().toString(36).slice(2,6);
@@ -393,7 +448,6 @@ async function addToMonitors(cfg) {
     if (cfg.item_id) monitorIds.add(cfg.item_id);
     monitors = c.monitors;
     toast('已添加: ' + cfg.label);
-    // 刷新搜索结果显示已监控
     if (window._lastSearchResults) {
       renderSearchResults(document.getElementById('search-results'), window._lastSearchResults);
     }
@@ -418,13 +472,13 @@ function addManual() {
     url: url,
     buy_url: url,
     buy_url_mobile: url,
-    buy_keywords: platform === 'damai' ? ['立即购买', '立即预订', '选座购买'] : ['立即购买', '选座购买', '去购买', '立即预订'],
-    sold_keywords: platform === 'damai' ? ['缺货登记', '已售罄', '暂无可售'] : ['已售罄', '售罄', '缺货登记'],
+    buy_keywords: ['立即购买', '选座购买', '立即预订'],
+    sold_keywords: ['已售罄', '售罄', '缺货登记'],
     comment: '手动添加',
   });
 }
 
-// ── 监控列表 ──
+// ── 监控列表（含实时状态） ──
 async function loadMonitors() {
   const el = document.getElementById('monitor-list');
   const emptyEl = document.getElementById('monitor-empty');
@@ -445,19 +499,36 @@ async function loadMonitors() {
     monitorIds.add(m.id || '');
   });
 
+  // 加载 state.json 获取实时状态
+  stateData = await fetchState();
+
   emptyEl.style.display = 'none';
   statsEl.style.display = 'flex';
   document.getElementById('mstat-total').textContent = monitors.length;
-  document.getElementById('mstat-enabled').textContent = monitors.filter(m => m.enabled !== false).length;
+  const enabled = monitors.filter(m => m.enabled !== false);
+  document.getElementById('mstat-enabled').textContent = enabled.length;
+  const availCount = monitors.filter(m => {
+    const st = stateData[m.id];
+    return st && st.status === 'available';
+  }).length;
+  document.getElementById('mstat-available').textContent = availCount;
+  document.getElementById('header-badge').textContent = availCount > 0 ? `有票 ${availCount}` : '监控中';
 
-  el.innerHTML = monitors.map((m,i) => `
+  el.innerHTML = monitors.map((m,i) => {
+    const st = stateData[m.id];
+    const status = st ? st.status : 'new';
+    const statusText = {available:'有票', sold_out:'售罄', unknown:'未知', new:'待检测'}[status] || status;
+    const dotClass = {available:'status-available', sold_out:'status-sold_out'}[status] || 'status-unknown';
+    const lastChange = st && st.last_change ? st.last_change.slice(0,16).replace('T',' ') : '';
+    return `
     <div class="monitor-row">
       <div class="monitor-info">
         <div class="name">
           <span class="tag ${m.platform==='damai'?'tag-damai':'tag-generic'}">${m.platform==='damai'?'大麦':m.platform||'通用'}</span>
           ${escHtml(m.label||'')}
         </div>
-        <div class="url">${escHtml(m.url||m.item_id||'')}</div>
+        <div class="st"><span class="status-dot ${dotClass}"></span>${statusText}${lastChange?' · '+lastChange:''}</div>
+        <div class="url">${escHtml(m.url||m.item_id||m.comment||'')}</div>
       </div>
       <div class="monitor-actions">
         <label class="toggle">
@@ -467,7 +538,7 @@ async function loadMonitors() {
         <button class="btn btn-outline btn-sm" onclick="deleteMonitor(${i})">删</button>
       </div>
     </div>
-  `).join('');
+  `}).join('');
   updateStats();
 }
 
@@ -492,7 +563,6 @@ async function deleteMonitor(idx) {
   }
 }
 
-// ── Toast ──
 function toast(msg) {
   const t = document.createElement('div');
   t.className = 'toast';
