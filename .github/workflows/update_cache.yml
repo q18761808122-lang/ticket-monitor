@@ -1,16 +1,13 @@
-name: 票务监控
+name: 更新搜索缓存
 
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    # 每天北京时间凌晨3点 (UTC 19:00)
+    - cron: "0 19 * * *"
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths-ignore:
-      - "state.json"
 
 jobs:
-  check:
+  update-cache:
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -23,33 +20,25 @@ jobs:
           python-version: "3.11"
           cache: "pip"
 
-      - name: 安装依赖
+      - name: 安装 Python 依赖
         run: pip install -r requirements.txt
 
-      - name: 检查票务
-        env:
-          PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
-          BARK_KEY: ${{ secrets.BARK_KEY }}
-        run: python ticket_monitor.py --once
+      - name: 安装 Playwright 浏览器
+        run: playwright install --with-deps chromium
 
-      - name: 提交状态更新
+      - name: 运行搜索缓存更新
+        run: python update_search_cache.py
+
+      - name: 提交缓存更新
         run: |
-          if [ -n "$(git status --porcelain state.json)" ]; then
+          if [ -n "$(git status --porcelain public/search_cache.json)" ]; then
             git config user.name "github-actions[bot]"
             git config user.email "github-actions[bot]@users.noreply.github.com"
-            git add state.json
-            git commit -m "更新状态 [skip ci]"
+            git add public/search_cache.json
+            COUNT=$(cat cache_update_count.txt 2>/dev/null || echo "0")
+            git commit -m "更新搜索缓存 — 新增 ${COUNT} 条 [skip ci]"
             git push
           fi
-
-  deploy:
-    if: github.event_name != 'schedule'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-
-    steps:
-      - uses: actions/checkout@v4
 
       - name: 部署到 GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
