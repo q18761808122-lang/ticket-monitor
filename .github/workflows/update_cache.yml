@@ -23,13 +23,10 @@ jobs:
       - name: 安装 Python 依赖
         run: pip install -r requirements.txt
 
-      - name: 安装 Playwright 系统依赖
-        run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y -qq libnss3 libnspr4 libatk-bridge2.0-0 libdrm2 libxkbcommon0 libgbm1 libasound2 libcups2 2>/dev/null || true
-
       - name: 安装 Playwright 浏览器
-        run: python -m playwright install chromium
+        uses: microsoft/playwright@v1
+        with:
+          browsers: chromium
 
       - name: 运行搜索缓存更新
         run: python update_search_cache.py
