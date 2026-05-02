@@ -242,7 +242,13 @@ STATUS_UNKNOWN = "unknown"
 def check_damai(item_id: str) -> tuple[str, str]:
     """
     大麦桌面版：https://detail.damai.cn/item.htm?id={item_id}
-    核心信号：window.buyFlag（服务端直接写入的 JS 变量）
+
+    判断优先级（避免假阳性）：
+      1. 「缺货登记」→ 100% 售罄，直接返回
+      2. 「已售罄」「暂无可售」+ 无「立即购买」→ 售罄
+      3. 「即将开售」「提交开售提醒」→ 尚未开售
+      4. 「立即购买」存在但按钮为 disabled/gray → 不可购买
+      5. buyFlag=true + 有购买词 + 无售罄词 → 有票
     """
     detail = f"大麦 item={item_id}"
     page_url = f"https://detail.damai.cn/item.htm?id={item_id}"
@@ -250,29 +256,80 @@ def check_damai(item_id: str) -> tuple[str, str]:
     if not html:
         return STATUS_UNKNOWN, f"{detail} → 页面请求失败"
 
-    # ⭐ 最可靠信号：window.buyFlag（服务端直接写入，不依赖 JS 渲染）
-    if "window.buyFlag = true" in html or "window.buyFlag=true" in html:
-        return STATUS_AVAILABLE, f"{detail} → 有票/可购买"
-    if "window.buyFlag = false" in html or "window.buyFlag=false" in html:
-        pass  # buyFlag 为 false，继续用其他指标确认
+    # ── 第一优先级：100% 售罄信号 ──
+    # 「缺货登记」是大麦最明确的售罄标志，一旦出现绝无可能买到
+    if "缺货登记" in html:
+        return STATUS_SOLD_OUT, f"{detail} → 已售罄（缺货登记）"
 
-    # 辅助信号：文本关键词
-    has_buy_text = find_keywords_in_html(html, ["立即购买", "立即预订", "选座购买"])
-    has_sold_text = find_keywords_in_html(html, ["缺货登记", "已售罄", "暂无可售"])
-    has_upcoming_text = find_keywords_in_html(html, ["即将开售", "预约抢购", "提交开售提醒"])
-
-    if has_buy_text:
-        return STATUS_AVAILABLE, f"{detail} → 有票/可购买"
-    if has_sold_text:
-        return STATUS_SOLD_OUT, f"{detail} → 已售罄"
-    if has_upcoming_text:
+    # ── 第二优先级：尚未开售 ──
+    if find_keywords_in_html(html, ["即将开售", "预约抢购", "提交开售提醒"]):
         return STATUS_UNKNOWN, f"{detail} → 尚未开售"
 
-    # buyFlag 明确为 false 且无其他信号 → 售罄
-    if "window.buyFlag" in html:
-        return STATUS_SOLD_OUT, f"{detail} → 已售罄 (buyFlag=false)"
+    # ── 第三优先级：检查售罄词（仅次于缺货登记） ──
+    has_sold = find_keywords_in_html(html, ["已售罄", "暂无可售", "已下架"])
+    has_buy = find_keywords_in_html(html, ["立即购买", "选座购买", "立即预订"])
+
+    # 有售罄词且没有有效的购买按钮 → 售罄
+    if has_sold and not _has_active_buy_button(html):
+        return STATUS_SOLD_OUT, f"{detail} → 已售罄"
+
+    # ── 第四优先级：检测 buyFlag ──
+    buy_flag_true = "window.buyFlag = true" in html or "window.buyFlag=true" in html or '"buyFlag":true' in html
+    buy_flag_false = "window.buyFlag = false" in html or "window.buyFlag=false" in html or '"buyFlag":false' in html
+
+    # buyFlag 明确为 false → 售罄
+    if buy_flag_false and not buy_flag_true:
+        return STATUS_SOLD_OUT, f"{detail} → 已售罄"
+
+    # ── 第五优先级：有票需同时满足三个条件 ──
+    # 1. buyFlag 为 true（或未明确 false）
+    # 2. 存在活跃的购买按钮
+    # 3. 不存在任何售罄词
+    if buy_flag_true and _has_active_buy_button(html) and not has_sold:
+        return STATUS_AVAILABLE, f"{detail} → 有票"
+
+    # 仅有购买文字但无 buyFlag 确认 → 不确定（可能是缓存/部分渲染）
+    if has_buy and not has_sold and not buy_flag_false:
+        return STATUS_UNKNOWN, f"{detail} → 疑似有票（无 buyFlag 确认）"
 
     return STATUS_UNKNOWN, f"{detail} → 无法确定状态"
+
+
+def _has_active_buy_button(html: str) -> bool:
+    """
+    检查是否存在真正可点击的购买按钮，而非灰色/disabled 状态。
+    大麦的购买按钮在不可点击时通常带有 disabled、gray、cant-buy 等标记。
+    """
+    from bs4 import BeautifulSoup
+    soup = BeautifulSoup(html, "html.parser")
+
+    buy_texts = ["立即购买", "选座购买", "立即预订"]
+
+    # 查找包含购买文字的元素
+    for element in soup.find_all(string=lambda t: t and any(kw in t for kw in buy_texts)):
+        parent = element.parent
+        # 向上查找 3 层，检查是否有 disabled/gray 标记
+        for _ in range(3):
+            if parent is None:
+                break
+            # 检查 class 和属性
+            classes = " ".join(parent.get("class", []))
+            attrs = " ".join(parent.attrs.keys()) if hasattr(parent, "attrs") else ""
+
+            # 失效信号
+            if any(x in classes.lower() for x in ["disabled", "gray", "cant-buy", "unable", "not-available"]):
+                break
+            if parent.get("disabled") is not None:
+                break
+            if "disable" in str(parent.get("style", "")).lower():
+                break
+
+            parent = parent.parent
+        else:
+            # 未发现失效标记 → 按钮可能有效
+            return True
+
+    return False
 
 
 def check_maoyan(show_id: str) -> tuple[str, str]:
