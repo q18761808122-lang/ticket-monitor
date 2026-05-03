@@ -650,7 +650,7 @@ def run_loop(once: bool = False):
     if notifier_cfg["pushplus_token"] and notifier_cfg["pushplus_token"] != "你的PushPlusToken":
         log.info(f"PushPlus 微信通知已启用，每 {global_cfg.get('remind_interval_seconds', 300)}s 提醒一次")
     else:
-        log.info("PushPlus 微信通知未配置，仅使用桌面弹窗")
+        log.info("PushPlus 微信通知未配置，Bark/钉钉/飞书等其他通道仍可用")
     if notifier_cfg["bark_key"] and notifier_cfg["bark_key"] != "你的BarkKey":
         log.info("Bark iOS 通知已启用")
     if notifier_cfg["dingtalk_webhook"] and notifier_cfg["dingtalk_webhook"] != "你的钉钉Webhook":
