@@ -22,6 +22,13 @@ from urllib.parse import quote
 import requests
 from bs4 import BeautifulSoup
 
+# ── 终极窗口压制：环境变量级封堵，确保 Chromium/Playwright 无法创建任何可见窗口 ──
+os.environ["PLAYWRIGHT_BROWSERS_PATH"] = os.environ.get("PLAYWRIGHT_BROWSERS_PATH", "0")
+os.environ["DISPLAY"] = ":99"
+os.environ["BROWSER"] = "none"
+os.environ["CHROMIUM_FLAGS"] = "--headless=new --no-sandbox --disable-gpu --disable-software-rasterizer"
+os.environ["NO_CONSOLE"] = "1"
+
 # ── 路径 ──────────────────────────────────────────────
 BASE_DIR = Path(__file__).resolve().parent
 CONFIG_PATH = BASE_DIR / "config.json"
@@ -35,9 +42,11 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(message)s",
     handlers=[
         RotatingFileHandler(LOG_PATH, maxBytes=5 * 1024 * 1024, backupCount=3, encoding="utf-8"),
-        logging.StreamHandler(open(sys.stdout.fileno(), mode='w', encoding='utf-8', errors='replace')),
     ],
 )
+# 彻底禁用 stdout/stderr 输出，防止弹出控制台窗口
+sys.stdout = open(os.devnull, 'w')
+sys.stderr = open(os.devnull, 'w')
 log = logging.getLogger("ticket_monitor")
 
 # ── HTTP 会话池 ────────────────────────────────────────
@@ -233,8 +242,21 @@ def check_damai(item_id: str) -> tuple[str, str]:
         from playwright.sync_api import sync_playwright
         with sync_playwright() as p:
             browser = p.chromium.launch(headless=True, args=[
+                "--headless=new",
                 "--disable-gpu", "--no-sandbox", "--disable-dev-shm-usage",
                 "--disable-blink-features=AutomationControlled",
+                "--disable-extensions",
+                "--mute-audio",
+                "--disable-background-networking",
+                "--disable-sync",
+                "--disable-default-apps",
+                "--hide-scrollbars",
+                "--no-first-run",
+                "--no-default-browser-check",
+                "--disable-infobars",
+                "--disable-notifications",
+                "--disable-popup-blocking",
+                "--window-size=1024,768",
             ])
             context = browser.new_context(
                 user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/131.0.0.0 Safari/537.36",

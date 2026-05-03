@@ -1,17 +1,5 @@
 @echo off
-chcp 65001 >nul
-title 票务监控
-
+chcp 65001 >nul 2>&1
 cd /d "%~dp0"
-
-echo.
-echo ╔════════════════════════════════╗
-echo ║    演出票务回流票监控工具     ║
-echo ╚════════════════════════════════╝
-echo.
-echo 按 Ctrl+C 可随时停止
-echo.
-
-python ticket_monitor.py
-
-pause
+REM 票务监控 — 后台静默模式
+start "" /B pythonw.exe ticket_monitor.py >nul 2>&1
