@@ -8,7 +8,6 @@ import json
 import logging
 import os
 import re
-import subprocess
 import sys
 import time
 import hashlib
@@ -60,44 +59,6 @@ STATUS_UNKNOWN = "unknown"
 # ═══════════════════════════════════════════════════════
 #  通知模块
 # ═══════════════════════════════════════════════════════
-
-def _escape_ps(s: str) -> str:
-    return s.replace("'", "''").replace("\n", " ").replace("\r", "")
-
-def send_toast(title: str, message: str, url: str = "", open_browser: bool = False) -> bool:
-    escaped_title = _escape_ps(title)
-    escaped_msg = _escape_ps(message)
-    escaped_url = _escape_ps(url)
-    ps_script = f'''
-Add-Type -AssemblyName System.Windows.Forms,System.Drawing
-$icon = [System.Drawing.SystemIcons]::Information
-$notify = New-Object System.Windows.Forms.NotifyIcon
-$notify.Icon = $icon
-$notify.Visible = $true
-$notify.BalloonTipTitle = "{escaped_title}"
-$notify.BalloonTipText = "{escaped_msg}"
-$notify.BalloonTipIcon = "Info"
-$notify.ShowBalloonTip(10000)
-Start-Sleep -Seconds 12
-$notify.Visible = $false
-$notify.Dispose()
-'''
-    try:
-        subprocess.Popen(
-            ["powershell", "-NoProfile", "-NonInteractive", "-Command", ps_script],
-            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-            creationflags=subprocess.CREATE_NO_WINDOW,
-        )
-        if url and open_browser:
-            subprocess.Popen(
-                ["powershell", "-NoProfile", "-NonInteractive", "-Command", f'Start-Process "{escaped_url}"'],
-                stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
-                creationflags=subprocess.CREATE_NO_WINDOW,
-            )
-        return True
-    except Exception as e:
-        log.warning(f"Toast 通知失败: {e}")
-        return False
 
 def send_pushplus(title: str, message: str, token: str) -> bool:
     if not token or token == "你的PushPlusToken":
@@ -173,13 +134,12 @@ def send_feishu(title: str, message: str, webhook: str) -> bool:
         return False
 
 def notify_all(title: str, html_msg: str, cfg: dict):
-    """多通道通知广播"""
+    """多通道通知广播（仅手机通道，不弹桌面窗口）"""
     text_msg = re.sub(r'<[^>]+>', '', html_msg)
     buy_url = cfg.get("buy_url", "")
     app_url = cfg.get("buy_url_mobile", buy_url)
 
-    send_toast(title, text_msg, buy_url, open_browser=True)
-
+    # 不再弹 Windows Toast — 所有通知走手机通道
     if pt := cfg.get("pushplus_token"):
         send_pushplus(title, html_msg, pt)
     if bk := cfg.get("bark_key"):
