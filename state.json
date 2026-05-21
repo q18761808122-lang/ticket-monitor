@@ -17,8 +17,8 @@
     "status": "available",
     "message": "https://www.ypiao.com/t_113812/ → 可能有票（关键词交叉命中）",
     "last_change": "2026-05-03T05:03:43.346397",
-    "last_remind": "2026-05-19T22:46:21.698537",
-    "remind_count": 70
+    "last_remind": "2026-05-20T23:53:25.820293",
+    "remind_count": 71
   },
   "xuezhiqian_taiyuan_dahe": {
     "status": "unknown",
@@ -360,8 +360,8 @@
     "status": "available",
     "message": "https://www.ypiao.com/t_113812/ → 可能有票（关键词同时命中）",
     "last_change": "2026-05-03T12:27:44.219864",
-    "last_remind": "2026-05-19T23:00:06.847298",
-    "remind_count": 75
+    "last_remind": "2026-05-21T00:07:36.976209",
+    "remind_count": 76
   },
   "auto_generic_motianlun_682c3c88f1b2200001985198": {
     "status": "unknown",
@@ -6051,6 +6051,69 @@
     "status": "unknown",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2019081684863.html → 页面请求失败",
     "last_change": "2026-05-19T23:21:39.674016",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_dahe_9030": {
+    "status": "unknown",
+    "message": "https://img03.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2Fimage%2F2024%2F03%2F30%2F50ddbb0e8b28defd99fd98af84dc5909.png&amp;sign=732880224ef0ebe1b2a607c49cd4e0e7 → 页面请求失败",
+    "last_change": "2026-05-20T23:54:17.801922",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_dahe_2637": {
+    "status": "unknown",
+    "message": "https://www.dahepiao.com/n → 页面请求失败",
+    "last_change": "2026-05-20T23:55:02.739579",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_dahe_3352": {
+    "status": "unknown",
+    "message": "https://www.dahepiao.com/y → 页面请求失败",
+    "last_change": "2026-05-20T23:55:02.749405",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_dahe_1775": {
+    "status": "unknown",
+    "message": "https://img03.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2F190817%2F156544-1ZQF94K0918.jpg&amp;sign=428f3289d839eb39ed00425a88690aa5 → 页面请求失败",
+    "last_change": "2026-05-21T00:00:50.871040",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_115803": {
+    "status": "sold_out",
+    "message": "http://www.xingqiupiao.com/event?id=115803 → 已售罄",
+    "last_change": "2026-05-21T00:06:14.751671",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_dahe_8512": {
+    "status": "unknown",
+    "message": "https://img03.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2Fallimg%2F250611%2F26161-fFCXChAhnkJwe.jpg&amp;sign=f76d166426063d112393af726396cade → 页面请求失败",
+    "last_change": "2026-05-21T00:28:41.459814",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_dahe_631": {
+    "status": "unknown",
+    "message": "https://img03.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2Fimage%2F2024%2F10%2F15%2Fbe0cd877509746a5257e21f997980c5c.png&amp;sign=5f35e5dd46874eca694bf986c95f7eba → 页面请求失败",
+    "last_change": "2026-05-21T00:28:46.413989",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_dahe_38": {
+    "status": "unknown",
+    "message": "https://www.dahepiao.com/mx/chenyixun/ → 页面请求失败",
+    "last_change": "2026-05-21T00:29:27.012921",
+    "last_remind": "",
+    "remind_count": 0
+  },
+  "auto_generic_dahe_5000": {
+    "status": "unknown",
+    "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2019081684863.html → 页面请求失败",
+    "last_change": "2026-05-21T00:29:32.983579",
     "last_remind": "",
     "remind_count": 0
   }
