@@ -840,6 +840,30 @@
     "keywords": "五月天"
   },
   {
+    "name": "五月天演出（大河票务）",
+    "city": "",
+    "time": "",
+    "platform": "generic",
+    "item_id": "dahe_3766",
+    "url": "https://img03.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2Fimage%2F2024%2F03%2F30%2F50ddbb0e8b28defd99fd98af84dc5909.png&amp;sign=732880224ef0ebe1b2a607c49cd4e0e7",
+    "url_mobile": "https://img03.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2Fimage%2F2024%2F03%2F30%2F50ddbb0e8b28defd99fd98af84dc5909.png&amp;sign=732880224ef0ebe1b2a607c49cd4e0e7",
+    "buy_url": "https://img03.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2Fimage%2F2024%2F03%2F30%2F50ddbb0e8b28defd99fd98af84dc5909.png&amp;sign=732880224ef0ebe1b2a607c49cd4e0e7",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "立即预订",
+      "有票"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "等待开售"
+    ],
+    "mode": "page",
+    "keywords": "五月天"
+  },
+  {
     "name": "【北京】2026五月天「#5525+2回到那一天」巡回演唱会-北京站",
     "city": "北京",
     "time": "",
@@ -2576,6 +2600,102 @@
     ],
     "mode": "page",
     "keywords": "华晨宇"
+  },
+  {
+    "name": "周杰伦演出（大河票务）",
+    "city": "",
+    "time": "",
+    "platform": "generic",
+    "item_id": "dahe_7752",
+    "url": "https://img02.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2Fimage%2F2022%2F01%2F22%2F5a76df85985cc75f861d20367a4612d5.png&amp;sign=e199305c83754528f338a194e9ea81f6",
+    "url_mobile": "https://img02.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2Fimage%2F2022%2F01%2F22%2F5a76df85985cc75f861d20367a4612d5.png&amp;sign=e199305c83754528f338a194e9ea81f6",
+    "buy_url": "https://img02.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2Fimage%2F2022%2F01%2F22%2F5a76df85985cc75f861d20367a4612d5.png&amp;sign=e199305c83754528f338a194e9ea81f6",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "立即预订",
+      "有票"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "等待开售"
+    ],
+    "mode": "page",
+    "keywords": "周杰伦"
+  },
+  {
+    "name": "周杰伦演出（大河票务）",
+    "city": "",
+    "time": "2022-1-25",
+    "platform": "generic",
+    "item_id": "20220122254618.html",
+    "url": "https://www.dahepiao.com/news1/yanchu/20220122254618.html",
+    "url_mobile": "https://www.dahepiao.com/news1/yanchu/20220122254618.html",
+    "buy_url": "https://www.dahepiao.com/news1/yanchu/20220122254618.html",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "立即预订",
+      "有票"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "等待开售"
+    ],
+    "mode": "page",
+    "keywords": "周杰伦"
+  },
+  {
+    "name": "周杰伦演出（大河票务）",
+    "city": "",
+    "time": "2022-1-25",
+    "platform": "generic",
+    "item_id": "dahe_1139",
+    "url": "https://www.dahepiao.com/",
+    "url_mobile": "https://www.dahepiao.com/",
+    "buy_url": "https://www.dahepiao.com/",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "立即预订",
+      "有票"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "等待开售"
+    ],
+    "mode": "page",
+    "keywords": "周杰伦"
+  },
+  {
+    "name": "周杰伦演出（大河票务）",
+    "city": "",
+    "time": "2026-5-29",
+    "platform": "generic",
+    "item_id": "zhoujielunwuhan",
+    "url": "https://www.dahepiao.com/yc/zhoujielunwuhan/",
+    "url_mobile": "https://www.dahepiao.com/yc/zhoujielunwuhan/",
+    "buy_url": "https://www.dahepiao.com/yc/zhoujielunwuhan/",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "立即预订",
+      "有票"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "等待开售"
+    ],
+    "mode": "page",
+    "keywords": "周杰伦"
   },
   {
     "name": "【北京】周杰伦2026世界巡回演唱会-北京站",
@@ -10453,6 +10573,54 @@
     "keywords": "林俊杰"
   },
   {
+    "name": "林俊杰演出（大河票务）",
+    "city": "",
+    "time": "",
+    "platform": "generic",
+    "item_id": "dahe_873",
+    "url": "https://img03.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2Fimage%2F2021%2F03%2F24%2F7b80b9312c37433c94ea539518f55f78.jpg&amp;sign=bc7e87b331010cbfc7ebc12117678e96",
+    "url_mobile": "https://img03.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2Fimage%2F2021%2F03%2F24%2F7b80b9312c37433c94ea539518f55f78.jpg&amp;sign=bc7e87b331010cbfc7ebc12117678e96",
+    "buy_url": "https://img03.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2Fimage%2F2021%2F03%2F24%2F7b80b9312c37433c94ea539518f55f78.jpg&amp;sign=bc7e87b331010cbfc7ebc12117678e96",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "立即预订",
+      "有票"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "等待开售"
+    ],
+    "mode": "page",
+    "keywords": "林俊杰"
+  },
+  {
+    "name": "林俊杰演出（大河票务）",
+    "city": "",
+    "time": "2023-07-31",
+    "platform": "generic",
+    "item_id": "dahe_9036",
+    "url": "https://www.dahepiao.com/n",
+    "url_mobile": "https://www.dahepiao.com/n",
+    "buy_url": "https://www.dahepiao.com/n",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "立即预订",
+      "有票"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "等待开售"
+    ],
+    "mode": "page",
+    "keywords": "林俊杰"
+  },
+  {
     "name": "林俊杰演出",
     "city": "",
     "time": "2024-01-10",
@@ -12651,6 +12819,126 @@
     "url": "http://www.dahepiao.com/news/20230323363821.html",
     "url_mobile": "http://www.dahepiao.com/news/20230323363821.html",
     "buy_url": "http://www.dahepiao.com/news/20230323363821.html",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "立即预订",
+      "有票"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "等待开售"
+    ],
+    "mode": "page",
+    "keywords": "薛之谦"
+  },
+  {
+    "name": "薛之谦演出（大河票务）",
+    "city": "",
+    "time": "",
+    "platform": "generic",
+    "item_id": "dahe_5621",
+    "url": "https://img03.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2F190817%2F156544-1ZQF94K0918.jpg&amp;sign=428f3289d839eb39ed00425a88690aa5",
+    "url_mobile": "https://img03.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2F190817%2F156544-1ZQF94K0918.jpg&amp;sign=428f3289d839eb39ed00425a88690aa5",
+    "buy_url": "https://img03.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2F190817%2F156544-1ZQF94K0918.jpg&amp;sign=428f3289d839eb39ed00425a88690aa5",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "立即预订",
+      "有票"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "等待开售"
+    ],
+    "mode": "page",
+    "keywords": "薛之谦"
+  },
+  {
+    "name": "薛之谦演出（大河票务）",
+    "city": "",
+    "time": "2024-10-08",
+    "platform": "generic",
+    "item_id": "dahe_6550",
+    "url": "https://www.dahepiao.com/y",
+    "url_mobile": "https://www.dahepiao.com/y",
+    "buy_url": "https://www.dahepiao.com/y",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "立即预订",
+      "有票"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "等待开售"
+    ],
+    "mode": "page",
+    "keywords": "薛之谦"
+  },
+  {
+    "name": "薛之谦演出（大河票务）",
+    "city": "",
+    "time": "",
+    "platform": "generic",
+    "item_id": "dahe_3251",
+    "url": "https://img02.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2Fimage%2F2023%2F03%2F24%2F8d1f40caa9001901f745239db28dcf17.jpg&amp;sign=c52fbedb6d8d2f897e1661c35fc9438e",
+    "url_mobile": "https://img02.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2Fimage%2F2023%2F03%2F24%2F8d1f40caa9001901f745239db28dcf17.jpg&amp;sign=c52fbedb6d8d2f897e1661c35fc9438e",
+    "buy_url": "https://img02.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2Fimage%2F2023%2F03%2F24%2F8d1f40caa9001901f745239db28dcf17.jpg&amp;sign=c52fbedb6d8d2f897e1661c35fc9438e",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "立即预订",
+      "有票"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "等待开售"
+    ],
+    "mode": "page",
+    "keywords": "薛之谦"
+  },
+  {
+    "name": "薛之谦演出（大河票务）",
+    "city": "",
+    "time": "2023-06-03",
+    "platform": "generic",
+    "item_id": "dahe_1965",
+    "url": "https://m.dahepiao.com/y",
+    "url_mobile": "https://m.dahepiao.com/y",
+    "buy_url": "https://m.dahepiao.com/y",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "立即预订",
+      "有票"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "等待开售"
+    ],
+    "mode": "page",
+    "keywords": "薛之谦"
+  },
+  {
+    "name": "薛之谦演出（大河票务）",
+    "city": "",
+    "time": "2023-06-03",
+    "platform": "generic",
+    "item_id": "dahe_2940",
+    "url": "https://m.dahepiao.com/yanchupiaowu1/20200106114438.html",
+    "url_mobile": "https://m.dahepiao.com/yanchupiaowu1/20200106114438.html",
+    "buy_url": "https://m.dahepiao.com/yanchupiaowu1/20200106114438.html",
     "buy_keywords": [
       "立即购买",
       "选座购买",
