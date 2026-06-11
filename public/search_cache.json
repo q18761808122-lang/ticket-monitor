@@ -6574,6 +6574,31 @@
     "keywords": "周杰伦"
   },
   {
+    "name": "周杰伦巡回演唱会-北京站",
+    "city": "北京",
+    "time": "",
+    "platform": "generic",
+    "item_id": "74482",
+    "url": "http://www.xingqiupiao.com/event?id=74482",
+    "url_mobile": "http://www.xingqiupiao.com/event?id=74482",
+    "buy_url": "http://www.xingqiupiao.com/event?id=74482",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "去购买",
+      "立即预订"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "下架",
+      "已下架"
+    ],
+    "mode": "page",
+    "keywords": "周杰伦"
+  },
+  {
     "name": "周杰伦2026世界巡回演唱会-温州站",
     "city": "温州",
     "time": "",
@@ -24812,6 +24837,31 @@
     "keywords": "谭咏麟"
   },
   {
+    "name": "【北京】赵雷“没有信号” 2026年巡回演唱会- 北京站",
+    "city": "北京",
+    "time": "",
+    "platform": "generic",
+    "item_id": "115030",
+    "url": "http://www.xingqiupiao.com/event?id=115030",
+    "url_mobile": "http://www.xingqiupiao.com/event?id=115030",
+    "buy_url": "http://www.xingqiupiao.com/event?id=115030",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "去购买",
+      "立即预订"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "下架",
+      "已下架"
+    ],
+    "mode": "page",
+    "keywords": "赵雷"
+  },
+  {
     "name": "邓紫棋演出（大河票务）",
     "city": "",
     "time": "",
@@ -31252,6 +31302,30 @@
     "url": "https://www.dahepiao.com/n",
     "url_mobile": "https://www.dahepiao.com/n",
     "buy_url": "https://www.dahepiao.com/n",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "立即预订",
+      "有票"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "等待开售"
+    ],
+    "mode": "page",
+    "keywords": "邓紫棋"
+  },
+  {
+    "name": "邓紫棋演出（大河票务）",
+    "city": "",
+    "time": "2023-12-24",
+    "platform": "generic",
+    "item_id": "dengziqi",
+    "url": "https://m.dahepiao.com/yanchu/dengziqi/?ivk_sa=1024320u",
+    "url_mobile": "https://m.dahepiao.com/yanchu/dengziqi/?ivk_sa=1024320u",
+    "buy_url": "https://m.dahepiao.com/yanchu/dengziqi/?ivk_sa=1024320u",
     "buy_keywords": [
       "立即购买",
       "选座购买",
