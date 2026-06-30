@@ -8286,6 +8286,58 @@
     "keywords": "周杰伦"
   },
   {
+    "name": "周杰伦演出（有票网）",
+    "city": "",
+    "time": "2026-06-01",
+    "platform": "generic",
+    "item_id": "ypiao_9258",
+    "url": "https://www.ypiao.com/l",
+    "url_mobile": "https://www.ypiao.com/l",
+    "buy_url": "https://www.ypiao.com/l",
+    "buy_keywords": [
+      "立即购买",
+      "去购买",
+      "立即预订",
+      "我要买票",
+      "有票"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "下架",
+      "已下架"
+    ],
+    "mode": "page",
+    "keywords": "周杰伦"
+  },
+  {
+    "name": "周杰伦演出（有票网）",
+    "city": "",
+    "time": "2026-06-01",
+    "platform": "generic",
+    "item_id": "ypiao_2976",
+    "url": "https://www.ypiao.com/list/?keyword=%E5%91%A8%E6%9D%B0%E4%BC%A6",
+    "url_mobile": "https://www.ypiao.com/list/?keyword=%E5%91%A8%E6%9D%B0%E4%BC%A6",
+    "buy_url": "https://www.ypiao.com/list/?keyword=%E5%91%A8%E6%9D%B0%E4%BC%A6",
+    "buy_keywords": [
+      "立即购买",
+      "去购买",
+      "立即预订",
+      "我要买票",
+      "有票"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "下架",
+      "已下架"
+    ],
+    "mode": "page",
+    "keywords": "周杰伦"
+  },
+  {
     "name": "【北京】周杰伦2026世界巡回演唱会-北京站",
     "city": "北京",
     "time": "",
@@ -9841,6 +9893,31 @@
     "url": "http://www.xingqiupiao.com/event?id=118807",
     "url_mobile": "http://www.xingqiupiao.com/event?id=118807",
     "buy_url": "http://www.xingqiupiao.com/event?id=118807",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "去购买",
+      "立即预订"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "下架",
+      "已下架"
+    ],
+    "mode": "page",
+    "keywords": "周深"
+  },
+  {
+    "name": "周深2026「深深的」巡回演唱会-沈阳站",
+    "city": "沈阳",
+    "time": "",
+    "platform": "generic",
+    "item_id": "1046",
+    "url": "http://www.xingqiupiao.com/event?id=1046",
+    "url_mobile": "http://www.xingqiupiao.com/event?id=1046",
+    "buy_url": "http://www.xingqiupiao.com/event?id=1046",
     "buy_keywords": [
       "立即购买",
       "选座购买",
@@ -27764,6 +27841,31 @@
     "keywords": "薛之谦"
   },
   {
+    "name": "【北京】2026薛之谦“万兽之王”巡回演唱会-北京站",
+    "city": "北京",
+    "time": "",
+    "platform": "generic",
+    "item_id": "74997",
+    "url": "http://www.xingqiupiao.com/event?id=74997",
+    "url_mobile": "http://www.xingqiupiao.com/event?id=74997",
+    "buy_url": "http://www.xingqiupiao.com/event?id=74997",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "去购买",
+      "立即预订"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "下架",
+      "已下架"
+    ],
+    "mode": "page",
+    "keywords": "薛之谦"
+  },
+  {
     "name": "【南京】2026薛之谦“万兽之王”巡回演唱会-南京站",
     "city": "南京",
     "time": "",
@@ -29084,6 +29186,31 @@
     "url": "http://www.xingqiupiao.com/event?id=1253",
     "url_mobile": "http://www.xingqiupiao.com/event?id=1253",
     "buy_url": "http://www.xingqiupiao.com/event?id=1253",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "去购买",
+      "立即预订"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "下架",
+      "已下架"
+    ],
+    "mode": "page",
+    "keywords": "谭咏麟"
+  },
+  {
+    "name": "谭咏麟「刻骨铭心」世界巡回演唱会终极篇-香港站",
+    "city": "",
+    "time": "",
+    "platform": "generic",
+    "item_id": "1260",
+    "url": "http://www.xingqiupiao.com/event?id=1260",
+    "url_mobile": "http://www.xingqiupiao.com/event?id=1260",
+    "buy_url": "http://www.xingqiupiao.com/event?id=1260",
     "buy_keywords": [
       "立即购买",
       "选座购买",
