@@ -6783,6 +6783,31 @@
     "keywords": "凤凰传奇"
   },
   {
+    "name": "凤凰传奇巡回演唱会-长沙站",
+    "city": "长沙",
+    "time": "",
+    "platform": "generic",
+    "item_id": "1895",
+    "url": "http://www.xingqiupiao.com/event?id=1895",
+    "url_mobile": "http://www.xingqiupiao.com/event?id=1895",
+    "buy_url": "http://www.xingqiupiao.com/event?id=1895",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "去购买",
+      "立即预订"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "下架",
+      "已下架"
+    ],
+    "mode": "page",
+    "keywords": "凤凰传奇"
+  },
+  {
     "name": "刀郎演出（大河票务）",
     "city": "",
     "time": "",
@@ -11237,6 +11262,31 @@
     "keywords": "周深"
   },
   {
+    "name": "周深2026「深深的」巡回演唱会-北京站",
+    "city": "北京",
+    "time": "",
+    "platform": "generic",
+    "item_id": "4277",
+    "url": "http://www.xingqiupiao.com/event?id=4277",
+    "url_mobile": "http://www.xingqiupiao.com/event?id=4277",
+    "buy_url": "http://www.xingqiupiao.com/event?id=4277",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "去购买",
+      "立即预订"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "下架",
+      "已下架"
+    ],
+    "mode": "page",
+    "keywords": "周深"
+  },
+  {
     "name": "【呼和浩特】周深2026「深深的」巡回演唱会-呼和浩特站",
     "city": "呼和浩特",
     "time": "",
@@ -11960,6 +12010,174 @@
     "url": "http://www.dahepiao.com/yc/sunyanzibeijing/",
     "url_mobile": "http://www.dahepiao.com/yc/sunyanzibeijing/",
     "buy_url": "http://www.dahepiao.com/yc/sunyanzibeijing/",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "立即预订",
+      "有票"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "等待开售"
+    ],
+    "mode": "page",
+    "keywords": "孙燕姿"
+  },
+  {
+    "name": "孙燕姿演出（大河票务）",
+    "city": "",
+    "time": "",
+    "platform": "generic",
+    "item_id": "dahe_9494",
+    "url": "https://img03.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2F190817%2F156544-1ZQF94K0918.jpg&amp;sign=428f3289d839eb39ed00425a88690aa5",
+    "url_mobile": "https://img03.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2F190817%2F156544-1ZQF94K0918.jpg&amp;sign=428f3289d839eb39ed00425a88690aa5",
+    "buy_url": "https://img03.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2F190817%2F156544-1ZQF94K0918.jpg&amp;sign=428f3289d839eb39ed00425a88690aa5",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "立即预订",
+      "有票"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "等待开售"
+    ],
+    "mode": "page",
+    "keywords": "孙燕姿"
+  },
+  {
+    "name": "孙燕姿演出（大河票务）",
+    "city": "",
+    "time": "2026-06-10",
+    "platform": "generic",
+    "item_id": "dahe_466",
+    "url": "https://www.dahepiao.com/y",
+    "url_mobile": "https://www.dahepiao.com/y",
+    "buy_url": "https://www.dahepiao.com/y",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "立即预订",
+      "有票"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "等待开售"
+    ],
+    "mode": "page",
+    "keywords": "孙燕姿"
+  },
+  {
+    "name": "孙燕姿演出（大河票务）",
+    "city": "",
+    "time": "",
+    "platform": "generic",
+    "item_id": "dahe_6940",
+    "url": "https://img04.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=http%3A%2F%2Fimg.dahepiao.com%2Fuploads%2Fallimg%2F191120%2F160062-1911201I10R56.jpg&amp;sign=7d246f9c3be61e8238db11453b847ff4",
+    "url_mobile": "https://img04.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=http%3A%2F%2Fimg.dahepiao.com%2Fuploads%2Fallimg%2F191120%2F160062-1911201I10R56.jpg&amp;sign=7d246f9c3be61e8238db11453b847ff4",
+    "buy_url": "https://img04.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=http%3A%2F%2Fimg.dahepiao.com%2Fuploads%2Fallimg%2F191120%2F160062-1911201I10R56.jpg&amp;sign=7d246f9c3be61e8238db11453b847ff4",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "立即预订",
+      "有票"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "等待开售"
+    ],
+    "mode": "page",
+    "keywords": "孙燕姿"
+  },
+  {
+    "name": "孙燕姿演出（大河票务）",
+    "city": "",
+    "time": "2026-06-05",
+    "platform": "generic",
+    "item_id": "dahe_2473",
+    "url": "https://m.dahepiao.com/y",
+    "url_mobile": "https://m.dahepiao.com/y",
+    "buy_url": "https://m.dahepiao.com/y",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "立即预订",
+      "有票"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "等待开售"
+    ],
+    "mode": "page",
+    "keywords": "孙燕姿"
+  },
+  {
+    "name": "孙燕姿演出（大河票务）",
+    "city": "",
+    "time": "2026-06-05",
+    "platform": "generic",
+    "item_id": "dahe_5766",
+    "url": "https://m.dahepiao.com/yanchupiaowu1/20191120104210.html",
+    "url_mobile": "https://m.dahepiao.com/yanchupiaowu1/20191120104210.html",
+    "buy_url": "https://m.dahepiao.com/yanchupiaowu1/20191120104210.html",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "立即预订",
+      "有票"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "等待开售"
+    ],
+    "mode": "page",
+    "keywords": "孙燕姿"
+  },
+  {
+    "name": "孙燕姿演出（大河票务）",
+    "city": "",
+    "time": "",
+    "platform": "generic",
+    "item_id": "dahe_3412",
+    "url": "https://img02.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2F200507%2F93380-20050GI00M52.jpg&amp;sign=e7b8d9dee8e98ff9e3e125ff973003e1",
+    "url_mobile": "https://img02.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2F200507%2F93380-20050GI00M52.jpg&amp;sign=e7b8d9dee8e98ff9e3e125ff973003e1",
+    "buy_url": "https://img02.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2F200507%2F93380-20050GI00M52.jpg&amp;sign=e7b8d9dee8e98ff9e3e125ff973003e1",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "立即预订",
+      "有票"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "等待开售"
+    ],
+    "mode": "page",
+    "keywords": "孙燕姿"
+  },
+  {
+    "name": "孙燕姿演出（大河票务）",
+    "city": "",
+    "time": "2026-04-30",
+    "platform": "generic",
+    "item_id": "dahe_6006",
+    "url": "http://www.dahepiao.com/y",
+    "url_mobile": "http://www.dahepiao.com/y",
+    "buy_url": "http://www.dahepiao.com/y",
     "buy_keywords": [
       "立即购买",
       "选座购买",
@@ -26205,6 +26423,31 @@
     "keywords": "梁静茹"
   },
   {
+    "name": "「Best,茹果我不唱情歌」梁静茹巡回演唱会 石家庄站",
+    "city": "石家庄",
+    "time": "",
+    "platform": "generic",
+    "item_id": "1812",
+    "url": "http://www.xingqiupiao.com/event?id=1812",
+    "url_mobile": "http://www.xingqiupiao.com/event?id=1812",
+    "buy_url": "http://www.xingqiupiao.com/event?id=1812",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "去购买",
+      "立即预订"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "下架",
+      "已下架"
+    ],
+    "mode": "page",
+    "keywords": "梁静茹"
+  },
+  {
     "name": "「Best,茹果我不唱情歌」 梁静茹巡回演唱会 西安站",
     "city": "西安",
     "time": "",
@@ -31232,6 +31475,31 @@
     "keywords": "薛之谦"
   },
   {
+    "name": "【北京】2026薛之谦“万兽之王”巡回演唱会-北京站",
+    "city": "北京",
+    "time": "",
+    "platform": "generic",
+    "item_id": "1038",
+    "url": "http://www.xingqiupiao.com/event?id=1038",
+    "url_mobile": "http://www.xingqiupiao.com/event?id=1038",
+    "buy_url": "http://www.xingqiupiao.com/event?id=1038",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "去购买",
+      "立即预订"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "下架",
+      "已下架"
+    ],
+    "mode": "page",
+    "keywords": "薛之谦"
+  },
+  {
     "name": "【南京】2026薛之谦“万兽之王”巡回演唱会-南京站",
     "city": "南京",
     "time": "",
@@ -31515,6 +31783,31 @@
     "url": "http://www.xingqiupiao.com/event?id=1153",
     "url_mobile": "http://www.xingqiupiao.com/event?id=1153",
     "buy_url": "http://www.xingqiupiao.com/event?id=1153",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "去购买",
+      "立即预订"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "下架",
+      "已下架"
+    ],
+    "mode": "page",
+    "keywords": "薛之谦"
+  },
+  {
+    "name": "【杭州】2026薛之谦“万兽之王”巡回演唱会-杭州站",
+    "city": "杭州",
+    "time": "",
+    "platform": "generic",
+    "item_id": "1162",
+    "url": "http://www.xingqiupiao.com/event?id=1162",
+    "url_mobile": "http://www.xingqiupiao.com/event?id=1162",
+    "buy_url": "http://www.xingqiupiao.com/event?id=1162",
     "buy_keywords": [
       "立即购买",
       "选座购买",
