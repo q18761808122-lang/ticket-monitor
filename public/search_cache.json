@@ -13879,6 +13879,30 @@
     "keywords": "张惠妹"
   },
   {
+    "name": "张惠妹演出（大河票务）",
+    "city": "",
+    "time": "",
+    "platform": "generic",
+    "item_id": "dahe_775",
+    "url": "https://img02.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2Fimage%2F2024%2F04%2F25%2F08240c8cbc3965f5e11ee19289402c69.jpg&amp;sign=048834349fa2ffd28ffe67c3be2c9809",
+    "url_mobile": "https://img02.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2Fimage%2F2024%2F04%2F25%2F08240c8cbc3965f5e11ee19289402c69.jpg&amp;sign=048834349fa2ffd28ffe67c3be2c9809",
+    "buy_url": "https://img02.sogoucdn.com/v2/thumb/crop/xy/ai/x/0/y/0/w/300/h/200/iw/225/ih/150/t/0/ir/3/retype_exclude_gif/ext/auto/q/75?t=2&amp;appid=200997&amp;url=https%3A%2F%2Fimg.dahepiao.com%2Fuploads%2Fimage%2F2024%2F04%2F25%2F08240c8cbc3965f5e11ee19289402c69.jpg&amp;sign=048834349fa2ffd28ffe67c3be2c9809",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "立即预订",
+      "有票"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "等待开售"
+    ],
+    "mode": "page",
+    "keywords": "张惠妹"
+  },
+  {
     "name": "张杰演出（大河票务）",
     "city": "",
     "time": "",
@@ -21591,6 +21615,31 @@
     "url": "http://www.xingqiupiao.com/event?id=99487",
     "url_mobile": "http://www.xingqiupiao.com/event?id=99487",
     "buy_url": "http://www.xingqiupiao.com/event?id=99487",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "去购买",
+      "立即预订"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "下架",
+      "已下架"
+    ],
+    "mode": "page",
+    "keywords": "李荣浩"
+  },
+  {
+    "name": "李荣浩「黑马」世界巡回演唱会-临沂站",
+    "city": "",
+    "time": "",
+    "platform": "generic",
+    "item_id": "121426",
+    "url": "http://www.xingqiupiao.com/event?id=121426",
+    "url_mobile": "http://www.xingqiupiao.com/event?id=121426",
+    "buy_url": "http://www.xingqiupiao.com/event?id=121426",
     "buy_keywords": [
       "立即购买",
       "选座购买",
@@ -42115,6 +42164,31 @@
     "url": "http://www.xingqiupiao.com/event?id=1584",
     "url_mobile": "http://www.xingqiupiao.com/event?id=1584",
     "buy_url": "http://www.xingqiupiao.com/event?id=1584",
+    "buy_keywords": [
+      "立即购买",
+      "选座购买",
+      "去购买",
+      "立即预订"
+    ],
+    "sold_keywords": [
+      "已售罄",
+      "售罄",
+      "缺货登记",
+      "下架",
+      "已下架"
+    ],
+    "mode": "page",
+    "keywords": "许嵩"
+  },
+  {
+    "name": "【天津】许嵩“安泊猜想”巡回演唱会-天津站",
+    "city": "天津",
+    "time": "",
+    "platform": "generic",
+    "item_id": "1139",
+    "url": "http://www.xingqiupiao.com/event?id=1139",
+    "url_mobile": "http://www.xingqiupiao.com/event?id=1139",
+    "buy_url": "http://www.xingqiupiao.com/event?id=1139",
     "buy_keywords": [
       "立即购买",
       "选座购买",
