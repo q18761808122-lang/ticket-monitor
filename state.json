@@ -14,11 +14,11 @@
     "remind_count": 0
   },
   "xuezhiqian_taiyuan_ypiao": {
-    "status": "available",
-    "message": "https://www.ypiao.com/t_113812/ → 有票/可购买",
-    "last_change": "2026-08-17T13:48:12.155875",
+    "status": "unknown",
+    "message": "https://www.ypiao.com/t_113812/ → 页面请求失败",
+    "last_change": "2026-08-19T04:17:53.577099",
     "last_remind": "2026-08-19T03:34:32.725403",
-    "remind_count": 58
+    "remind_count": 0
   },
   "xuezhiqian_taiyuan_dahe": {
     "status": "unknown",
@@ -357,11 +357,11 @@
     "remind_count": 0
   },
   "auto_generic_ypiao_113812": {
-    "status": "available",
-    "message": "https://www.ypiao.com/t_113812/ → 有票/可购买",
-    "last_change": "2026-08-19T03:10:18.552968",
+    "status": "unknown",
+    "message": "https://www.ypiao.com/t_113812/ → 页面请求失败",
+    "last_change": "2026-08-19T04:36:42.212210",
     "last_remind": "2026-08-19T03:51:03.030233",
-    "remind_count": 1
+    "remind_count": 0
   },
   "auto_generic_motianlun_682c3c88f1b2200001985198": {
     "status": "unknown",
@@ -388,8 +388,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=93596 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T17:03:36.857470",
-    "last_remind": "2026-08-19T03:35:55.365641",
-    "remind_count": 370
+    "last_remind": "2026-08-19T04:19:28.805108",
+    "remind_count": 371
   },
   "auto_generic_116454": {
     "status": "sold_out",
@@ -542,8 +542,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=111806 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T17:02:07.106083",
-    "last_remind": "2026-08-19T03:34:21.731555",
-    "remind_count": 370
+    "last_remind": "2026-08-19T04:17:48.467771",
+    "remind_count": 371
   },
   "auto_generic_114352": {
     "status": "sold_out",
@@ -563,15 +563,15 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=85768 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:21:33.170092",
-    "last_remind": "2026-08-19T03:38:08.431187",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:21:53.116302",
+    "remind_count": 385
   },
   "auto_generic_114159": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=114159 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:43:33.965441",
-    "last_remind": "2026-08-19T03:38:49.812089",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:22:44.176571",
+    "remind_count": 372
   },
   "auto_generic_zhangjieych": {
     "status": "unknown",
@@ -609,11 +609,11 @@
     "remind_count": 0
   },
   "auto_generic_linjunjiewuhanyanchanghui": {
-    "status": "available",
-    "message": "https://www.dahepiao.com/yc/linjunjiewuhanyanchanghui/ → 可能有票（关键词交叉命中）",
-    "last_change": "2026-08-18T15:43:26.606927",
+    "status": "unknown",
+    "message": "https://www.dahepiao.com/yc/linjunjiewuhanyanchanghui/ → 页面请求失败",
+    "last_change": "2026-08-19T04:28:13.969927",
     "last_remind": "2026-08-19T03:43:43.954758",
-    "remind_count": 17
+    "remind_count": 0
   },
   "auto_generic_dahe_3723": {
     "status": "unknown",
@@ -651,11 +651,11 @@
     "remind_count": 0
   },
   "auto_generic_dahe_1921": {
-    "status": "available",
-    "message": "https://www.dahepiao.com/yanchupiaowu1/ych/20200416132407.html → 可能有票（关键词交叉命中）",
-    "last_change": "2026-08-16T04:26:29.510239",
+    "status": "unknown",
+    "message": "https://www.dahepiao.com/yanchupiaowu1/ych/20200416132407.html → 页面请求失败",
+    "last_change": "2026-08-19T04:37:32.379841",
     "last_remind": "2026-08-19T03:51:58.882391",
-    "remind_count": 109
+    "remind_count": 0
   },
   "auto_generic_dahe_8796": {
     "status": "unknown",
@@ -1263,8 +1263,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=104911 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:51:42.034252",
-    "last_remind": "2026-08-19T03:48:51.756325",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:33:40.749857",
+    "remind_count": 372
   },
   "auto_generic_dahe_4369": {
     "status": "unknown",
@@ -2355,8 +2355,8 @@
     "status": "available",
     "message": "http://www.dahepiao.com/yc/xzhqshhychhmp/ → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-17T10:54:31.187209",
-    "last_remind": "2026-08-19T03:48:36.631219",
-    "remind_count": 61
+    "last_remind": "2026-08-19T04:33:20.918407",
+    "remind_count": 62
   },
   "auto_generic_dahe_3044": {
     "status": "unknown",
@@ -2779,10 +2779,10 @@
     "remind_count": 0
   },
   "auto_generic_dahe_859": {
-    "status": "unknown",
-    "message": "https://www.dahepiao.com/yanchupiaowu1/ych/20200416132407.html → 页面请求失败",
-    "last_change": "2026-08-19T03:54:56.682633",
-    "last_remind": "2026-08-19T03:13:34.818032",
+    "status": "available",
+    "message": "https://www.dahepiao.com/yanchupiaowu1/ych/20200416132407.html → 可能有票（关键词交叉命中）",
+    "last_change": "2026-08-19T04:40:01.734201",
+    "last_remind": "2026-08-19T04:40:01.734201",
     "remind_count": 0
   },
   "auto_generic_dahe_9982": {
@@ -3871,10 +3871,10 @@
     "remind_count": 0
   },
   "auto_generic_dahe_2460": {
-    "status": "unknown",
-    "message": "https://www.dahepiao.com/yanchupiaowu1/ych/20200416132407.html → 页面请求失败",
-    "last_change": "2026-08-19T03:53:34.413688",
-    "last_remind": "2026-08-19T03:12:25.480291",
+    "status": "available",
+    "message": "https://www.dahepiao.com/yanchupiaowu1/ych/20200416132407.html → 可能有票（关键词交叉命中）",
+    "last_change": "2026-08-19T04:38:44.446685",
+    "last_remind": "2026-08-19T04:38:44.446685",
     "remind_count": 0
   },
   "auto_generic_dahe_9461": {
@@ -3944,8 +3944,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=115313 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-08T19:52:58.066413",
-    "last_remind": "2026-08-19T03:36:17.329740",
-    "remind_count": 309
+    "last_remind": "2026-08-19T04:19:57.543687",
+    "remind_count": 310
   },
   "auto_generic_3187": {
     "status": "sold_out",
@@ -4011,10 +4011,10 @@
     "remind_count": 0
   },
   "auto_generic_dahe_2998": {
-    "status": "unknown",
-    "message": "https://www.dahepiao.com/yanchupiaowu1/ych/20200416132407.html → 页面请求失败",
-    "last_change": "2026-08-19T03:53:39.987264",
-    "last_remind": "2026-08-19T03:12:30.494670",
+    "status": "available",
+    "message": "https://www.dahepiao.com/yanchupiaowu1/ych/20200416132407.html → 可能有票（关键词交叉命中）",
+    "last_change": "2026-08-19T04:38:45.804511",
+    "last_remind": "2026-08-19T04:38:45.804511",
     "remind_count": 0
   },
   "auto_generic_dahe_8140": {
@@ -4137,10 +4137,10 @@
     "remind_count": 0
   },
   "auto_generic_dahe_4347": {
-    "status": "unknown",
-    "message": "https://www.dahepiao.com/yanchupiaowu1/ych/20200416132407.html → 页面请求失败",
-    "last_change": "2026-08-19T03:53:45.234721",
-    "last_remind": "2026-08-19T03:12:35.719269",
+    "status": "available",
+    "message": "https://www.dahepiao.com/yanchupiaowu1/ych/20200416132407.html → 可能有票（关键词交叉命中）",
+    "last_change": "2026-08-19T04:38:50.975698",
+    "last_remind": "2026-08-19T04:38:50.975698",
     "remind_count": 0
   },
   "auto_generic_dahe_5427": {
@@ -4959,15 +4959,15 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/20230428378539.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T11:57:26.227435",
-    "last_remind": "2026-08-19T03:36:44.208403",
-    "remind_count": 22
+    "last_remind": "2026-08-19T04:20:21.883828",
+    "remind_count": 23
   },
   "auto_generic_dahe_7738": {
     "status": "available",
     "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2017080328664.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T11:57:29.079132",
-    "last_remind": "2026-08-19T03:36:45.731489",
-    "remind_count": 22
+    "last_remind": "2026-08-19T04:20:23.166118",
+    "remind_count": 23
   },
   "auto_generic_dahe_1568": {
     "status": "unknown",
@@ -6202,11 +6202,11 @@
     "remind_count": 0
   },
   "auto_generic_dahe_4308": {
-    "status": "available",
-    "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 可能有票（关键词交叉命中）",
-    "last_change": "2026-08-17T18:04:03.539784",
+    "status": "unknown",
+    "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 页面请求失败",
+    "last_change": "2026-08-19T04:25:26.889707",
     "last_remind": "2026-08-19T03:41:23.556509",
-    "remind_count": 50
+    "remind_count": 0
   },
   "auto_generic_99048": {
     "status": "sold_out",
@@ -6275,8 +6275,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=116614 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:58:14.130691",
-    "last_remind": "2026-08-19T03:55:40.918965",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:40:56.597370",
+    "remind_count": 372
   },
   "auto_generic_114590": {
     "status": "sold_out",
@@ -6475,10 +6475,10 @@
     "remind_count": 0
   },
   "auto_generic_dahe_39": {
-    "status": "unknown",
-    "message": "https://www.dahepiao.com/yanchupiaowu1/ych/20200416132407.html → 页面请求失败",
-    "last_change": "2026-08-19T03:55:02.732126",
-    "last_remind": "2026-08-19T03:13:38.036792",
+    "status": "available",
+    "message": "https://www.dahepiao.com/yanchupiaowu1/ych/20200416132407.html → 可能有票（关键词交叉命中）",
+    "last_change": "2026-08-19T04:40:00.237942",
+    "last_remind": "2026-08-19T04:40:00.237942",
     "remind_count": 0
   },
   "auto_generic_dahe_9113": {
@@ -6517,11 +6517,11 @@
     "remind_count": 0
   },
   "auto_generic_dahe_4932": {
-    "status": "available",
-    "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018040535092.html → 可能有票（关键词交叉命中）",
-    "last_change": "2026-08-17T18:04:07.141380",
+    "status": "unknown",
+    "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018040535092.html → 页面请求失败",
+    "last_change": "2026-08-19T04:25:30.061907",
     "last_remind": "2026-08-19T03:41:27.117833",
-    "remind_count": 50
+    "remind_count": 0
   },
   "auto_generic_dahe_9936": {
     "status": "unknown",
@@ -6538,10 +6538,10 @@
     "remind_count": 0
   },
   "auto_generic_dahe_9763": {
-    "status": "unknown",
-    "message": "https://www.dahepiao.com/yanchupiaowu1/ych/20200416132407.html → 页面请求失败",
-    "last_change": "2026-08-19T03:55:06.227658",
-    "last_remind": "2026-08-19T03:13:41.656228",
+    "status": "available",
+    "message": "https://www.dahepiao.com/yanchupiaowu1/ych/20200416132407.html → 可能有票（关键词交叉命中）",
+    "last_change": "2026-08-19T04:40:04.395993",
+    "last_remind": "2026-08-19T04:40:04.395993",
     "remind_count": 0
   },
   "auto_generic_dahe_6376": {
@@ -6650,11 +6650,11 @@
     "remind_count": 0
   },
   "auto_generic_wytsh": {
-    "status": "available",
-    "message": "https://www.dahepiao.com/yc/wytsh/ → 可能有票（关键词交叉命中）",
-    "last_change": "2026-08-16T20:38:47.827943",
+    "status": "unknown",
+    "message": "https://www.dahepiao.com/yc/wytsh/ → 页面请求失败",
+    "last_change": "2026-08-19T04:18:11.527870",
     "last_remind": "2026-08-19T03:34:37.929938",
-    "remind_count": 80
+    "remind_count": 0
   },
   "auto_generic_dahe_6788": {
     "status": "unknown",
@@ -7094,8 +7094,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yc/wangfeishanghai/ → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-17T08:54:42.705346",
-    "last_remind": "2026-08-19T03:47:55.853396",
-    "remind_count": 64
+    "last_remind": "2026-08-19T04:32:38.158459",
+    "remind_count": 65
   },
   "auto_generic_wangfeibeijing": {
     "status": "unknown",
@@ -7147,11 +7147,11 @@
     "remind_count": 0
   },
   "auto_generic_dahe_7732": {
-    "status": "available",
-    "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 可能有票（关键词交叉命中）",
-    "last_change": "2026-08-17T18:04:23.340806",
+    "status": "unknown",
+    "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 页面请求失败",
+    "last_change": "2026-08-19T04:25:45.636987",
     "last_remind": "2026-08-19T03:41:41.328029",
-    "remind_count": 50
+    "remind_count": 0
   },
   "auto_generic_dahe_2038": {
     "status": "unknown",
@@ -7199,8 +7199,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=116999 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T12:45:51.266375",
-    "last_remind": "2026-08-19T03:55:47.019748",
-    "remind_count": 385
+    "last_remind": "2026-08-19T04:41:02.614208",
+    "remind_count": 386
   },
   "auto_generic_dahe_3766": {
     "status": "unknown",
@@ -7297,8 +7297,8 @@
     "status": "available",
     "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-17T18:04:25.443378",
-    "last_remind": "2026-08-19T03:41:44.527762",
-    "remind_count": 50
+    "last_remind": "2026-08-19T04:25:49.231020",
+    "remind_count": 51
   },
   "auto_generic_dahe_5959": {
     "status": "unknown",
@@ -7381,8 +7381,8 @@
     "status": "available",
     "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-17T18:04:30.565660",
-    "last_remind": "2026-08-19T03:41:48.267581",
-    "remind_count": 50
+    "last_remind": "2026-08-19T04:25:50.557500",
+    "remind_count": 51
   },
   "auto_generic_dahe_6744": {
     "status": "unknown",
@@ -7465,8 +7465,8 @@
     "status": "available",
     "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-17T18:04:33.229131",
-    "last_remind": "2026-08-19T03:41:50.228119",
-    "remind_count": 50
+    "last_remind": "2026-08-19T04:25:52.077788",
+    "remind_count": 51
   },
   "auto_generic_dahe_2776": {
     "status": "unknown",
@@ -7556,8 +7556,8 @@
     "status": "available",
     "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-16T11:37:42.892122",
-    "last_remind": "2026-08-19T03:41:54.634457",
-    "remind_count": 96
+    "last_remind": "2026-08-19T04:25:56.426005",
+    "remind_count": 97
   },
   "auto_generic_dahe_5869": {
     "status": "unknown",
@@ -7703,8 +7703,8 @@
     "status": "available",
     "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-16T11:37:50.571902",
-    "last_remind": "2026-08-19T03:42:02.024702",
-    "remind_count": 96
+    "last_remind": "2026-08-19T04:26:04.961552",
+    "remind_count": 97
   },
   "auto_generic_dahe_6789": {
     "status": "unknown",
@@ -7787,8 +7787,8 @@
     "status": "available",
     "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-16T04:17:13.015026",
-    "last_remind": "2026-08-19T03:42:04.736681",
-    "remind_count": 109
+    "last_remind": "2026-08-19T04:26:07.014381",
+    "remind_count": 110
   },
   "auto_generic_dahe_8525": {
     "status": "unknown",
@@ -7889,11 +7889,11 @@
     "remind_count": 0
   },
   "auto_generic_dahe_5914": {
-    "status": "available",
-    "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 可能有票（关键词交叉命中）",
-    "last_change": "2026-08-16T04:17:15.695935",
+    "status": "unknown",
+    "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 页面请求失败",
+    "last_change": "2026-08-19T04:26:46.023817",
     "last_remind": "2026-08-19T03:42:08.164236",
-    "remind_count": 109
+    "remind_count": 0
   },
   "auto_generic_dahe_3656": {
     "status": "unknown",
@@ -7969,8 +7969,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T07:59:00.093964",
-    "last_remind": "2026-08-19T03:44:54.722381",
-    "remind_count": 30
+    "last_remind": "2026-08-19T04:29:22.426238",
+    "remind_count": 31
   },
   "auto_generic_dahe_9301": {
     "status": "unknown",
@@ -8046,8 +8046,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T07:59:01.548926",
-    "last_remind": "2026-08-19T03:44:55.739239",
-    "remind_count": 30
+    "last_remind": "2026-08-19T04:29:23.784648",
+    "remind_count": 31
   },
   "auto_generic_dahe_4398": {
     "status": "unknown",
@@ -8116,8 +8116,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T07:59:02.908959",
-    "last_remind": "2026-08-19T03:44:56.753977",
-    "remind_count": 30
+    "last_remind": "2026-08-19T04:29:25.086389",
+    "remind_count": 31
   },
   "auto_generic_dahe_6396": {
     "status": "unknown",
@@ -8165,8 +8165,8 @@
     "status": "available",
     "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2018032134605.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-17T06:09:16.237236",
-    "last_remind": "2026-08-19T03:39:48.104632",
-    "remind_count": 67
+    "last_remind": "2026-08-19T04:23:41.068465",
+    "remind_count": 68
   },
   "auto_generic_dahe_9418": {
     "status": "unknown",
@@ -8207,8 +8207,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T07:59:05.514031",
-    "last_remind": "2026-08-19T03:44:57.957403",
-    "remind_count": 30
+    "last_remind": "2026-08-19T04:29:26.329453",
+    "remind_count": 31
   },
   "auto_generic_dahe_4770": {
     "status": "unknown",
@@ -8274,11 +8274,11 @@
     "remind_count": 0
   },
   "auto_generic_dahe_201": {
-    "status": "available",
-    "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 可能有票（关键词交叉命中）",
-    "last_change": "2026-08-18T15:42:10.943112",
+    "status": "unknown",
+    "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 页面请求失败",
+    "last_change": "2026-08-19T04:26:36.320070",
     "last_remind": "2026-08-19T03:42:12.241781",
-    "remind_count": 17
+    "remind_count": 0
   },
   "auto_generic_dahe_7463": {
     "status": "unknown",
@@ -8340,8 +8340,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T07:59:07.425351",
-    "last_remind": "2026-08-19T03:44:59.770573",
-    "remind_count": 30
+    "last_remind": "2026-08-19T04:29:28.806694",
+    "remind_count": 31
   },
   "auto_generic_dahe_8466": {
     "status": "unknown",
@@ -8393,11 +8393,11 @@
     "remind_count": 0
   },
   "auto_generic_dahe_8010": {
-    "status": "available",
-    "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 可能有票（关键词交叉命中）",
-    "last_change": "2026-08-18T15:42:15.753878",
+    "status": "unknown",
+    "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 页面请求失败",
+    "last_change": "2026-08-19T04:26:43.799732",
     "last_remind": "2026-08-19T03:42:16.418238",
-    "remind_count": 17
+    "remind_count": 0
   },
   "auto_generic_dahe_5335": {
     "status": "unknown",
@@ -8431,8 +8431,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-16T17:38:21.139816",
-    "last_remind": "2026-08-19T03:45:00.959589",
-    "remind_count": 86
+    "last_remind": "2026-08-19T04:29:30.037167",
+    "remind_count": 87
   },
   "auto_generic_dahe_5934": {
     "status": "unknown",
@@ -8463,11 +8463,11 @@
     "remind_count": 0
   },
   "auto_generic_dahe_7772": {
-    "status": "available",
-    "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 可能有票（关键词交叉命中）",
-    "last_change": "2026-08-18T15:42:17.530610",
+    "status": "unknown",
+    "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 页面请求失败",
+    "last_change": "2026-08-19T04:26:44.782917",
     "last_remind": "2026-08-19T03:42:18.121323",
-    "remind_count": 17
+    "remind_count": 0
   },
   "auto_generic_dahe_9629": {
     "status": "unknown",
@@ -8501,8 +8501,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:44:51.757430",
-    "last_remind": "2026-08-19T03:45:01.961244",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:29:31.261774",
+    "remind_count": 18
   },
   "auto_generic_dahe_2012": {
     "status": "unknown",
@@ -8536,8 +8536,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:44:52.776544",
-    "last_remind": "2026-08-19T03:45:02.978547",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:29:32.502463",
+    "remind_count": 18
   },
   "auto_generic_dahe_539": {
     "status": "unknown",
@@ -8624,11 +8624,11 @@
     "remind_count": 0
   },
   "auto_generic_dahe_8492": {
-    "status": "available",
-    "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 可能有票（关键词交叉命中）",
-    "last_change": "2026-08-18T15:42:22.252028",
+    "status": "unknown",
+    "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 页面请求失败",
+    "last_change": "2026-08-19T04:26:40.330431",
     "last_remind": "2026-08-19T03:42:21.270461",
-    "remind_count": 17
+    "remind_count": 0
   },
   "auto_generic_3052": {
     "status": "sold_out",
@@ -8655,8 +8655,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:44:53.964740",
-    "last_remind": "2026-08-19T03:45:03.997108",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:29:33.778212",
+    "remind_count": 18
   },
   "auto_generic_1463": {
     "status": "unknown",
@@ -8694,11 +8694,11 @@
     "remind_count": 0
   },
   "auto_generic_dahe_2187": {
-    "status": "available",
-    "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 可能有票（关键词交叉命中）",
-    "last_change": "2026-08-18T15:42:23.991625",
+    "status": "unknown",
+    "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 页面请求失败",
+    "last_change": "2026-08-19T04:26:45.453277",
     "last_remind": "2026-08-19T03:42:23.028099",
-    "remind_count": 17
+    "remind_count": 0
   },
   "auto_generic_dahe_9076": {
     "status": "unknown",
@@ -8732,8 +8732,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:44:55.769189",
-    "last_remind": "2026-08-19T03:45:05.192778",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:29:35.019174",
+    "remind_count": 18
   },
   "auto_generic_dahe_913": {
     "status": "unknown",
@@ -8809,8 +8809,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:44:57.548434",
-    "last_remind": "2026-08-19T03:45:06.898204",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:29:36.254678",
+    "remind_count": 18
   },
   "auto_generic_dahe_2022": {
     "status": "unknown",
@@ -8827,11 +8827,11 @@
     "remind_count": 0
   },
   "auto_generic_dahe_9930": {
-    "status": "available",
-    "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 可能有票（关键词交叉命中）",
-    "last_change": "2026-08-18T15:42:28.479094",
+    "status": "unknown",
+    "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 页面请求失败",
+    "last_change": "2026-08-19T04:26:52.324066",
     "last_remind": "2026-08-19T03:42:28.141850",
-    "remind_count": 17
+    "remind_count": 0
   },
   "auto_generic_dahe_9987": {
     "status": "unknown",
@@ -8858,8 +8858,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:44:58.704224",
-    "last_remind": "2026-08-19T03:45:08.125818",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:29:37.499016",
+    "remind_count": 18
   },
   "auto_generic_dahe_4799": {
     "status": "unknown",
@@ -8897,11 +8897,11 @@
     "remind_count": 0
   },
   "auto_generic_dahe_3757": {
-    "status": "available",
-    "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 可能有票（关键词交叉命中）",
-    "last_change": "2026-08-18T15:42:31.568526",
+    "status": "unknown",
+    "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 页面请求失败",
+    "last_change": "2026-08-19T04:26:54.128146",
     "last_remind": "2026-08-19T03:42:30.179581",
-    "remind_count": 17
+    "remind_count": 0
   },
   "auto_generic_dahe_5724": {
     "status": "unknown",
@@ -8935,8 +8935,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:44:59.933257",
-    "last_remind": "2026-08-19T03:45:09.410201",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:29:38.730531",
+    "remind_count": 18
   },
   "auto_generic_dahe_1730": {
     "status": "unknown",
@@ -8974,11 +8974,11 @@
     "remind_count": 0
   },
   "auto_generic_dahe_5806": {
-    "status": "available",
-    "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 可能有票（关键词交叉命中）",
-    "last_change": "2026-08-18T15:42:34.712054",
+    "status": "unknown",
+    "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 页面请求失败",
+    "last_change": "2026-08-19T04:26:57.406228",
     "last_remind": "2026-08-19T03:42:32.074278",
-    "remind_count": 17
+    "remind_count": 0
   },
   "auto_generic_dahe_8067": {
     "status": "unknown",
@@ -9019,8 +9019,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:45:01.075010",
-    "last_remind": "2026-08-19T03:45:10.628009",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:29:40.232236",
+    "remind_count": 18
   },
   "auto_generic_dahe_1454": {
     "status": "unknown",
@@ -9044,11 +9044,11 @@
     "remind_count": 0
   },
   "auto_generic_dahe_6065": {
-    "status": "available",
-    "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 可能有票（关键词交叉命中）",
-    "last_change": "2026-08-18T15:42:36.489651",
+    "status": "unknown",
+    "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 页面请求失败",
+    "last_change": "2026-08-19T04:27:00.855760",
     "last_remind": "2026-08-19T03:42:33.887561",
-    "remind_count": 17
+    "remind_count": 0
   },
   "auto_generic_dahe_408": {
     "status": "unknown",
@@ -9068,8 +9068,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:45:02.690996",
-    "last_remind": "2026-08-19T03:45:11.860170",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:29:41.746895",
+    "remind_count": 18
   },
   "auto_generic_dahe_2715": {
     "status": "unknown",
@@ -9114,11 +9114,11 @@
     "remind_count": 0
   },
   "auto_generic_dahe_9532": {
-    "status": "available",
-    "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 可能有票（关键词交叉命中）",
-    "last_change": "2026-08-18T15:42:38.251092",
+    "status": "unknown",
+    "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2016071318416.html → 页面请求失败",
+    "last_change": "2026-08-19T04:27:01.720610",
     "last_remind": "2026-08-19T03:42:34.964214",
-    "remind_count": 17
+    "remind_count": 0
   },
   "auto_generic_dahe_6666": {
     "status": "unknown",
@@ -9145,8 +9145,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:45:04.786297",
-    "last_remind": "2026-08-19T03:45:13.133467",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:29:42.984465",
+    "remind_count": 18
   },
   "auto_generic_dahe_7456": {
     "status": "unknown",
@@ -9180,8 +9180,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:45:05.901163",
-    "last_remind": "2026-08-19T03:45:14.313603",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:29:44.224637",
+    "remind_count": 18
   },
   "auto_generic_dahe_6206": {
     "status": "unknown",
@@ -9292,8 +9292,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:45:10.624302",
-    "last_remind": "2026-08-19T03:45:17.643034",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:29:47.144122",
+    "remind_count": 18
   },
   "auto_generic_dahe_5235": {
     "status": "unknown",
@@ -9341,8 +9341,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:45:11.624897",
-    "last_remind": "2026-08-19T03:45:19.057356",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:29:48.582747",
+    "remind_count": 18
   },
   "auto_generic_dahe_9331": {
     "status": "unknown",
@@ -9404,8 +9404,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:45:12.646538",
-    "last_remind": "2026-08-19T03:45:20.306658",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:29:49.925277",
+    "remind_count": 18
   },
   "auto_generic_dahe_6614": {
     "status": "unknown",
@@ -9446,8 +9446,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:45:13.767072",
-    "last_remind": "2026-08-19T03:45:22.641471",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:29:51.178943",
+    "remind_count": 18
   },
   "auto_generic_dahe_5894": {
     "status": "unknown",
@@ -9481,8 +9481,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:45:14.779645",
-    "last_remind": "2026-08-19T03:45:23.649483",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:29:52.410973",
+    "remind_count": 18
   },
   "auto_generic_dahe_9395": {
     "status": "unknown",
@@ -9523,8 +9523,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:45:17.641796",
-    "last_remind": "2026-08-19T03:45:25.562702",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:29:53.644175",
+    "remind_count": 18
   },
   "auto_generic_dahe_4831": {
     "status": "unknown",
@@ -9572,8 +9572,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:45:18.639571",
-    "last_remind": "2026-08-19T03:45:26.773377",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:29:55.017993",
+    "remind_count": 18
   },
   "auto_generic_dahe_6202": {
     "status": "unknown",
@@ -9628,15 +9628,15 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=74359 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:21:34.257491",
-    "last_remind": "2026-08-19T03:38:16.422244",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:22:04.253961",
+    "remind_count": 385
   },
   "auto_generic_dahe_7636": {
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:45:19.671925",
-    "last_remind": "2026-08-19T03:45:27.884899",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:29:56.433370",
+    "remind_count": 18
   },
   "auto_generic_dahe_1065": {
     "status": "unknown",
@@ -9698,8 +9698,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:45:21.418678",
-    "last_remind": "2026-08-19T03:45:29.333665",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:29:57.925959",
+    "remind_count": 18
   },
   "auto_generic_dahe_1755": {
     "status": "unknown",
@@ -9775,8 +9775,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:45:23.825930",
-    "last_remind": "2026-08-19T03:45:30.497622",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:29:59.321823",
+    "remind_count": 18
   },
   "auto_generic_dahe_3573": {
     "status": "unknown",
@@ -9803,15 +9803,15 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2017081629094.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-15T04:21:19.725789",
-    "last_remind": "2026-08-19T03:50:56.451064",
-    "remind_count": 150
+    "last_remind": "2026-08-19T04:36:02.636192",
+    "remind_count": 151
   },
   "auto_generic_xusongshanghai": {
     "status": "available",
     "message": "https://www.dahepiao.com/yc/xusongshanghai/ → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-15T04:21:21.114239",
-    "last_remind": "2026-08-19T03:50:57.453108",
-    "remind_count": 150
+    "last_remind": "2026-08-19T04:36:01.368190",
+    "remind_count": 151
   },
   "auto_generic_dahe_6273": {
     "status": "unknown",
@@ -9894,8 +9894,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:45:25.311494",
-    "last_remind": "2026-08-19T03:45:32.388861",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:30:02.212162",
+    "remind_count": 18
   },
   "auto_generic_dahe_4061": {
     "status": "unknown",
@@ -9971,8 +9971,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:45:26.306352",
-    "last_remind": "2026-08-19T03:45:33.602827",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:30:03.833802",
+    "remind_count": 18
   },
   "auto_generic_dahe_1867": {
     "status": "unknown",
@@ -10083,8 +10083,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:45:28.303291",
-    "last_remind": "2026-08-19T03:45:36.058803",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:30:05.696449",
+    "remind_count": 18
   },
   "auto_generic_4873": {
     "status": "sold_out",
@@ -10125,8 +10125,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:45:29.481588",
-    "last_remind": "2026-08-19T03:45:37.235794",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:30:07.040013",
+    "remind_count": 18
   },
   "auto_generic_dahe_6982": {
     "status": "unknown",
@@ -10181,8 +10181,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:45:30.547689",
-    "last_remind": "2026-08-19T03:45:38.250252",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:30:08.273269",
+    "remind_count": 18
   },
   "auto_generic_dahe_43": {
     "status": "unknown",
@@ -10237,8 +10237,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:45:31.545995",
-    "last_remind": "2026-08-19T03:45:39.267936",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:30:09.519026",
+    "remind_count": 18
   },
   "auto_generic_dahe_7917": {
     "status": "unknown",
@@ -10265,8 +10265,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:45:32.572978",
-    "last_remind": "2026-08-19T03:45:40.252088",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:30:10.770288",
+    "remind_count": 18
   },
   "auto_generic_dahe_8462": {
     "status": "unknown",
@@ -10307,8 +10307,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=115744 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-11T00:04:40.673446",
-    "last_remind": "2026-08-19T03:36:13.610260",
-    "remind_count": 247
+    "last_remind": "2026-08-19T04:19:49.897079",
+    "remind_count": 248
   },
   "auto_generic_118480": {
     "status": "sold_out",
@@ -10335,15 +10335,15 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=118415 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:26:25.073004",
-    "last_remind": "2026-08-19T03:42:47.763800",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:27:14.981502",
+    "remind_count": 385
   },
   "auto_generic_dahe_9302": {
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:45:33.587250",
-    "last_remind": "2026-08-19T03:45:41.259058",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:30:12.007912",
+    "remind_count": 18
   },
   "auto_generic_dahe_5212": {
     "status": "unknown",
@@ -10447,8 +10447,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:45:36.383931",
-    "last_remind": "2026-08-19T03:45:43.584979",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:30:14.033038",
+    "remind_count": 18
   },
   "auto_generic_dahe_8071": {
     "status": "unknown",
@@ -10482,8 +10482,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=118769 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:19:16.641674",
-    "last_remind": "2026-08-19T03:37:17.970258",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:21:03.518672",
+    "remind_count": 385
   },
   "auto_generic_dahe_302": {
     "status": "unknown",
@@ -10496,8 +10496,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:45:37.674612",
-    "last_remind": "2026-08-19T03:45:44.591975",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:30:15.330644",
+    "remind_count": 18
   },
   "auto_generic_116223": {
     "status": "sold_out",
@@ -10587,8 +10587,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:45:38.854921",
-    "last_remind": "2026-08-19T03:45:45.582547",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:30:16.583669",
+    "remind_count": 18
   },
   "auto_generic_dahe_3813": {
     "status": "unknown",
@@ -10636,8 +10636,8 @@
     "status": "available",
     "message": "https://www.dahepiao.com/yanchupiaowu1/ych/2018101548174.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T15:45:39.867856",
-    "last_remind": "2026-08-19T03:45:46.565496",
-    "remind_count": 17
+    "last_remind": "2026-08-19T04:30:17.826159",
+    "remind_count": 18
   },
   "auto_generic_115827": {
     "status": "sold_out",
@@ -10713,8 +10713,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=74489 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:21:35.462098",
-    "last_remind": "2026-08-19T03:38:18.496341",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:22:08.878115",
+    "remind_count": 385
   },
   "auto_douyin_b59ee32a17fe": {
     "status": "unknown",
@@ -10762,8 +10762,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=104380 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T12:38:03.731831",
-    "last_remind": "2026-08-19T03:48:13.768060",
-    "remind_count": 385
+    "last_remind": "2026-08-19T04:32:57.418908",
+    "remind_count": 386
   },
   "auto_generic_117966": {
     "status": "sold_out",
@@ -10776,8 +10776,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=74499 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:21:36.899726",
-    "last_remind": "2026-08-19T03:38:20.112952",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:22:10.309442",
+    "remind_count": 385
   },
   "auto_generic_118754": {
     "status": "sold_out",
@@ -10839,8 +10839,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=116923 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-14T06:23:19.104190",
-    "last_remind": "2026-08-19T03:37:24.329038",
-    "remind_count": 176
+    "last_remind": "2026-08-19T04:21:00.776301",
+    "remind_count": 177
   },
   "auto_generic_116983": {
     "status": "sold_out",
@@ -10895,15 +10895,15 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=118029 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:18:27.995962",
-    "last_remind": "2026-08-19T03:36:23.436194",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:20:01.008134",
+    "remind_count": 385
   },
   "auto_generic_116817": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=116817 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:51:21.213374",
-    "last_remind": "2026-08-19T03:48:24.461613",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:33:11.141869",
+    "remind_count": 372
   },
   "auto_generic_3924": {
     "status": "sold_out",
@@ -10986,8 +10986,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=113180 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:49:31.636923",
-    "last_remind": "2026-08-19T03:46:01.053394",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:30:33.812424",
+    "remind_count": 372
   },
   "auto_generic_118201": {
     "status": "sold_out",
@@ -11056,8 +11056,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=113338 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:26:41.243237",
-    "last_remind": "2026-08-19T03:43:17.609196",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:27:42.685358",
+    "remind_count": 385
   },
   "auto_generic_118866": {
     "status": "sold_out",
@@ -11189,8 +11189,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=74669 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T12:38:36.629989",
-    "last_remind": "2026-08-19T03:48:55.922220",
-    "remind_count": 385
+    "last_remind": "2026-08-19T04:33:42.005084",
+    "remind_count": 386
   },
   "auto_generic_ypiao_6761": {
     "status": "available",
@@ -11448,8 +11448,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=119008 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T12:38:39.009772",
-    "last_remind": "2026-08-19T03:48:58.208721",
-    "remind_count": 385
+    "last_remind": "2026-08-19T04:33:43.255730",
+    "remind_count": 386
   },
   "auto_generic_15787": {
     "status": "sold_out",
@@ -11553,8 +11553,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=117073 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T17:03:58.403676",
-    "last_remind": "2026-08-19T03:36:22.423384",
-    "remind_count": 370
+    "last_remind": "2026-08-19T04:20:02.283510",
+    "remind_count": 371
   },
   "auto_generic_ypiao_8149": {
     "status": "available",
@@ -11644,8 +11644,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=119342 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-08T19:52:55.749654",
-    "last_remind": "2026-08-19T03:36:12.521067",
-    "remind_count": 309
+    "last_remind": "2026-08-19T04:19:51.316382",
+    "remind_count": 310
   },
   "auto_generic_117660": {
     "status": "sold_out",
@@ -11770,15 +11770,15 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=110922 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:43:41.989873",
-    "last_remind": "2026-08-19T03:39:42.281804",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:23:36.844259",
+    "remind_count": 372
   },
   "auto_generic_112856": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=112856 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T12:38:05.186861",
-    "last_remind": "2026-08-19T03:48:15.127238",
-    "remind_count": 385
+    "last_remind": "2026-08-19T04:32:58.660019",
+    "remind_count": 386
   },
   "auto_generic_1109": {
     "status": "unknown",
@@ -11868,8 +11868,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=74940 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:21:41.352250",
-    "last_remind": "2026-08-19T03:38:53.477373",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:22:45.517665",
+    "remind_count": 385
   },
   "auto_generic_118807": {
     "status": "sold_out",
@@ -11910,15 +11910,15 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=74976 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T12:38:40.601410",
-    "last_remind": "2026-08-19T03:48:59.908926",
-    "remind_count": 385
+    "last_remind": "2026-08-19T04:33:48.835855",
+    "remind_count": 386
   },
   "auto_generic_118503": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=118503 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:19:11.112357",
-    "last_remind": "2026-08-19T03:37:09.039311",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:20:46.351274",
+    "remind_count": 385
   },
   "auto_generic_118190": {
     "status": "sold_out",
@@ -12057,8 +12057,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=119636 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:26:34.709874",
-    "last_remind": "2026-08-19T03:43:08.113335",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:27:32.039127",
+    "remind_count": 385
   },
   "auto_generic_75002": {
     "status": "sold_out",
@@ -12183,8 +12183,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=101829 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:26:36.863034",
-    "last_remind": "2026-08-19T03:43:10.141891",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:27:33.409279",
+    "remind_count": 385
   },
   "auto_generic_75022": {
     "status": "sold_out",
@@ -12211,8 +12211,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=113859 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:26:35.783598",
-    "last_remind": "2026-08-19T03:43:11.134875",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:27:34.656177",
+    "remind_count": 385
   },
   "auto_generic_1190": {
     "status": "unknown",
@@ -12393,15 +12393,15 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=119869 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T12:46:07.330893",
-    "last_remind": "2026-08-19T03:56:00.650395",
-    "remind_count": 385
+    "last_remind": "2026-08-19T04:41:16.757821",
+    "remind_count": 386
   },
   "auto_generic_75180": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=75180 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:52:05.837089",
-    "last_remind": "2026-08-19T03:49:13.877522",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:34:02.564072",
+    "remind_count": 372
   },
   "auto_generic_118953": {
     "status": "sold_out",
@@ -12421,8 +12421,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=119026 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T17:03:46.946029",
-    "last_remind": "2026-08-19T03:36:07.168785",
-    "remind_count": 370
+    "last_remind": "2026-08-19T04:19:42.483763",
+    "remind_count": 371
   },
   "auto_generic_12043": {
     "status": "sold_out",
@@ -12442,8 +12442,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=119019 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:31:06.015480",
-    "last_remind": "2026-08-19T03:46:22.536666",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:30:49.718742",
+    "remind_count": 385
   },
   "auto_generic_12046": {
     "status": "sold_out",
@@ -12792,8 +12792,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=75315 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:52:10.747445",
-    "last_remind": "2026-08-19T03:49:19.467234",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:34:08.107744",
+    "remind_count": 372
   },
   "auto_generic_119822": {
     "status": "sold_out",
@@ -12806,15 +12806,15 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=75320 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:52:15.126140",
-    "last_remind": "2026-08-19T03:49:18.440993",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:34:10.710365",
+    "remind_count": 372
   },
   "auto_generic_99018": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=99018 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:52:12.182497",
-    "last_remind": "2026-08-19T03:49:20.523062",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:34:09.473340",
+    "remind_count": 372
   },
   "auto_generic_75329": {
     "status": "sold_out",
@@ -12925,8 +12925,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=75342 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:52:13.730676",
-    "last_remind": "2026-08-19T03:49:21.529505",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:34:12.092786",
+    "remind_count": 372
   },
   "auto_generic_1242": {
     "status": "unknown",
@@ -13198,8 +13198,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=119626 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-08T19:53:10.025115",
-    "last_remind": "2026-08-19T03:36:28.141778",
-    "remind_count": 309
+    "last_remind": "2026-08-19T04:20:08.568115",
+    "remind_count": 310
   },
   "auto_generic_4224": {
     "status": "sold_out",
@@ -13338,15 +13338,15 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=119946 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:19:32.261523",
-    "last_remind": "2026-08-19T03:37:37.906412",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:21:20.159300",
+    "remind_count": 385
   },
   "auto_generic_99983": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=99983 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:26:20.546448",
-    "last_remind": "2026-08-19T03:42:43.472619",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:27:08.672757",
+    "remind_count": 385
   },
   "auto_generic_116584": {
     "status": "sold_out",
@@ -13387,8 +13387,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120008 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-08T19:53:12.775081",
-    "last_remind": "2026-08-19T03:36:30.898681",
-    "remind_count": 309
+    "last_remind": "2026-08-19T04:20:11.303872",
+    "remind_count": 310
   },
   "auto_generic_1826": {
     "status": "sold_out",
@@ -13485,8 +13485,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=113179 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:26:26.360574",
-    "last_remind": "2026-08-19T03:42:48.780278",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:27:13.690130",
+    "remind_count": 385
   },
   "auto_generic_1318": {
     "status": "unknown",
@@ -13527,8 +13527,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=119685 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:19:06.464443",
-    "last_remind": "2026-08-19T03:37:06.294900",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:20:39.564142",
+    "remind_count": 385
   },
   "auto_generic_4563": {
     "status": "sold_out",
@@ -13569,8 +13569,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=119027 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:26:37.988911",
-    "last_remind": "2026-08-19T03:43:12.139257",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:27:35.911115",
+    "remind_count": 385
   },
   "auto_generic_1370": {
     "status": "unknown",
@@ -13615,16 +13615,16 @@
     "remind_count": 0
   },
   "auto_generic_ypiao_2071": {
-    "status": "available",
-    "message": "https://www.ypiao.com/news_61/ → 有票/可购买",
-    "last_change": "2026-08-17T05:15:05.003205",
+    "status": "unknown",
+    "message": "https://www.ypiao.com/news_61/ → 页面请求失败",
+    "last_change": "2026-08-19T04:33:00.170062",
     "last_remind": "2026-08-19T03:48:20.459855",
-    "remind_count": 69
+    "remind_count": 0
   },
   "auto_generic_ypiao_3806": {
-    "status": "available",
-    "message": "https://www.ypiao.com/n → 有票/可购买",
-    "last_change": "2026-08-19T03:48:47.204772",
+    "status": "unknown",
+    "message": "https://www.ypiao.com/n → 页面请求失败",
+    "last_change": "2026-08-19T04:33:23.667923",
     "last_remind": "2026-08-19T03:48:47.204772",
     "remind_count": 0
   },
@@ -13800,8 +13800,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=118867 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T12:45:55.467706",
-    "last_remind": "2026-08-19T03:55:49.937505",
-    "remind_count": 385
+    "last_remind": "2026-08-19T04:41:05.756355",
+    "remind_count": 386
   },
   "auto_generic_119988": {
     "status": "sold_out",
@@ -13877,15 +13877,15 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120016 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-08T19:53:15.188691",
-    "last_remind": "2026-08-19T03:36:35.313791",
-    "remind_count": 309
+    "last_remind": "2026-08-19T04:20:15.546768",
+    "remind_count": 310
   },
   "auto_generic_120312": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120312 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:26:29.076037",
-    "last_remind": "2026-08-19T03:42:59.088800",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:27:22.119759",
+    "remind_count": 385
   },
   "auto_generic_120339": {
     "status": "sold_out",
@@ -13912,8 +13912,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=117709 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-08T19:53:18.718784",
-    "last_remind": "2026-08-19T03:36:36.346558",
-    "remind_count": 309
+    "last_remind": "2026-08-19T04:20:14.302016",
+    "remind_count": 310
   },
   "auto_generic_1884": {
     "status": "sold_out",
@@ -13982,15 +13982,15 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=119024 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-08T19:53:16.418851",
-    "last_remind": "2026-08-19T03:36:38.518252",
-    "remind_count": 309
+    "last_remind": "2026-08-19T04:20:16.820645",
+    "remind_count": 310
   },
   "auto_generic_117324": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=117324 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:18:52.452617",
-    "last_remind": "2026-08-19T03:36:49.339552",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:20:25.715389",
+    "remind_count": 385
   },
   "auto_generic_119691": {
     "status": "sold_out",
@@ -14003,8 +14003,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=118223 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-08T19:53:17.570092",
-    "last_remind": "2026-08-19T03:36:37.503973",
-    "remind_count": 309
+    "last_remind": "2026-08-19T04:20:18.123332",
+    "remind_count": 310
   },
   "auto_generic_1874": {
     "status": "sold_out",
@@ -14017,15 +14017,15 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=75588 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:52:20.098776",
-    "last_remind": "2026-08-19T03:49:25.908571",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:34:19.800340",
+    "remind_count": 372
   },
   "auto_generic_75598": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=75598 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:52:23.097534",
-    "last_remind": "2026-08-19T03:49:27.912698",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:34:18.556727",
+    "remind_count": 372
   },
   "auto_generic_116227": {
     "status": "sold_out",
@@ -14073,8 +14073,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=75605 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:52:21.696680",
-    "last_remind": "2026-08-19T03:49:26.905358",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:34:21.031588",
+    "remind_count": 372
   },
   "auto_generic_1075": {
     "status": "unknown",
@@ -14178,8 +14178,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120411 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-08T19:53:19.864807",
-    "last_remind": "2026-08-19T03:36:39.574544",
-    "remind_count": 309
+    "last_remind": "2026-08-19T04:20:19.358597",
+    "remind_count": 310
   },
   "auto_generic_129568": {
     "status": "unknown",
@@ -14206,8 +14206,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=119978 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-08T19:53:21.067349",
-    "last_remind": "2026-08-19T03:36:40.730756",
-    "remind_count": 309
+    "last_remind": "2026-08-19T04:20:20.599355",
+    "remind_count": 310
   },
   "auto_generic_1054": {
     "status": "unknown",
@@ -14346,8 +14346,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=116567 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:26:32.513116",
-    "last_remind": "2026-08-19T03:43:09.141768",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:27:29.635132",
+    "remind_count": 385
   },
   "auto_generic_1864": {
     "status": "sold_out",
@@ -14360,8 +14360,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=118504 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T12:38:06.691617",
-    "last_remind": "2026-08-19T03:48:21.705680",
-    "remind_count": 385
+    "last_remind": "2026-08-19T04:33:04.333919",
+    "remind_count": 386
   },
   "auto_generic_75682": {
     "status": "sold_out",
@@ -14409,8 +14409,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=119870 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T19:32:35.724295",
-    "last_remind": "2026-08-19T03:37:28.100467",
-    "remind_count": 11
+    "last_remind": "2026-08-19T04:21:05.205569",
+    "remind_count": 12
   },
   "auto_generic_1415": {
     "status": "unknown",
@@ -14479,8 +14479,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=75698 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T12:39:07.978094",
-    "last_remind": "2026-08-19T03:49:32.090828",
-    "remind_count": 385
+    "last_remind": "2026-08-19T04:34:25.321671",
+    "remind_count": 386
   },
   "auto_generic_24554": {
     "status": "sold_out",
@@ -14521,8 +14521,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=75711 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T12:39:09.163299",
-    "last_remind": "2026-08-19T03:49:33.083273",
-    "remind_count": 385
+    "last_remind": "2026-08-19T04:34:23.837204",
+    "remind_count": 386
   },
   "auto_generic_24600": {
     "status": "sold_out",
@@ -14633,8 +14633,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120557 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:50:47.431618",
-    "last_remind": "2026-08-19T03:47:38.115686",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:32:20.439872",
+    "remind_count": 372
   },
   "auto_generic_75739": {
     "status": "sold_out",
@@ -14668,8 +14668,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=75753 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:52:27.525938",
-    "last_remind": "2026-08-19T03:49:34.770772",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:34:28.103453",
+    "remind_count": 372
   },
   "auto_generic_1088": {
     "status": "unknown",
@@ -14710,8 +14710,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=34582 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:31:35.106293",
-    "last_remind": "2026-08-19T03:46:43.980726",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:31:22.628671",
+    "remind_count": 385
   },
   "auto_generic_75761": {
     "status": "sold_out",
@@ -14724,8 +14724,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=109260 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T12:41:18.455132",
-    "last_remind": "2026-08-19T03:51:20.337233",
-    "remind_count": 385
+    "last_remind": "2026-08-19T04:36:31.229690",
+    "remind_count": 386
   },
   "auto_generic_119896": {
     "status": "sold_out",
@@ -14738,8 +14738,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=118085 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T04:20:23.688413",
-    "last_remind": "2026-08-19T03:37:10.024183",
-    "remind_count": 375
+    "last_remind": "2026-08-19T04:20:49.034646",
+    "remind_count": 376
   },
   "auto_generic_1750": {
     "status": "sold_out",
@@ -14766,8 +14766,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120320 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-06T04:15:41.468442",
-    "last_remind": "2026-08-19T03:51:34.602111",
-    "remind_count": 363
+    "last_remind": "2026-08-19T04:36:49.006294",
+    "remind_count": 364
   },
   "auto_generic_120446": {
     "status": "sold_out",
@@ -14801,8 +14801,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=75786 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:52:28.877938",
-    "last_remind": "2026-08-19T03:49:36.968418",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:34:29.348182",
+    "remind_count": 372
   },
   "auto_generic_6158": {
     "status": "sold_out",
@@ -14815,8 +14815,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120281 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:58:39.190641",
-    "last_remind": "2026-08-19T03:56:12.689784",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:41:28.388632",
+    "remind_count": 372
   },
   "auto_generic_dahe_3214": {
     "status": "unknown",
@@ -14843,8 +14843,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=118193 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-13T02:37:03.060243",
-    "last_remind": "2026-08-19T03:38:37.841827",
-    "remind_count": 200
+    "last_remind": "2026-08-19T04:22:26.001459",
+    "remind_count": 201
   },
   "auto_generic_dahe_1863": {
     "status": "unknown",
@@ -14906,15 +14906,15 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=119381 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:18:22.657804",
-    "last_remind": "2026-08-19T03:36:14.718553",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:19:52.904443",
+    "remind_count": 385
   },
   "auto_generic_118561": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=118561 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:21:39.125322",
-    "last_remind": "2026-08-19T03:38:36.842542",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:22:30.115385",
+    "remind_count": 385
   },
   "auto_generic_2915": {
     "status": "sold_out",
@@ -14969,8 +14969,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=75864 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:52:31.863960",
-    "last_remind": "2026-08-19T03:49:37.982165",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:34:34.637411",
+    "remind_count": 372
   },
   "auto_generic_2942": {
     "status": "sold_out",
@@ -15018,8 +15018,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=119863 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:52:30.466397",
-    "last_remind": "2026-08-19T03:49:42.177188",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:34:30.941300",
+    "remind_count": 372
   },
   "auto_generic_75871": {
     "status": "sold_out",
@@ -15081,8 +15081,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=75883 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-13T21:52:37.200371",
-    "last_remind": "2026-08-19T03:49:38.971927",
-    "remind_count": 183
+    "last_remind": "2026-08-19T04:34:32.177023",
+    "remind_count": 184
   },
   "auto_generic_1028": {
     "status": "unknown",
@@ -15144,8 +15144,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120702 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-07T09:43:18.626386",
-    "last_remind": "2026-08-19T03:38:38.840415",
-    "remind_count": 351
+    "last_remind": "2026-08-19T04:22:27.656206",
+    "remind_count": 352
   },
   "auto_generic_2972": {
     "status": "sold_out",
@@ -15242,8 +15242,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=75917 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-13T21:52:38.318080",
-    "last_remind": "2026-08-19T03:49:40.305383",
-    "remind_count": 183
+    "last_remind": "2026-08-19T04:34:33.414176",
+    "remind_count": 184
   },
   "auto_generic_1029": {
     "status": "unknown",
@@ -15312,8 +15312,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=118590 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:58:40.585453",
-    "last_remind": "2026-08-19T03:56:13.764147",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:41:29.798998",
+    "remind_count": 372
   },
   "auto_generic_120314": {
     "status": "sold_out",
@@ -15417,8 +15417,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120009 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T12:40:32.104539",
-    "last_remind": "2026-08-19T03:50:35.945260",
-    "remind_count": 385
+    "last_remind": "2026-08-19T04:35:35.128869",
+    "remind_count": 386
   },
   "auto_generic_7768": {
     "status": "sold_out",
@@ -15445,15 +15445,15 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120318 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T12:21:26.779478",
-    "last_remind": "2026-08-19T03:43:42.405074",
-    "remind_count": 385
+    "last_remind": "2026-08-19T04:28:09.248715",
+    "remind_count": 386
   },
   "auto_generic_120549": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120549 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:49:41.903078",
-    "last_remind": "2026-08-19T03:46:21.527355",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:30:47.948243",
+    "remind_count": 372
   },
   "auto_generic_1617": {
     "status": "sold_out",
@@ -15466,8 +15466,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=75994 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:52:37.624986",
-    "last_remind": "2026-08-19T03:49:45.017593",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:34:40.850959",
+    "remind_count": 372
   },
   "auto_generic_7568": {
     "status": "sold_out",
@@ -15487,15 +15487,15 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120012 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T19:32:38.436328",
-    "last_remind": "2026-08-19T03:37:27.001905",
-    "remind_count": 11
+    "last_remind": "2026-08-19T04:21:06.476415",
+    "remind_count": 12
   },
   "auto_generic_118500": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=118500 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:31:39.105742",
-    "last_remind": "2026-08-19T03:46:50.930270",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:31:26.835856",
+    "remind_count": 385
   },
   "auto_generic_6854": {
     "status": "sold_out",
@@ -15508,8 +15508,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=75997 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:52:39.292431",
-    "last_remind": "2026-08-19T03:49:48.379789",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:34:44.830941",
+    "remind_count": 372
   },
   "auto_generic_7328": {
     "status": "sold_out",
@@ -15529,15 +15529,15 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120929 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:18:53.524485",
-    "last_remind": "2026-08-19T03:36:47.320368",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:20:26.955562",
+    "remind_count": 385
   },
   "auto_generic_76005": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=76005 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:52:41.872845",
-    "last_remind": "2026-08-19T03:49:50.414274",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:34:48.849481",
+    "remind_count": 372
   },
   "auto_generic_130780": {
     "status": "unknown",
@@ -15550,8 +15550,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120798 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T12:41:21.499336",
-    "last_remind": "2026-08-19T03:51:27.485899",
-    "remind_count": 385
+    "last_remind": "2026-08-19T04:36:40.078529",
+    "remind_count": 386
   },
   "auto_generic_1025": {
     "status": "unknown",
@@ -15613,8 +15613,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=76012 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-16T11:24:42.823473",
-    "last_remind": "2026-08-19T03:49:51.419943",
-    "remind_count": 97
+    "last_remind": "2026-08-19T04:34:46.310860",
+    "remind_count": 98
   },
   "auto_generic_7288": {
     "status": "sold_out",
@@ -15627,8 +15627,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=113813 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:18:54.630561",
-    "last_remind": "2026-08-19T03:36:48.334853",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:20:28.286014",
+    "remind_count": 385
   },
   "auto_generic_1187": {
     "status": "unknown",
@@ -15648,8 +15648,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=99487 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:26:40.158558",
-    "last_remind": "2026-08-19T03:43:13.138420",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:27:37.195721",
+    "remind_count": 385
   },
   "auto_generic_1086": {
     "status": "unknown",
@@ -15669,8 +15669,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=76016 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:52:44.750985",
-    "last_remind": "2026-08-19T03:49:55.950756",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:34:47.552683",
+    "remind_count": 372
   },
   "auto_generic_119779": {
     "status": "sold_out",
@@ -15879,8 +15879,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=119705 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:49:29.665765",
-    "last_remind": "2026-08-19T03:45:58.986791",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:30:29.041879",
+    "remind_count": 372
   },
   "auto_generic_131042": {
     "status": "unknown",
@@ -15914,8 +15914,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120055 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:46:56.606399",
-    "last_remind": "2026-08-19T03:43:30.089865",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:27:57.582586",
+    "remind_count": 372
   },
   "auto_generic_1506": {
     "status": "sold_out",
@@ -15928,8 +15928,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120944 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:50:11.954365",
-    "last_remind": "2026-08-19T03:46:55.919354",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:31:29.437762",
+    "remind_count": 372
   },
   "auto_generic_131066": {
     "status": "unknown",
@@ -15942,8 +15942,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=119722 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:58:11.443580",
-    "last_remind": "2026-08-19T03:55:44.424983",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:40:54.009804",
+    "remind_count": 372
   },
   "auto_generic_1123": {
     "status": "unknown",
@@ -16019,8 +16019,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=121125 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:18:51.374337",
-    "last_remind": "2026-08-19T03:36:42.564534",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:20:24.481189",
+    "remind_count": 385
   },
   "auto_generic_1458": {
     "status": "unknown",
@@ -16075,8 +16075,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=121172 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-07T07:49:31.950761",
-    "last_remind": "2026-08-19T03:38:39.839119",
-    "remind_count": 353
+    "last_remind": "2026-08-19T04:22:28.882590",
+    "remind_count": 354
   },
   "auto_generic_1080": {
     "status": "unknown",
@@ -16089,15 +16089,15 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120518 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:50:13.459847",
-    "last_remind": "2026-08-19T03:46:54.911340",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:31:31.389659",
+    "remind_count": 372
   },
   "auto_generic_76156": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=76156 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:53:00.442280",
-    "last_remind": "2026-08-19T03:50:04.700559",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:35:00.810444",
+    "remind_count": 372
   },
   "auto_generic_4630": {
     "status": "sold_out",
@@ -16173,8 +16173,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=119445 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:50:22.148146",
-    "last_remind": "2026-08-19T03:47:03.815999",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:31:40.151401",
+    "remind_count": 372
   },
   "auto_generic_1379": {
     "status": "unknown",
@@ -16194,29 +16194,29 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=118194 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T02:04:57.245886",
-    "last_remind": "2026-08-19T03:38:21.098354",
-    "remind_count": 38
+    "last_remind": "2026-08-19T04:22:11.556121",
+    "remind_count": 39
   },
   "auto_generic_113339": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=113339 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-04T13:21:37.991710",
-    "last_remind": "2026-08-19T03:38:22.115644",
-    "remind_count": 384
+    "last_remind": "2026-08-19T04:22:12.797160",
+    "remind_count": 385
   },
   "auto_generic_99979": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=99979 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-17T02:43:05.862026",
-    "last_remind": "2026-08-19T03:38:28.188298",
-    "remind_count": 72
+    "last_remind": "2026-08-19T04:22:20.289954",
+    "remind_count": 73
   },
   "auto_generic_113649": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=113649 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-15T03:32:56.441322",
-    "last_remind": "2026-08-19T03:39:44.283868",
-    "remind_count": 151
+    "last_remind": "2026-08-19T04:23:39.743099",
+    "remind_count": 152
   },
   "auto_generic_1346": {
     "status": "unknown",
@@ -16313,8 +16313,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=121080 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:50:28.069661",
-    "last_remind": "2026-08-19T03:47:08.244251",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:31:43.476020",
+    "remind_count": 372
   },
   "auto_generic_1326": {
     "status": "unknown",
@@ -16334,8 +16334,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=110187 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T19:32:40.114692",
-    "last_remind": "2026-08-19T03:37:30.000120",
-    "remind_count": 11
+    "last_remind": "2026-08-19T04:21:09.346781",
+    "remind_count": 12
   },
   "auto_generic_8115": {
     "status": "sold_out",
@@ -16397,8 +16397,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120455 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:53:31.533134",
-    "last_remind": "2026-08-19T03:50:36.939963",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:35:32.376686",
+    "remind_count": 372
   },
   "auto_generic_7848": {
     "status": "sold_out",
@@ -16488,15 +16488,15 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=121061 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:58:12.767361",
-    "last_remind": "2026-08-19T03:55:38.751818",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:40:55.281103",
+    "remind_count": 372
   },
   "auto_generic_120507": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120507 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-05T15:54:16.108194",
-    "last_remind": "2026-08-19T03:51:35.605591",
-    "remind_count": 371
+    "last_remind": "2026-08-19T04:36:47.717436",
+    "remind_count": 372
   },
   "auto_generic_3176": {
     "status": "sold_out",
@@ -16565,8 +16565,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=117990 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-06T09:24:35.825691",
-    "last_remind": "2026-08-19T03:39:43.287283",
-    "remind_count": 361
+    "last_remind": "2026-08-19T04:23:38.222863",
+    "remind_count": 362
   },
   "auto_generic_121144": {
     "status": "sold_out",
@@ -16579,8 +16579,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=121181 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-06T09:28:01.786156",
-    "last_remind": "2026-08-19T03:42:57.485109",
-    "remind_count": 361
+    "last_remind": "2026-08-19T04:27:24.635445",
+    "remind_count": 362
   },
   "auto_generic_3205": {
     "status": "sold_out",
@@ -16593,8 +16593,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120864 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-06T09:28:27.727515",
-    "last_remind": "2026-08-19T03:43:33.623829",
-    "remind_count": 361
+    "last_remind": "2026-08-19T04:28:03.390016",
+    "remind_count": 362
   },
   "auto_generic_1243": {
     "status": "unknown",
@@ -16614,8 +16614,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=121049 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-06T15:35:13.195997",
-    "last_remind": "2026-08-19T03:43:00.871172",
-    "remind_count": 358
+    "last_remind": "2026-08-19T04:27:28.207115",
+    "remind_count": 359
   },
   "auto_generic_1213": {
     "status": "unknown",
@@ -16635,8 +16635,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=116984 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-07T05:33:30.852730",
-    "last_remind": "2026-08-19T03:56:01.674464",
-    "remind_count": 355
+    "last_remind": "2026-08-19T04:41:19.619520",
+    "remind_count": 356
   },
   "auto_generic_2128": {
     "status": "sold_out",
@@ -16691,8 +16691,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=121051 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-07T07:58:55.996865",
-    "last_remind": "2026-08-19T03:48:49.700278",
-    "remind_count": 353
+    "last_remind": "2026-08-19T04:33:35.756630",
+    "remind_count": 354
   },
   "auto_generic_1290": {
     "status": "unknown",
@@ -16719,15 +16719,15 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120650 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-07T13:38:10.781032",
-    "last_remind": "2026-08-19T03:51:15.050732",
-    "remind_count": 347
+    "last_remind": "2026-08-19T04:36:27.046367",
+    "remind_count": 348
   },
   "auto_generic_119706": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=119706 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-07T18:55:05.557374",
-    "last_remind": "2026-08-19T03:38:41.505942",
-    "remind_count": 341
+    "last_remind": "2026-08-19T04:22:31.351938",
+    "remind_count": 342
   },
   "auto_generic_112689": {
     "status": "sold_out",
@@ -16775,8 +16775,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120416 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-08T07:14:59.277780",
-    "last_remind": "2026-08-19T03:46:11.229961",
-    "remind_count": 327
+    "last_remind": "2026-08-19T04:30:41.527635",
+    "remind_count": 328
   },
   "auto_generic_2378": {
     "status": "sold_out",
@@ -16796,15 +16796,15 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120230 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-08T13:14:34.121417",
-    "last_remind": "2026-08-19T03:43:34.631768",
-    "remind_count": 318
+    "last_remind": "2026-08-19T04:27:59.034681",
+    "remind_count": 319
   },
   "auto_generic_120435": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120435 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-08T13:26:05.517187",
-    "last_remind": "2026-08-19T03:56:14.979125",
-    "remind_count": 318
+    "last_remind": "2026-08-19T04:41:31.379346",
+    "remind_count": 319
   },
   "auto_generic_2427": {
     "status": "sold_out",
@@ -16880,8 +16880,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=111848 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-09T13:26:40.529122",
-    "last_remind": "2026-08-19T03:56:04.567238",
-    "remind_count": 288
+    "last_remind": "2026-08-19T04:41:21.246193",
+    "remind_count": 289
   },
   "auto_generic_1408": {
     "status": "unknown",
@@ -16915,8 +16915,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=121122 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-10T08:29:23.288937",
-    "last_remind": "2026-08-19T03:37:59.665213",
-    "remind_count": 263
+    "last_remind": "2026-08-19T04:21:41.637244",
+    "remind_count": 264
   },
   "auto_generic_dahe_5464": {
     "status": "unknown",
@@ -16964,15 +16964,15 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=116813 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-10T08:34:46.547065",
-    "last_remind": "2026-08-19T03:42:49.803361",
-    "remind_count": 263
+    "last_remind": "2026-08-19T04:27:16.303381",
+    "remind_count": 264
   },
   "auto_generic_120043": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120043 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-10T08:38:04.234032",
-    "last_remind": "2026-08-19T03:46:12.826562",
-    "remind_count": 263
+    "last_remind": "2026-08-19T04:30:39.981079",
+    "remind_count": 264
   },
   "auto_generic_115723": {
     "status": "sold_out",
@@ -16992,15 +16992,15 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120410 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-10T10:11:11.102353",
-    "last_remind": "2026-08-19T03:50:34.196854",
-    "remind_count": 262
+    "last_remind": "2026-08-19T04:35:33.793616",
+    "remind_count": 263
   },
   "auto_generic_120285": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120285 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-10T08:41:55.777133",
-    "last_remind": "2026-08-19T03:50:46.566747",
-    "remind_count": 263
+    "last_remind": "2026-08-19T04:35:47.273561",
+    "remind_count": 264
   },
   "auto_generic_10312": {
     "status": "sold_out",
@@ -17013,8 +17013,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=121228 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-10T14:01:22.316116",
-    "last_remind": "2026-08-19T03:38:01.236588",
-    "remind_count": 259
+    "last_remind": "2026-08-19T04:21:40.267405",
+    "remind_count": 260
   },
   "auto_generic_117695": {
     "status": "sold_out",
@@ -17027,8 +17027,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=117511 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-10T14:05:42.035688",
-    "last_remind": "2026-08-19T03:43:15.178122",
-    "remind_count": 259
+    "last_remind": "2026-08-19T04:27:40.206340",
+    "remind_count": 260
   },
   "auto_generic_119955": {
     "status": "sold_out",
@@ -17048,8 +17048,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=121416 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-10T14:16:39.924612",
-    "last_remind": "2026-08-19T03:55:58.616757",
-    "remind_count": 259
+    "last_remind": "2026-08-19T04:41:17.999719",
+    "remind_count": 260
   },
   "auto_generic_3380": {
     "status": "sold_out",
@@ -17062,15 +17062,15 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120640 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-10T19:42:58.330256",
-    "last_remind": "2026-08-19T03:50:39.139437",
-    "remind_count": 254
+    "last_remind": "2026-08-19T04:35:36.469852",
+    "remind_count": 255
   },
   "auto_generic_119698": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=119698 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-13T21:53:37.818239",
-    "last_remind": "2026-08-19T03:50:40.134693",
-    "remind_count": 183
+    "last_remind": "2026-08-19T04:35:37.910220",
+    "remind_count": 184
   },
   "auto_generic_9260": {
     "status": "sold_out",
@@ -17111,8 +17111,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=121073 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-11T07:04:05.202641",
-    "last_remind": "2026-08-19T03:46:18.511666",
-    "remind_count": 242
+    "last_remind": "2026-08-19T04:30:50.951831",
+    "remind_count": 243
   },
   "auto_generic_1043": {
     "status": "unknown",
@@ -17125,15 +17125,15 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120522 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-11T13:28:28.782982",
-    "last_remind": "2026-08-19T03:38:02.243039",
-    "remind_count": 235
+    "last_remind": "2026-08-19T04:21:42.871138",
+    "remind_count": 236
   },
   "auto_generic_120772": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120772 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-11T13:36:56.280495",
-    "last_remind": "2026-08-19T03:46:20.521804",
-    "remind_count": 235
+    "last_remind": "2026-08-19T04:30:52.200152",
+    "remind_count": 236
   },
   "auto_generic_1128": {
     "status": "unknown",
@@ -17153,8 +17153,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=121306 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-11T19:29:20.392102",
-    "last_remind": "2026-08-19T03:46:19.508035",
-    "remind_count": 229
+    "last_remind": "2026-08-19T04:30:56.518658",
+    "remind_count": 230
   },
   "auto_generic_120554": {
     "status": "sold_out",
@@ -17188,29 +17188,29 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=121448 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-12T08:18:16.026667",
-    "last_remind": "2026-08-19T03:51:33.602964",
-    "remind_count": 218
+    "last_remind": "2026-08-19T04:36:46.066413",
+    "remind_count": 219
   },
   "auto_generic_121482": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=121482 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-12T08:22:30.389342",
-    "last_remind": "2026-08-19T03:56:06.595549",
-    "remind_count": 218
+    "last_remind": "2026-08-19T04:41:23.836010",
+    "remind_count": 219
   },
   "auto_generic_119211": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=119211 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-12T13:40:04.063234",
-    "last_remind": "2026-08-19T03:38:29.643924",
-    "remind_count": 213
+    "last_remind": "2026-08-19T04:22:22.861805",
+    "remind_count": 214
   },
   "auto_generic_121208": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=121208 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-12T13:44:25.964758",
-    "last_remind": "2026-08-19T03:42:46.483781",
-    "remind_count": 213
+    "last_remind": "2026-08-19T04:27:10.012519",
+    "remind_count": 214
   },
   "auto_generic_4620": {
     "status": "sold_out",
@@ -17230,8 +17230,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120576 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-12T19:41:56.909699",
-    "last_remind": "2026-08-19T03:42:45.477311",
-    "remind_count": 207
+    "last_remind": "2026-08-19T04:27:11.848329",
+    "remind_count": 208
   },
   "auto_generic_3232": {
     "status": "sold_out",
@@ -17272,8 +17272,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=119690 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-13T13:53:49.691794",
-    "last_remind": "2026-08-19T03:48:50.716269",
-    "remind_count": 192
+    "last_remind": "2026-08-19T04:33:36.995090",
+    "remind_count": 193
   },
   "auto_generic_1558": {
     "status": "sold_out",
@@ -17314,8 +17314,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=119486 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-14T08:03:55.070557",
-    "last_remind": "2026-08-19T03:43:35.630154",
-    "remind_count": 175
+    "last_remind": "2026-08-19T04:28:00.269077",
+    "remind_count": 176
   },
   "auto_generic_dahe_4386": {
     "status": "unknown",
@@ -17335,15 +17335,15 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=111664 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-14T08:07:51.375277",
-    "last_remind": "2026-08-19T03:47:30.805892",
-    "remind_count": 175
+    "last_remind": "2026-08-19T04:32:09.972054",
+    "remind_count": 176
   },
   "auto_generic_121456": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=121456 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-14T08:09:01.009814",
-    "last_remind": "2026-08-19T03:48:54.353388",
-    "remind_count": 175
+    "last_remind": "2026-08-19T04:33:38.230643",
+    "remind_count": 176
   },
   "auto_generic_1622": {
     "status": "sold_out",
@@ -17356,8 +17356,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120696 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-14T13:47:10.825056",
-    "last_remind": "2026-08-19T03:47:31.792203",
-    "remind_count": 169
+    "last_remind": "2026-08-19T04:32:12.062934",
+    "remind_count": 170
   },
   "auto_generic_dahe_5273": {
     "status": "unknown",
@@ -17384,8 +17384,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=121698 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-14T13:48:14.275034",
-    "last_remind": "2026-08-19T03:48:53.161228",
-    "remind_count": 169
+    "last_remind": "2026-08-19T04:33:39.473048",
+    "remind_count": 170
   },
   "auto_generic_1619": {
     "status": "sold_out",
@@ -17405,15 +17405,15 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=113095 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-14T19:24:14.636417",
-    "last_remind": "2026-08-19T03:56:05.570247",
-    "remind_count": 163
+    "last_remind": "2026-08-19T04:41:22.555064",
+    "remind_count": 164
   },
   "auto_generic_121248": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=121248 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T05:10:55.805276",
-    "last_remind": "2026-08-19T03:51:04.120716",
-    "remind_count": 34
+    "last_remind": "2026-08-19T04:36:08.876605",
+    "remind_count": 35
   },
   "auto_generic_1584": {
     "status": "sold_out",
@@ -17440,8 +17440,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=121426 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-15T13:10:12.147420",
-    "last_remind": "2026-08-19T03:43:14.154098",
-    "remind_count": 135
+    "last_remind": "2026-08-19T04:27:38.446549",
+    "remind_count": 136
   },
   "auto_generic_1139": {
     "status": "unknown",
@@ -17482,8 +17482,8 @@
     "status": "available",
     "message": "http://www.dahepiao.com/yanchupiaowu1/ych/2018032134605.html → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-16T11:35:45.058509",
-    "last_remind": "2026-08-19T03:39:50.776109",
-    "remind_count": 96
+    "last_remind": "2026-08-19T04:23:44.368986",
+    "remind_count": 97
   },
   "auto_generic_dahe_4700": {
     "status": "unknown",
@@ -17524,8 +17524,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=121244 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-17T07:20:26.225639",
-    "last_remind": "2026-08-19T03:43:16.186875",
-    "remind_count": 66
+    "last_remind": "2026-08-19T04:27:41.447125",
+    "remind_count": 67
   },
   "auto_generic_2001": {
     "status": "sold_out",
@@ -17552,8 +17552,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=121699 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-17T07:29:30.070035",
-    "last_remind": "2026-08-19T03:51:17.557848",
-    "remind_count": 66
+    "last_remind": "2026-08-19T04:36:28.341388",
+    "remind_count": 67
   },
   "auto_generic_1649": {
     "status": "sold_out",
@@ -17573,8 +17573,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120617 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-17T13:21:10.371247",
-    "last_remind": "2026-08-19T03:50:47.586275",
-    "remind_count": 59
+    "last_remind": "2026-08-19T04:35:48.608759",
+    "remind_count": 60
   },
   "auto_generic_4546": {
     "status": "sold_out",
@@ -17587,8 +17587,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=121143 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-17T13:21:58.093120",
-    "last_remind": "2026-08-19T03:51:36.609303",
-    "remind_count": 59
+    "last_remind": "2026-08-19T04:36:50.617475",
+    "remind_count": 60
   },
   "auto_generic_1665": {
     "status": "sold_out",
@@ -17650,8 +17650,8 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=120899 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T07:09:31.344328",
-    "last_remind": "2026-08-19T03:37:39.059852",
-    "remind_count": 31
+    "last_remind": "2026-08-19T04:21:21.398821",
+    "remind_count": 32
   },
   "auto_generic_1520": {
     "status": "sold_out",
@@ -17685,15 +17685,15 @@
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=121533 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-18T13:35:29.780461",
-    "last_remind": "2026-08-19T03:55:59.632930",
-    "remind_count": 21
+    "last_remind": "2026-08-19T04:41:15.443337",
+    "remind_count": 22
   },
   "auto_generic_118192": {
     "status": "available",
     "message": "http://www.xingqiupiao.com/event?id=118192 → 可能有票（关键词交叉命中）",
     "last_change": "2026-08-19T02:00:21.980087",
-    "last_remind": "2026-08-19T03:37:40.552454",
-    "remind_count": 2
+    "last_remind": "2026-08-19T04:21:22.638098",
+    "remind_count": 3
   },
   "auto_generic_4486": {
     "status": "sold_out",
